@@ -1,5 +1,5 @@
 # floimg-web Dockerfile
-# Multi-stage build for static site deployment
+# Multi-stage build for Astro static site
 
 # Stage 1: Build
 FROM node:20-alpine AS builder
@@ -20,12 +20,11 @@ RUN pnpm install --frozen-lockfile
 # Copy source code
 COPY packages/shared ./packages/shared
 COPY packages/frontend ./packages/frontend
-COPY tsconfig.json ./
 
-# Build shared types first
+# Build shared types first (if it exists)
 RUN pnpm --filter @floimg-web/shared build 2>/dev/null || true
 
-# Build frontend (static assets)
+# Build Astro static site
 RUN pnpm --filter @floimg-web/frontend build
 
 # Stage 2: Production with nginx
