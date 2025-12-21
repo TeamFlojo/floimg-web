@@ -8,7 +8,7 @@ const { title, description = 'Universal image workflow engine for developers and
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,16 +16,17 @@ const { title, description = 'Universal image workflow engine for developers and
     <title>{title} | floimg</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="min-h-screen bg-zinc-950 text-white">
-    <header class="border-b border-white/10">
+  <body class="min-h-screen bg-white text-zinc-900 dark:bg-zinc-950 dark:text-white">
+    <header class="border-b border-zinc-200 dark:border-white/10">
       <nav class="mx-auto max-w-7xl px-6 py-4">
         <div class="flex items-center justify-between">
-          <a href="/" class="text-xl font-bold text-white">floimg</a>
+          <a href="/" class="text-xl font-bold text-zinc-900 dark:text-white">floimg</a>
           <div class="flex items-center gap-8">
-            <a href="/docs" class="text-sm text-zinc-400 hover:text-white transition-colors">Docs</a>
-            <a href="/gallery" class="text-sm text-zinc-400 hover:text-white transition-colors">Gallery</a>
-            <a href="/pricing" class="text-sm text-zinc-400 hover:text-white transition-colors">Pricing</a>
-            <a href="https://github.com/floimg/floimg" class="text-sm text-zinc-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://studio.floimg.com" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Studio</a>
+            <a href="/docs" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Docs</a>
+            <a href="/gallery" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Gallery</a>
+            <a href="/pricing" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Pricing</a>
+            <a href="https://github.com/floimg/floimg" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="/signup" class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 transition-colors">Get Started</a>
           </div>
         </div>
@@ -36,44 +37,45 @@ const { title, description = 'Universal image workflow engine for developers and
       <slot />
     </main>
 
-    <footer class="border-t border-white/10 bg-zinc-900/50">
+    <footer class="border-t border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900/50">
       <div class="mx-auto max-w-7xl px-6 py-12">
         <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div>
-            <span class="text-lg font-bold text-white">floimg</span>
-            <p class="mt-2 text-sm text-zinc-400">
+            <span class="text-lg font-bold text-zinc-900 dark:text-white">floimg</span>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
               Universal image workflow engine for developers and AI agents.
             </p>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white">Product</h3>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Product</h3>
             <ul class="mt-4 space-y-2">
-              <li><a href="/docs" class="text-sm text-zinc-400 hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="/gallery" class="text-sm text-zinc-400 hover:text-white transition-colors">Gallery</a></li>
-              <li><a href="/pricing" class="text-sm text-zinc-400 hover:text-white transition-colors">Pricing</a></li>
+              <li><a href="https://studio.floimg.com" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Studio</a></li>
+              <li><a href="/docs" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Documentation</a></li>
+              <li><a href="/gallery" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Gallery</a></li>
+              <li><a href="/pricing" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Pricing</a></li>
             </ul>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white">Open Source</h3>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Open Source</h3>
             <ul class="mt-4 space-y-2">
-              <li><a href="https://github.com/floimg/floimg" class="text-sm text-zinc-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">floimg Core</a></li>
-              <li><a href="https://github.com/floimg/floimg-studio" class="text-sm text-zinc-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">floimg Studio</a></li>
-              <li><a href="https://www.npmjs.com/package/@teamflojo/floimg" class="text-sm text-zinc-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">npm</a></li>
+              <li><a href="https://github.com/floimg/floimg" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">floimg Core</a></li>
+              <li><a href="https://github.com/floimg/floimg-studio" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">floimg Studio</a></li>
+              <li><a href="https://www.npmjs.com/package/@teamflojo/floimg" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">npm</a></li>
             </ul>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white">Resources</h3>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Resources</h3>
             <ul class="mt-4 space-y-2">
-              <li><a href="/docs/getting-started/installation" class="text-sm text-zinc-400 hover:text-white transition-colors">Getting Started</a></li>
-              <li><a href="/docs/plugins/quickchart" class="text-sm text-zinc-400 hover:text-white transition-colors">Plugins</a></li>
-              <li><a href="/docs/mcp/claude-integration" class="text-sm text-zinc-400 hover:text-white transition-colors">MCP Integration</a></li>
+              <li><a href="/docs/getting-started/installation" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Getting Started</a></li>
+              <li><a href="/docs/plugins/quickchart" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Plugins</a></li>
+              <li><a href="/docs/mcp/claude-integration" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">MCP Integration</a></li>
             </ul>
           </div>
         </div>
-        <div class="mt-12 border-t border-white/10 pt-8 text-center text-sm text-zinc-500">
+        <div class="mt-12 border-t border-zinc-200 dark:border-white/10 pt-8 text-center text-sm text-zinc-500">
           <p>MIT License</p>
           <p class="mt-2">
-            A <a href="https://flojo.io" class="text-zinc-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Flojo, Inc</a> product
+            A <a href="https://flojo.io" class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Flojo, Inc</a> product
           </p>
         </div>
       </div>

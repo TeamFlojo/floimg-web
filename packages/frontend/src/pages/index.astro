@@ -38,10 +38,10 @@ const generators = [
   <!-- Hero -->
   <section class="px-6 py-24 text-center">
     <div class="mx-auto max-w-4xl">
-      <h1 class="text-5xl font-bold tracking-tight text-white sm:text-6xl">
-        Image workflows for <span class="text-violet-400">developers</span> and <span class="text-violet-400">AI agents</span>
+      <h1 class="text-5xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-6xl">
+        Image workflows for <span class="text-violet-600 dark:text-violet-400">developers</span> and <span class="text-violet-600 dark:text-violet-400">AI agents</span>
       </h1>
-      <p class="mt-6 text-xl text-zinc-400">
+      <p class="mt-6 text-xl text-zinc-600 dark:text-zinc-400">
         Generate charts, diagrams, QR codes, screenshots, and AI images with a unified API.
         Deterministic execution for reliable production workflows.
       </p>
@@ -49,7 +49,7 @@ const generators = [
         <a href="/docs/getting-started/installation" class="rounded-lg bg-violet-600 px-6 py-3 text-lg font-medium text-white hover:bg-violet-500 transition-colors">
           Get Started
         </a>
-        <a href="/gallery" class="rounded-lg border border-white/20 px-6 py-3 text-lg font-medium text-white hover:bg-white/5 transition-colors">
+        <a href="/gallery" class="rounded-lg border border-zinc-300 dark:border-white/20 px-6 py-3 text-lg font-medium text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors">
           View Gallery
         </a>
       </div>
@@ -57,9 +57,9 @@ const generators = [
   </section>
 
   <!-- Code Example -->
-  <section class="border-y border-white/10 bg-zinc-900/50 px-6 py-16">
+  <section class="border-y border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900/50 px-6 py-16">
     <div class="mx-auto max-w-4xl">
-      <pre class="overflow-x-auto rounded-lg bg-zinc-950 p-6 text-sm"><code class="text-zinc-300"><span class="text-violet-400">import</span> createClient <span class="text-violet-400">from</span> <span class="text-green-400">'@teamflojo/floimg'</span>;
+      <pre class="overflow-x-auto rounded-lg bg-zinc-900 dark:bg-zinc-950 p-6 text-sm"><code class="text-zinc-300"><span class="text-violet-400">import</span> createClient <span class="text-violet-400">from</span> <span class="text-green-400">'@teamflojo/floimg'</span>;
 <span class="text-violet-400">import</span> quickchart <span class="text-violet-400">from</span> <span class="text-green-400">'@teamflojo/floimg-quickchart'</span>;
 
 <span class="text-violet-400">const</span> floimg = createClient();
@@ -85,34 +85,99 @@ floimg.registerGenerator(quickchart());
   <!-- Features -->
   <section class="px-6 py-24">
     <div class="mx-auto max-w-7xl">
-      <h2 class="text-center text-3xl font-bold text-white">Why floimg?</h2>
+      <h2 class="text-center text-3xl font-bold text-zinc-900 dark:text-white">Why floimg?</h2>
       <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((feature) => (
-          <div class="rounded-lg border border-white/10 bg-zinc-900/50 p-6">
+          <div class="rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50 p-6">
             <div class="text-3xl">{feature.icon}</div>
-            <h3 class="mt-4 text-lg font-semibold text-white">{feature.title}</h3>
-            <p class="mt-2 text-sm text-zinc-400">{feature.description}</p>
+            <h3 class="mt-4 text-lg font-semibold text-zinc-900 dark:text-white">{feature.title}</h3>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{feature.description}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Generators -->
-  <section class="border-t border-white/10 bg-zinc-900/50 px-6 py-24">
+  <!-- Two Ways to Use floimg -->
+  <section class="border-y border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900/50 px-6 py-24">
     <div class="mx-auto max-w-7xl">
-      <h2 class="text-center text-3xl font-bold text-white">Generators</h2>
-      <p class="mt-4 text-center text-zinc-400">Install only what you need</p>
+      <h2 class="text-center text-3xl font-bold text-zinc-900 dark:text-white">Two Ways to Use floimg</h2>
+      <p class="mt-4 text-center text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+        Choose the approach that fits your workflow
+      </p>
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <!-- SDK Path -->
+        <div class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 p-8">
+          <div class="text-4xl mb-4">💻</div>
+          <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">SDK & CLI</h3>
+          <p class="mt-3 text-zinc-600 dark:text-zinc-400">
+            For developers who want full programmatic control. Integrate floimg into your codebase,
+            build custom pipelines, and automate image workflows.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+            <li class="flex items-center gap-2">
+              <span class="text-violet-600 dark:text-violet-400">✓</span>
+              TypeScript/JavaScript SDK
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-violet-600 dark:text-violet-400">✓</span>
+              Command-line interface
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-violet-600 dark:text-violet-400">✓</span>
+              MCP for AI agents
+            </li>
+          </ul>
+          <a href="/docs/getting-started/installation" class="mt-8 inline-block rounded-lg bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-500 transition-colors">
+            Read the Docs
+          </a>
+        </div>
+
+        <!-- Studio Path -->
+        <div class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 p-8">
+          <div class="text-4xl mb-4">🎨</div>
+          <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">Studio</h3>
+          <p class="mt-3 text-zinc-600 dark:text-zinc-400">
+            Visual drag-and-drop workflow builder. Create image pipelines without writing code,
+            then export to SDK or run directly in Studio.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+            <li class="flex items-center gap-2">
+              <span class="text-violet-600 dark:text-violet-400">✓</span>
+              Node-based visual editor
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-violet-600 dark:text-violet-400">✓</span>
+              Real-time preview
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-violet-600 dark:text-violet-400">✓</span>
+              Self-hostable (MIT license)
+            </li>
+          </ul>
+          <a href="https://studio.floimg.com" class="mt-8 inline-block rounded-lg bg-zinc-900 dark:bg-white px-6 py-3 font-medium text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors">
+            Try Studio
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Generators -->
+  <section class="px-6 py-24">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="text-center text-3xl font-bold text-zinc-900 dark:text-white">Generators</h2>
+      <p class="mt-4 text-center text-zinc-600 dark:text-zinc-400">Install only what you need</p>
       <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {generators.map((gen) => (
-          <div class="flex items-center gap-4 rounded-lg border border-white/10 bg-zinc-950 p-4">
-            <code class="text-sm text-violet-400">@teamflojo/floimg-{gen.name}</code>
+          <div class="flex items-center gap-4 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-950 p-4">
+            <code class="text-sm text-violet-600 dark:text-violet-400">@teamflojo/floimg-{gen.name}</code>
             <span class="text-sm text-zinc-500">{gen.desc}</span>
           </div>
         ))}
       </div>
       <div class="mt-8 text-center">
-        <a href="/docs/plugins/quickchart" class="text-violet-400 hover:text-violet-300 transition-colors">
+        <a href="/docs/plugins/quickchart" class="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors">
           View all plugins →
         </a>
       </div>
@@ -120,14 +185,14 @@ floimg.registerGenerator(quickchart());
   </section>
 
   <!-- CTA -->
-  <section class="px-6 py-24">
+  <section class="border-t border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50 px-6 py-24">
     <div class="mx-auto max-w-4xl text-center">
-      <h2 class="text-3xl font-bold text-white">Ready to start?</h2>
-      <p class="mt-4 text-zinc-400">
+      <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">Ready to start?</h2>
+      <p class="mt-4 text-zinc-600 dark:text-zinc-400">
         Install floimg and generate your first image in minutes.
       </p>
       <div class="mt-8">
-        <code class="rounded-lg bg-zinc-900 px-4 py-2 text-violet-400">
+        <code class="rounded-lg bg-zinc-900 dark:bg-zinc-950 px-4 py-2 text-violet-400">
           npm install @teamflojo/floimg
         </code>
       </div>
@@ -135,7 +200,7 @@ floimg.registerGenerator(quickchart());
         <a href="/docs/getting-started/installation" class="rounded-lg bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-500 transition-colors">
           Read the Docs
         </a>
-        <a href="https://github.com/floimg/floimg" class="rounded-lg border border-white/20 px-6 py-3 font-medium text-white hover:bg-white/5 transition-colors" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/floimg/floimg" class="rounded-lg border border-zinc-300 dark:border-white/20 px-6 py-3 font-medium text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors" target="_blank" rel="noopener noreferrer">
           Star on GitHub
         </a>
       </div>
