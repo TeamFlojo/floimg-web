@@ -14,8 +14,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/frontend/package.json ./packages/frontend/
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install dependencies (--ignore-scripts skips prepare/husky in prod)
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copy source code
 COPY packages/shared ./packages/shared
