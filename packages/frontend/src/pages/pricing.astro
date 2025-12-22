@@ -1,5 +1,5 @@
 ---
-import MarketingLayout from '../layouts/MarketingLayout.astro';
+import MarketingLayout from "../layouts/MarketingLayout.astro";
 
 const tiers = [
   {
@@ -70,7 +70,10 @@ const tiers = [
 ];
 ---
 
-<MarketingLayout title="Pricing">
+<MarketingLayout
+  title="Pricing"
+  description="floimg pricing plans. Free tier for individuals, paid plans for teams. Self-hosting is always free. AI image generation included."
+>
   <div class="mx-auto max-w-7xl px-6 py-24">
     <div class="text-center">
       <h1 class="text-4xl font-bold text-zinc-900 dark:text-white">Pricing</h1>
@@ -80,40 +83,57 @@ const tiers = [
     </div>
 
     <div class="mt-16 grid gap-8 lg:grid-cols-4">
-      {tiers.map((tier) => (
-        <div class={`rounded-lg border p-8 ${tier.highlighted ? 'border-violet-500 bg-violet-500/10' : 'border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50'}`}>
-          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white">{tier.name}</h3>
-          <div class="mt-4">
-            <span class="text-4xl font-bold text-zinc-900 dark:text-white">{tier.price}</span>
-            {tier.period && <span class="text-zinc-600 dark:text-zinc-400">{tier.period}</span>}
-          </div>
-          <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{tier.description}</p>
-
-          <ul class="mt-8 space-y-3">
-            {tier.features.map((feature) => (
-              <li class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-                <svg class="h-4 w-4 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                {feature}
-              </li>
-            ))}
-          </ul>
-
-          <a
-            href={tier.href}
-            class={`mt-8 block rounded-lg px-4 py-2 text-center text-sm font-medium transition-colors ${tier.highlighted ? 'bg-violet-600 text-white hover:bg-violet-500' : 'border border-zinc-300 dark:border-white/20 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5'}`}
+      {
+        tiers.map((tier) => (
+          <div
+            class={`rounded-lg border p-8 ${tier.highlighted ? "border-violet-500 bg-violet-500/10" : "border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50"}`}
           >
-            {tier.cta}
-          </a>
-        </div>
-      ))}
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-white">{tier.name}</h3>
+            <div class="mt-4">
+              <span class="text-4xl font-bold text-zinc-900 dark:text-white">{tier.price}</span>
+              {tier.period && <span class="text-zinc-600 dark:text-zinc-400">{tier.period}</span>}
+            </div>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{tier.description}</p>
+
+            <ul class="mt-8 space-y-3">
+              {tier.features.map((feature) => (
+                <li class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+                  <svg
+                    class="h-4 w-4 text-violet-600 dark:text-violet-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href={tier.href}
+              class={`mt-8 block rounded-lg px-4 py-2 text-center text-sm font-medium transition-colors ${tier.highlighted ? "bg-violet-600 text-white hover:bg-violet-500" : "border border-zinc-300 dark:border-white/20 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5"}`}
+            >
+              {tier.cta}
+            </a>
+          </div>
+        ))
+      }
     </div>
 
     <div class="mt-16 text-center">
       <p class="text-zinc-600 dark:text-zinc-400">
-        Prefer to self-host?{' '}
-        <a href="/docs/studio/self-hosting" class="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300">
+        Prefer to self-host?{" "}
+        <a
+          href="/docs/studio/self-hosting"
+          class="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300"
+        >
           Run floimg Studio on your own infrastructure for free →
         </a>
       </p>

@@ -2,11 +2,63 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: string;
+  keywords?: string[];
 }
 
-const { title, description = "Universal image workflow engine for developers and AI agents" } =
-  Astro.props;
+const {
+  title,
+  description = "AI-powered image workflow engine for developers. Generate images with DALL-E, create charts, diagrams, and more. Claude Code plugin included.",
+  ogImage = "/og/default.png",
+  ogType = "website",
+  keywords = [],
+} = Astro.props;
+
 const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
+const siteUrl = "https://floimg.com";
+const fullTitle = title === "Home" ? "floimg - AI Image Workflow Engine" : `${title} | floimg`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = ogImage.startsWith("http") ? ogImage : `${siteUrl}${ogImage}`;
+
+const defaultKeywords = [
+  "AI image generation",
+  "image workflow",
+  "DALL-E API",
+  "Claude Code plugin",
+  "chart generator",
+  "diagram generator",
+  "TypeScript image library",
+  "Node.js image processing",
+  "MCP server",
+];
+
+const allKeywords = [...new Set([...defaultKeywords, ...keywords])];
+
+// JSON-LD structured data
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "floimg",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Cross-platform",
+  description:
+    "Universal image workflow engine for developers and AI agents. Generate AI images, charts, diagrams, and more with a unified API.",
+  url: siteUrl,
+  author: {
+    "@type": "Organization",
+    name: "Flojo, Inc",
+    url: "https://flojo.io",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  license: "https://opensource.org/licenses/MIT",
+  programmingLanguage: ["TypeScript", "JavaScript"],
+  softwareRequirements: "Node.js >= 18.0.0",
+};
 ---
 
 <!doctype html>
@@ -14,9 +66,37 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
     <meta name="description" content={description} />
-    <title>{title} | floimg</title>
+    <meta name="keywords" content={allKeywords.join(", ")} />
+    <meta name="author" content="Flojo, Inc" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="floimg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageUrl} />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="min-h-screen bg-white text-zinc-900 dark:bg-zinc-950 dark:text-white">
     <header class="border-b border-zinc-200 dark:border-white/10">
@@ -111,25 +191,29 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
                 <a
                   href="https://studio.floimg.com"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Studio</a>
+                  >Studio</a
+                >
               </li>
               <li>
                 <a
                   href="/docs"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Documentation</a>
+                  >Documentation</a
+                >
               </li>
               <li>
                 <a
                   href="/gallery"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Gallery</a>
+                  >Gallery</a
+                >
               </li>
               <li>
                 <a
                   href="/pricing"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Pricing</a>
+                  >Pricing</a
+                >
               </li>
             </ul>
           </div>
@@ -141,27 +225,31 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
                   href="https://github.com/TeamFlojo/floimg"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
                   target="_blank"
-                  rel="noopener noreferrer">floimg Core</a>
+                  rel="noopener noreferrer">floimg Core</a
+                >
               </li>
               <li>
                 <a
                   href="https://github.com/TeamFlojo/floimg-studio"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
                   target="_blank"
-                  rel="noopener noreferrer">floimg Studio</a>
+                  rel="noopener noreferrer">floimg Studio</a
+                >
               </li>
               <li>
                 <a
                   href="/community"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Community</a>
+                  >Community</a
+                >
               </li>
               <li>
                 <a
                   href="https://github.com/TeamFlojo/floimg/issues"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
                   target="_blank"
-                  rel="noopener noreferrer">Contribute</a>
+                  rel="noopener noreferrer">Contribute</a
+                >
               </li>
             </ul>
           </div>
@@ -172,19 +260,22 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
                 <a
                   href="/docs/getting-started/installation"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Getting Started</a>
+                  >Getting Started</a
+                >
               </li>
               <li>
                 <a
                   href="/docs/plugins/quickchart"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >Plugins</a>
+                  >Plugins</a
+                >
               </li>
               <li>
                 <a
                   href="/docs/mcp/claude-integration"
                   class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                  >MCP Integration</a>
+                  >MCP Integration</a
+                >
               </li>
             </ul>
           </div>
