@@ -1,4 +1,6 @@
 ---
+import NavDropdown from "../components/NavDropdown.astro";
+
 interface Props {
   title: string;
   description?: string;
@@ -14,6 +16,19 @@ const {
   ogType = "website",
   keywords = [],
 } = Astro.props;
+
+// Navigation dropdown items
+const productItems = [
+  { label: "Studio", href: "https://studio.floimg.com", external: true },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Pricing", href: "/pricing" },
+];
+
+const developersItems = [
+  { label: "Docs", href: "/docs" },
+  { label: "Plugins", href: "/plugins" },
+  { label: "Community", href: "/community" },
+];
 
 const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
 const siteUrl = "https://floimg.com";
@@ -103,32 +118,11 @@ const structuredData = {
       <nav class="mx-auto max-w-7xl px-6 py-4">
         <div class="flex items-center justify-between">
           <a href="/" class="text-xl font-bold text-zinc-900 dark:text-white">floimg</a>
-          <div class="flex items-center gap-8">
-            <a
-              href="https://studio.floimg.com"
-              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-              >Studio</a
-            >
-            <a
-              href="/docs"
-              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-              >Docs</a
-            >
-            <a
-              href="/plugins"
-              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-              >Plugins</a
-            >
-            <a
-              href="/gallery"
-              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-              >Gallery</a
-            >
-            <a
-              href="/community"
-              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-              >Community</a
-            >
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center gap-6">
+            <NavDropdown label="Product" items={productItems} />
+            <NavDropdown label="Developers" items={developersItems} />
             <a
               href="https://github.com/TeamFlojo/floimg"
               class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
@@ -144,7 +138,7 @@ const structuredData = {
                 >Sign in</a
               >
               <a
-                href="/signup"
+                href="https://studio.floimg.com"
                 class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 transition-colors"
                 >Get Started</a
               >
@@ -165,6 +159,97 @@ const structuredData = {
                   <span id="user-initial">?</span>
                 </button>
               </div>
+            </div>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-btn"
+            class="md:hidden p-2 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            aria-label="Toggle menu"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round" stroke-linejoin="round"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
+          <div class="flex flex-col gap-2">
+            <div class="py-2">
+              <span
+                class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider"
+                >Product</span
+              >
+              <div class="mt-2 flex flex-col gap-1">
+                <a
+                  href="https://studio.floimg.com"
+                  class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  >Studio</a
+                >
+                <a
+                  href="/gallery"
+                  class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  >Gallery</a
+                >
+                <a
+                  href="/pricing"
+                  class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  >Pricing</a
+                >
+              </div>
+            </div>
+            <div class="py-2">
+              <span
+                class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider"
+                >Developers</span
+              >
+              <div class="mt-2 flex flex-col gap-1">
+                <a
+                  href="/docs"
+                  class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  >Docs</a
+                >
+                <a
+                  href="/plugins"
+                  class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  >Plugins</a
+                >
+                <a
+                  href="/community"
+                  class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  >Community</a
+                >
+              </div>
+            </div>
+            <div
+              class="border-t border-zinc-200 dark:border-white/10 pt-4 mt-2 flex flex-col gap-2"
+            >
+              <a
+                href="https://github.com/TeamFlojo/floimg"
+                class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer">GitHub</a
+              >
+              <a
+                href="/login"
+                class="py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                >Sign in</a
+              >
+              <a
+                href="https://studio.floimg.com"
+                class="mt-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white text-center hover:bg-violet-500 transition-colors"
+                >Get Started</a
+              >
             </div>
           </div>
         </div>
@@ -340,4 +425,17 @@ const structuredData = {
   }
 
   updateAuthState();
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  mobileMenuBtn?.addEventListener("click", () => {
+    const isOpen = !mobileMenu?.classList.contains("hidden");
+    if (isOpen) {
+      mobileMenu?.classList.add("hidden");
+    } else {
+      mobileMenu?.classList.remove("hidden");
+    }
+  });
 </script>
