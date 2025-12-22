@@ -1,0 +1,444 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import PluginCard from "../../components/PluginCard.astro";
+import { plugins, getCategories } from "../../data/plugins";
+
+const categories = getCategories();
+
+const categoryInfo: Record<string, { icon: string; description: string }> = {
+  AI: {
+    icon: "sparkles",
+    description: "AI-powered image generation with DALL-E, Ollama, and more",
+  },
+  "Data Visualization": {
+    icon: "chart-bar",
+    description: "Charts, graphs, and data visualization with Chart.js and D3",
+  },
+  Diagrams: {
+    icon: "share-nodes",
+    description: "Flowcharts, sequence diagrams, and architecture diagrams",
+  },
+  Utilities: {
+    icon: "wrench",
+    description: "QR codes, screenshots, and utility image generation",
+  },
+};
+---
+
+<MarketingLayout
+  title="Plugins"
+  description="Explore floimg generator plugins for AI images, charts, diagrams, and more"
+>
+  <main>
+    <!-- Hero -->
+    <section class="hero-section">
+      <div class="hero-container">
+        <h1 class="hero-title">Plugin Directory</h1>
+        <p class="hero-subtitle">
+          Extend floimg with generator plugins. Each plugin adds new image generation capabilities
+          and integrates seamlessly with the SDK, CLI, and MCP.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value">{plugins.length}</span>
+            <span class="stat-label">Plugins</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{categories.length}</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">MIT</span>
+            <span class="stat-label">License</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search and Filters -->
+    <section class="filter-section">
+      <div class="filter-container">
+        <div class="search-wrapper">
+          <svg
+            class="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input
+            type="text"
+            id="plugin-search"
+            placeholder="Search plugins..."
+            class="search-input"
+          />
+        </div>
+
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-category="all">All</button>
+          {
+            categories.map((cat) => (
+              <button class="filter-btn" data-category={cat}>
+                {cat}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Plugins Grid -->
+    <section class="plugins-section">
+      <div class="plugins-container">
+        <div class="plugins-grid" id="plugins-grid">
+          {
+            plugins.map((plugin) => (
+              <div class="plugin-wrapper" data-category={plugin.category}>
+                <PluginCard plugin={plugin} />
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="no-results" id="no-results" style="display: none;">
+          <p>No plugins found matching your search.</p>
+          <button class="reset-btn" id="reset-search">Clear search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Create Your Own -->
+    <section class="cta-section">
+      <div class="cta-container">
+        <h2 class="cta-title">Build Your Own Plugin</h2>
+        <p class="cta-description">
+          floimg's plugin architecture makes it easy to add new generators. Wrap any image
+          generation library and integrate with the ecosystem.
+        </p>
+        <div class="cta-buttons">
+          <a href="/docs/plugins/creating-plugins" class="cta-btn primary"> Plugin Guide </a>
+          <a
+            href="https://github.com/TeamFlojo/floimg/tree/main/packages"
+            class="cta-btn secondary"
+          >
+            View Source
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("plugin-search") as HTMLInputElement;
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const pluginWrappers = document.querySelectorAll(".plugin-wrapper");
+    const noResults = document.getElementById("no-results");
+    const resetBtn = document.getElementById("reset-search");
+
+    let activeCategory = "all";
+
+    function filterPlugins() {
+      const searchTerm = searchInput.value.toLowerCase();
+      let visibleCount = 0;
+
+      pluginWrappers.forEach((wrapper) => {
+        const category = wrapper.getAttribute("data-category");
+        const text = wrapper.textContent?.toLowerCase() || "";
+
+        const matchesCategory = activeCategory === "all" || category === activeCategory;
+        const matchesSearch = text.includes(searchTerm);
+
+        if (matchesCategory && matchesSearch) {
+          (wrapper as HTMLElement).style.display = "";
+          visibleCount++;
+        } else {
+          (wrapper as HTMLElement).style.display = "none";
+        }
+      });
+
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 ? "block" : "none";
+      }
+    }
+
+    searchInput?.addEventListener("input", filterPlugins);
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeCategory = btn.getAttribute("data-category") || "all";
+        filterPlugins();
+      });
+    });
+
+    resetBtn?.addEventListener("click", () => {
+      searchInput.value = "";
+      activeCategory = "all";
+      filterButtons.forEach((b) => {
+        b.classList.remove("active");
+        if (b.getAttribute("data-category") === "all") {
+          b.classList.add("active");
+        }
+      });
+      filterPlugins();
+    });
+  });
+</script>
+
+<style>
+  main {
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero-section {
+    padding: 4rem 1.5rem 3rem;
+    background: linear-gradient(135deg, var(--sl-color-bg) 0%, var(--sl-color-gray-6) 100%);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--sl-color-white);
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: var(--sl-color-gray-2);
+    margin: 0 0 2rem;
+    line-height: 1.6;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--sl-color-accent);
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  /* Filters */
+  .filter-section {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--sl-color-bg);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    padding: 1rem 1.5rem;
+  }
+
+  .filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .search-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sl-color-gray-3);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-white);
+    font-size: 0.875rem;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--sl-color-accent);
+  }
+
+  .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-gray-2);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--sl-color-gray-4);
+    color: var(--sl-color-white);
+  }
+
+  .filter-btn.active {
+    background: var(--sl-color-accent);
+    border-color: var(--sl-color-accent);
+    color: white;
+  }
+
+  /* Plugins Grid */
+  .plugins-section {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .plugins-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .plugins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  .reset-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--sl-color-accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 4rem 1.5rem;
+    background: var(--sl-color-gray-6);
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .cta-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--sl-color-white);
+  }
+
+  .cta-description {
+    color: var(--sl-color-gray-2);
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .cta-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .cta-btn.primary {
+    background: var(--sl-color-accent);
+    color: white;
+  }
+
+  .cta-btn.primary:hover {
+    opacity: 0.9;
+  }
+
+  .cta-btn.secondary {
+    background: transparent;
+    color: var(--sl-color-white);
+    border: 1px solid var(--sl-color-gray-4);
+  }
+
+  .cta-btn.secondary:hover {
+    border-color: var(--sl-color-white);
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-stats {
+      gap: 2rem;
+    }
+
+    .filter-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .search-wrapper {
+      max-width: none;
+    }
+
+    .filter-buttons {
+      justify-content: center;
+    }
+  }
+</style>
