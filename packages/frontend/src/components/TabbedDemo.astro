@@ -1,0 +1,268 @@
+---
+// Tabbed demo section showing different use cases
+// Tabs: AI Generation, Data Visualization, Utilities
+
+interface DemoTab {
+  id: string;
+  label: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  code: string;
+}
+
+const tabs: DemoTab[] = [
+  {
+    id: "ai",
+    label: "AI Generation",
+    description:
+      "Generate images with DALL-E and other AI models. Perfect for product visuals, marketing assets, and creative content.",
+    image: "/showcase/ai-generation/futuristic-city.png",
+    imageAlt: "AI-generated futuristic city",
+    code: `import createClient from '@teamflojo/floimg';
+import openai from '@teamflojo/floimg-openai';
+
+const floimg = createClient();
+floimg.registerGenerator(openai());
+
+const image = await floimg.generate({
+  generator: 'openai',
+  params: {
+    prompt: 'A futuristic city at sunset',
+    size: '1024x1024'
+  }
+});`,
+  },
+  {
+    id: "dataviz",
+    label: "Data Visualization",
+    description:
+      "Create charts, graphs, and diagrams programmatically. Chart.js, D3, and Mermaid support built-in.",
+    image: "/showcase/data-viz/quarterly-revenue.png",
+    imageAlt: "Revenue chart",
+    code: `import createClient from '@teamflojo/floimg';
+import quickchart from '@teamflojo/floimg-quickchart';
+
+const floimg = createClient();
+floimg.registerGenerator(quickchart());
+
+const chart = await floimg.generate({
+  generator: 'quickchart',
+  params: {
+    type: 'bar',
+    data: {
+      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+      datasets: [{ data: [12, 19, 8, 15] }]
+    }
+  }
+});`,
+  },
+  {
+    id: "utilities",
+    label: "Utilities",
+    description:
+      "Resize, crop, watermark, convert formats. Chain transforms into powerful pipelines.",
+    image: "/showcase/pipelines/output/watermark-branded.png",
+    imageAlt: "Watermarked image",
+    code: `import createClient from '@teamflojo/floimg';
+
+const floimg = createClient();
+
+// Load, transform, save
+const image = await floimg.load('photo.jpg');
+const processed = await floimg.pipeline(image, [
+  { op: 'resize', params: { width: 800 } },
+  { op: 'watermark', params: { text: 'floimg' } },
+  { op: 'convert', params: { format: 'webp' } }
+]);
+
+await floimg.save(processed, 'output.webp');`,
+  },
+];
+---
+
+<div class="tabbed-demo">
+  <div class="tab-buttons" role="tablist">
+    {
+      tabs.map((tab, i) => (
+        <button
+          role="tab"
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-controls={`panel-${tab.id}`}
+          data-tab={tab.id}
+          class={`tab-button ${i === 0 ? "active" : ""}`}
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="tab-panels">
+    {
+      tabs.map((tab, i) => (
+        <div
+          id={`panel-${tab.id}`}
+          role="tabpanel"
+          class={`tab-panel ${i === 0 ? "active" : ""}`}
+          data-panel={tab.id}
+        >
+          <div class="panel-content">
+            <div class="panel-image">
+              <img src={tab.image} alt={tab.imageAlt} loading="lazy" />
+            </div>
+            <div class="panel-info">
+              <p class="panel-description">{tab.description}</p>
+              <pre class="panel-code">
+                <code set:text={tab.code} />
+              </pre>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  function initTabs() {
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabPanels = document.querySelectorAll(".tab-panel");
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tabId = button.getAttribute("data-tab");
+
+        // Update buttons
+        tabButtons.forEach((btn) => {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-selected", "false");
+        });
+        button.classList.add("active");
+        button.setAttribute("aria-selected", "true");
+
+        // Update panels
+        tabPanels.forEach((panel) => {
+          panel.classList.remove("active");
+          if (panel.getAttribute("data-panel") === tabId) {
+            panel.classList.add("active");
+          }
+        });
+      });
+    });
+  }
+
+  // Initialize on load and navigation
+  initTabs();
+  document.addEventListener("astro:after-swap", initTabs);
+</script>
+
+<style>
+  .tabbed-demo {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .tab-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .tab-button {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+    background: transparent;
+    color: var(--sl-color-text);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tab-button:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .tab-button.active {
+    background: rgb(124 58 237);
+    border-color: rgb(124 58 237);
+    color: white;
+  }
+
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .panel-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .panel-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .panel-image {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .panel-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .panel-description {
+    color: var(--sl-color-gray-2);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .panel-code {
+    background: rgb(24 24 27);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+
+  .panel-code code {
+    color: rgb(212 212 216);
+    white-space: pre;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  :global(.dark) .panel-image {
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.3),
+      0 4px 6px -4px rgb(0 0 0 / 0.2);
+  }
+</style>

@@ -1,141 +1,151 @@
 ---
 import MarketingLayout from "../layouts/MarketingLayout.astro";
+import ImageShowcase from "../components/ImageShowcase.astro";
+import TabbedDemo from "../components/TabbedDemo.astro";
+import ClaudeCodeCallout from "../components/ClaudeCodeCallout.astro";
+import GitHubStars from "../components/GitHubStars.astro";
 
+// Reorganized features: AI -> Workflows -> Generators -> DevEx
 const features = [
   {
-    title: "Unified API",
-    description: "One interface for charts, diagrams, QR codes, screenshots, and AI images.",
-    icon: "🔗",
+    category: "AI-Powered",
+    items: [
+      {
+        title: "AI Image Generation",
+        description: "Generate images with DALL-E and other AI models via a unified API.",
+        icon: "🎨",
+      },
+      {
+        title: "LLM-Ready",
+        description: "MCP integration for Claude and other AI agents out of the box.",
+        icon: "🤖",
+      },
+    ],
   },
   {
-    title: "Deterministic",
-    description: "Same inputs, same outputs. Reliable workflows for production.",
-    icon: "🎯",
+    category: "Workflows",
+    items: [
+      {
+        title: "Pipeline Engine",
+        description: "Chain generators and transforms into reusable, shareable workflows.",
+        icon: "⚡",
+      },
+      {
+        title: "Deterministic",
+        description: "Same inputs, same outputs. Reliable execution for production.",
+        icon: "🎯",
+      },
+    ],
   },
   {
-    title: "LLM-Ready",
-    description: "MCP integration for Claude and other AI agents out of the box.",
-    icon: "🤖",
+    category: "Generators",
+    items: [
+      {
+        title: "Charts & Diagrams",
+        description: "Chart.js, D3, and Mermaid for data visualization.",
+        icon: "📊",
+      },
+      {
+        title: "QR & Barcodes",
+        description: "Generate branded QR codes and barcodes with styling options.",
+        icon: "📱",
+      },
+    ],
   },
   {
-    title: "Self-Hostable",
-    description: "Run anywhere. No vendor lock-in. MIT licensed.",
-    icon: "🏠",
+    category: "Developer Experience",
+    items: [
+      {
+        title: "Self-Hostable",
+        description: "Run anywhere. No vendor lock-in. MIT licensed.",
+        icon: "🏠",
+      },
+      {
+        title: "TypeScript First",
+        description: "Full type safety with excellent IDE support.",
+        icon: "💻",
+      },
+    ],
   },
 ];
 
 const generators = [
-  { name: "quickchart", desc: "Charts via Chart.js" },
-  { name: "mermaid", desc: "Diagrams" },
-  { name: "qr", desc: "QR codes" },
-  { name: "d3", desc: "D3 visualizations" },
-  { name: "screenshot", desc: "Playwright screenshots" },
-  { name: "openai", desc: "DALL-E images" },
+  { name: "quickchart", desc: "Charts via Chart.js", icon: "📊" },
+  { name: "mermaid", desc: "Diagrams & flowcharts", icon: "📐" },
+  { name: "qr", desc: "QR codes & barcodes", icon: "📱" },
+  { name: "d3", desc: "D3 visualizations", icon: "📈" },
+  { name: "screenshot", desc: "Playwright screenshots", icon: "🖼️" },
+  { name: "openai", desc: "DALL-E images", icon: "🎨" },
 ];
 ---
 
 <MarketingLayout title="Home">
-  <!-- Hero -->
-  <section class="px-6 py-24 text-center">
-    <div class="mx-auto max-w-4xl">
-      <h1 class="text-5xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-6xl">
-        Image workflows for <span class="text-violet-600 dark:text-violet-400">developers</span> and <span
-          class="text-violet-600 dark:text-violet-400">AI agents</span
+  <!-- Hero Section with Image Showcase -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-badges">
+        <span class="open-source-badge">
+          <svg
+            class="badge-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+          Open Source
+        </span>
+        <GitHubStars repo="TeamFlojo/floimg" />
+      </div>
+
+      <h1 class="hero-title">
+        Image workflows for <span class="highlight">developers</span> and <span class="highlight"
+          >AI agents</span
         >
       </h1>
-      <p class="mt-6 text-xl text-zinc-600 dark:text-zinc-400">
-        Generate charts, diagrams, QR codes, screenshots, and AI images with a unified API.
-        Deterministic execution for reliable production workflows.
+
+      <p class="hero-subtitle">
+        Generate charts, diagrams, QR codes, screenshots, and AI images with a unified API. Build
+        deterministic pipelines for production-ready image workflows.
       </p>
-      <div class="mt-10 flex items-center justify-center gap-4">
-        <a
-          href="/docs/getting-started/installation"
-          class="rounded-lg bg-violet-600 px-6 py-3 text-lg font-medium text-white hover:bg-violet-500 transition-colors"
-        >
-          Get Started
-        </a>
-        <a
-          href="/gallery"
-          class="rounded-lg border border-zinc-300 dark:border-white/20 px-6 py-3 text-lg font-medium text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
-        >
-          View Gallery
-        </a>
+
+      <div class="hero-ctas">
+        <a href="/docs/getting-started/installation" class="cta-primary"> Get Started </a>
+        <a href="/gallery" class="cta-secondary"> View Gallery </a>
       </div>
+
+      <ImageShowcase class="hero-showcase" />
     </div>
   </section>
 
-  <!-- Try It Now (npx) -->
-  <section
-    class="border-y border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900/50 px-6 py-16"
-  >
-    <div class="mx-auto max-w-4xl">
-      <h2 class="text-center text-2xl font-bold text-zinc-900 dark:text-white mb-6">
-        Try It Now — No Install Required
-      </h2>
-      <pre
-        class="overflow-x-auto rounded-lg bg-zinc-900 dark:bg-zinc-950 p-6 text-sm"><code class="text-zinc-300"><span class="text-zinc-500"># Generate a QR code</span>
-<span class="text-green-400">npx @teamflojo/floimg qr "https://floimg.com" -o qr.png</span>
-
-<span class="text-zinc-500"># Create a chart</span>
-<span class="text-green-400">npx @teamflojo/floimg chart bar --labels "Q1,Q2,Q3" --values "10,20,30" -o chart.png</span>
-
-<span class="text-zinc-500"># Resize an image</span>
-<span class="text-green-400">npx @teamflojo/floimg resize photo.jpg 800x600 -o thumbnail.jpg</span>
-
-<span class="text-zinc-500"># Convert to WebP</span>
-<span class="text-green-400">npx @teamflojo/floimg convert image.png -o image.webp</span></code></pre>
-      <p class="mt-4 text-center text-sm text-zinc-500">
-        Plugins auto-install on first use. <a
-          href="/docs/cli"
-          class="text-violet-600 dark:text-violet-400 hover:underline">See all CLI commands →</a
-        >
-      </p>
+  <!-- Tabbed Demo Section -->
+  <section class="demo-section">
+    <div class="section-container">
+      <h2 class="section-title">See It in Action</h2>
+      <p class="section-subtitle">Choose your use case</p>
+      <TabbedDemo />
     </div>
   </section>
 
-  <!-- SDK Code Example -->
-  <section class="px-6 py-16">
-    <div class="mx-auto max-w-4xl">
-      <h2 class="text-center text-2xl font-bold text-zinc-900 dark:text-white mb-6">
-        Or Use the SDK
-      </h2>
-      <pre
-        class="overflow-x-auto rounded-lg bg-zinc-900 dark:bg-zinc-950 p-6 text-sm"><code class="text-zinc-300"><span class="text-violet-400">import</span> createClient <span class="text-violet-400">from</span> <span class="text-green-400">'@teamflojo/floimg'</span>;
-<span class="text-violet-400">import</span> quickchart <span class="text-violet-400">from</span> <span class="text-green-400">'@teamflojo/floimg-quickchart'</span>;
-
-<span class="text-violet-400">const</span> floimg = createClient();
-floimg.registerGenerator(quickchart());
-
-<span class="text-zinc-500">// Generate a chart</span>
-<span class="text-violet-400">const</span> chart = <span class="text-violet-400">await</span> floimg.generate({'{'}
-  generator: <span class="text-green-400">'quickchart'</span>,
-  params: {'{'} type: <span class="text-green-400">'bar'</span>, data: {'{'} <span class="text-zinc-500">/* Chart.js config */</span> {'}'} {'}'}
-{'}'});
-
-<span class="text-zinc-500">// Transform it</span>
-<span class="text-violet-400">const</span> resized = <span class="text-violet-400">await</span> floimg.transform(chart, {'{'}
-  op: <span class="text-green-400">'resize'</span>,
-  params: {'{'} width: <span class="text-amber-400">800</span> {'}'}
-{'}'});
-
-<span class="text-zinc-500">// Save to S3</span>
-<span class="text-violet-400">await</span> floimg.save(resized, <span class="text-green-400">'s3://bucket/chart.png'</span>);</code></pre>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="px-6 py-24">
-    <div class="mx-auto max-w-7xl">
-      <h2 class="text-center text-3xl font-bold text-zinc-900 dark:text-white">Why floimg?</h2>
-      <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+  <!-- Features Grid -->
+  <section class="features-section">
+    <div class="features-container">
+      <h2 class="section-title">Why floimg?</h2>
+      <div class="features-grid">
         {
-          features.map((feature) => (
-            <div class="rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50 p-6">
-              <div class="text-3xl">{feature.icon}</div>
-              <h3 class="mt-4 text-lg font-semibold text-zinc-900 dark:text-white">
-                {feature.title}
-              </h3>
-              <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{feature.description}</p>
+          features.map((category) => (
+            <div class="feature-category">
+              <h3 class="category-title">{category.category}</h3>
+              <div class="category-items">
+                {category.items.map((item) => (
+                  <div class="feature-card">
+                    <span class="feature-icon">{item.icon}</span>
+                    <h4 class="feature-title">{item.title}</h4>
+                    <p class="feature-description">{item.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           ))
         }
@@ -143,149 +153,632 @@ floimg.registerGenerator(quickchart());
     </div>
   </section>
 
-  <!-- Two Ways to Use floimg -->
-  <section
-    class="border-y border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900/50 px-6 py-24"
-  >
-    <div class="mx-auto max-w-7xl">
-      <h2 class="text-center text-3xl font-bold text-zinc-900 dark:text-white">
-        Two Ways to Use floimg
-      </h2>
-      <p class="mt-4 text-center text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-        Choose the approach that fits your workflow
-      </p>
-      <div class="mt-16 grid gap-8 md:grid-cols-2">
+  <!-- Two Ways to Use -->
+  <section class="two-ways-section">
+    <div class="section-container">
+      <h2 class="section-title">Two Ways to Use floimg</h2>
+      <p class="section-subtitle">Choose the approach that fits your workflow</p>
+
+      <div class="ways-grid">
         <!-- SDK Path -->
-        <div
-          class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 p-8"
-        >
-          <div class="text-4xl mb-4">💻</div>
-          <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">SDK & CLI</h3>
-          <p class="mt-3 text-zinc-600 dark:text-zinc-400">
+        <div class="way-card">
+          <div class="way-icon">💻</div>
+          <h3 class="way-title">SDK & CLI</h3>
+          <p class="way-description">
             For developers who want full programmatic control. Integrate floimg into your codebase,
             build custom pipelines, and automate image workflows.
           </p>
-          <ul class="mt-6 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
-            <li class="flex items-center gap-2">
-              <span class="text-violet-600 dark:text-violet-400">✓</span>
-              TypeScript/JavaScript SDK
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="text-violet-600 dark:text-violet-400">✓</span>
-              Command-line interface
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="text-violet-600 dark:text-violet-400">✓</span>
-              MCP for AI agents
-            </li>
+          <ul class="way-features">
+            <li><span class="check">✓</span> TypeScript/JavaScript SDK</li>
+            <li><span class="check">✓</span> Command-line interface</li>
+            <li><span class="check">✓</span> MCP for AI agents</li>
           </ul>
-          <a
-            href="/docs/getting-started/installation"
-            class="mt-8 inline-block rounded-lg bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-500 transition-colors"
-          >
+          <a href="/docs/getting-started/installation" class="way-cta way-cta-primary">
             Read the Docs
           </a>
         </div>
 
         <!-- Studio Path -->
-        <div
-          class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 p-8"
-        >
-          <div class="text-4xl mb-4">🎨</div>
-          <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">Studio</h3>
-          <p class="mt-3 text-zinc-600 dark:text-zinc-400">
+        <div class="way-card">
+          <div class="way-icon">🎨</div>
+          <h3 class="way-title">Studio</h3>
+          <p class="way-description">
             Visual drag-and-drop workflow builder. Create image pipelines without writing code, then
             export to SDK or run directly in Studio.
           </p>
-          <ul class="mt-6 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
-            <li class="flex items-center gap-2">
-              <span class="text-violet-600 dark:text-violet-400">✓</span>
-              Node-based visual editor
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="text-violet-600 dark:text-violet-400">✓</span>
-              Real-time preview
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="text-violet-600 dark:text-violet-400">✓</span>
-              Self-hostable (MIT license)
-            </li>
+          <ul class="way-features">
+            <li><span class="check">✓</span> Node-based visual editor</li>
+            <li><span class="check">✓</span> Real-time preview</li>
+            <li><span class="check">✓</span> Self-hostable (MIT license)</li>
           </ul>
+          <a href="https://studio.floimg.com" class="way-cta way-cta-secondary"> Try Studio </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Claude Code Callout -->
+  <ClaudeCodeCallout />
+
+  <!-- Generators -->
+  <section class="generators-section">
+    <div class="section-container">
+      <h2 class="section-title">Generators</h2>
+      <p class="section-subtitle">Install only what you need</p>
+      <div class="generators-grid">
+        {
+          generators.map((gen) => (
+            <div class="generator-card">
+              <span class="generator-icon">{gen.icon}</span>
+              <div class="generator-info">
+                <code class="generator-name">@teamflojo/floimg-{gen.name}</code>
+                <span class="generator-desc">{gen.desc}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <div class="generators-link">
+        <a href="/docs/plugins/quickchart">View all plugins →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributor CTA -->
+  <section class="contributor-section">
+    <div class="section-container">
+      <div class="contributor-content">
+        <h2 class="contributor-title">Join the Community</h2>
+        <p class="contributor-description">
+          floimg is open source and community-driven. We welcome contributions of all kinds — code,
+          documentation, bug reports, and feature requests.
+        </p>
+        <div class="contributor-ctas">
           <a
-            href="https://studio.floimg.com"
-            class="mt-8 inline-block rounded-lg bg-zinc-900 dark:bg-white px-6 py-3 font-medium text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
+            href="https://github.com/TeamFlojo/floimg"
+            class="contributor-cta-primary"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Try Studio
+            <svg viewBox="0 0 16 16" fill="currentColor" class="gh-icon">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+              ></path>
+            </svg>
+            Star on GitHub
+          </a>
+          <a
+            href="https://github.com/TeamFlojo/floimg/blob/main/CONTRIBUTING.md"
+            class="contributor-cta-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Contributing Guide
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Generators -->
-  <section class="px-6 py-24">
-    <div class="mx-auto max-w-7xl">
-      <h2 class="text-center text-3xl font-bold text-zinc-900 dark:text-white">Generators</h2>
-      <p class="mt-4 text-center text-zinc-600 dark:text-zinc-400">Install only what you need</p>
-      <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          generators.map((gen) => (
-            <div class="flex items-center gap-4 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-950 p-4">
-              <code class="text-sm text-violet-600 dark:text-violet-400">
-                @teamflojo/floimg-{gen.name}
-              </code>
-              <span class="text-sm text-zinc-500">{gen.desc}</span>
-            </div>
-          ))
-        }
-      </div>
-      <div class="mt-8 text-center">
-        <a
-          href="/docs/plugins/quickchart"
-          class="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
-        >
-          View all plugins →
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section
-    class="border-t border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50 px-6 py-24"
-  >
-    <div class="mx-auto max-w-4xl text-center">
-      <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">Ready to start?</h2>
-      <p class="mt-4 text-zinc-600 dark:text-zinc-400">
+  <!-- Quick Start CTA -->
+  <section class="cta-section">
+    <div class="section-container">
+      <h2 class="cta-title">Ready to start?</h2>
+      <p class="cta-description">
         Generate your first image in seconds — no installation required.
       </p>
-      <div class="mt-8">
-        <code class="rounded-lg bg-zinc-900 dark:bg-zinc-950 px-4 py-2 text-green-400">
-          npx @teamflojo/floimg qr "https://floimg.com" -o qr.png
-        </code>
+      <div class="cta-code">
+        <code>npx @teamflojo/floimg qr "https://floimg.com" -o qr.png</code>
       </div>
-      <div class="mt-8 flex items-center justify-center gap-4">
-        <a
-          href="/docs/cli"
-          class="rounded-lg bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-500 transition-colors"
-        >
-          CLI Reference
-        </a>
-        <a
-          href="/docs/getting-started/quick-start"
-          class="rounded-lg border border-zinc-300 dark:border-white/20 px-6 py-3 font-medium text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
-        >
-          Quick Start
-        </a>
-        <a
-          href="https://github.com/TeamFlojo/floimg"
-          class="rounded-lg border border-zinc-300 dark:border-white/20 px-6 py-3 font-medium text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
+      <div class="cta-buttons">
+        <a href="/docs/cli" class="cta-primary">CLI Reference</a>
+        <a href="/docs/getting-started/quick-start" class="cta-secondary">Quick Start</a>
       </div>
     </div>
   </section>
 </MarketingLayout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding: 4rem 1.5rem 6rem;
+    text-align: center;
+  }
+
+  .hero-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .open-source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    background: rgb(34 197 94 / 0.1);
+    border: 1px solid rgb(34 197 94 / 0.3);
+    border-radius: 0.5rem;
+    color: rgb(34 197 94);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  :global(.dark) .open-source-badge {
+    background: rgb(34 197 94 / 0.15);
+    color: rgb(74 222 128);
+  }
+
+  .badge-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--sl-color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  .highlight {
+    color: rgb(124 58 237);
+  }
+
+  :global(.dark) .highlight {
+    color: rgb(167 139 250);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--sl-color-gray-2);
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .hero-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-primary {
+    padding: 0.875rem 1.75rem;
+    background: rgb(124 58 237);
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .cta-primary:hover {
+    background: rgb(109 40 217);
+  }
+
+  .cta-secondary {
+    padding: 0.875rem 1.75rem;
+    background: transparent;
+    border: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-text);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .cta-secondary:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .hero-showcase {
+    margin-top: 2rem;
+  }
+
+  /* Demo Section */
+  .demo-section {
+    padding: 5rem 1.5rem;
+    background: var(--sl-color-gray-6);
+    border-top: 1px solid var(--sl-color-gray-5);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .section-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.125rem;
+    color: var(--sl-color-gray-2);
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  /* Features Section */
+  .features-section {
+    padding: 5rem 1.5rem;
+  }
+
+  .features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 1024px) {
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .feature-category {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .category-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgb(124 58 237);
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.dark) .category-title {
+    color: rgb(167 139 250);
+  }
+
+  .category-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .feature-card {
+    padding: 1.25rem;
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+  }
+
+  .feature-icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-description {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-2);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Two Ways Section */
+  .two-ways-section {
+    padding: 5rem 1.5rem;
+    background: var(--sl-color-gray-6);
+    border-top: 1px solid var(--sl-color-gray-5);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .ways-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .ways-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .way-card {
+    padding: 2rem;
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1rem;
+  }
+
+  .way-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .way-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .way-description {
+    color: var(--sl-color-gray-2);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .way-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+  }
+
+  .way-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--sl-color-gray-2);
+    font-size: 0.95rem;
+    padding: 0.375rem 0;
+  }
+
+  .check {
+    color: rgb(124 58 237);
+  }
+
+  :global(.dark) .check {
+    color: rgb(167 139 250);
+  }
+
+  .way-cta {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .way-cta-primary {
+    background: rgb(124 58 237);
+    color: white;
+  }
+
+  .way-cta-primary:hover {
+    background: rgb(109 40 217);
+  }
+
+  .way-cta-secondary {
+    background: var(--sl-color-gray-5);
+    color: var(--sl-color-text);
+  }
+
+  .way-cta-secondary:hover {
+    background: var(--sl-color-gray-4);
+  }
+
+  /* Generators Section */
+  .generators-section {
+    padding: 5rem 1.5rem;
+  }
+
+  .generators-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .generators-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .generators-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .generator-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+  }
+
+  .generator-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .generator-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .generator-name {
+    font-size: 0.8rem;
+    color: rgb(124 58 237);
+  }
+
+  :global(.dark) .generator-name {
+    color: rgb(167 139 250);
+  }
+
+  .generator-desc {
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-2);
+  }
+
+  .generators-link {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .generators-link a {
+    color: rgb(124 58 237);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .generators-link a:hover {
+    text-decoration: underline;
+  }
+
+  :global(.dark) .generators-link a {
+    color: rgb(167 139 250);
+  }
+
+  /* Contributor Section */
+  .contributor-section {
+    padding: 5rem 1.5rem;
+    background: var(--sl-color-gray-6);
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .contributor-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contributor-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 1rem;
+  }
+
+  .contributor-description {
+    color: var(--sl-color-gray-2);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .contributor-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .contributor-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--sl-color-text);
+    color: var(--sl-color-bg);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .contributor-cta-primary:hover {
+    opacity: 0.9;
+  }
+
+  .gh-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .contributor-cta-secondary {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-text);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .contributor-cta-secondary:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 5rem 1.5rem;
+    text-align: center;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .cta-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .cta-description {
+    color: var(--sl-color-gray-2);
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-code {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background: rgb(24 24 27);
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta-code code {
+    color: rgb(74 222 128);
+    font-size: 0.9rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .cta-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

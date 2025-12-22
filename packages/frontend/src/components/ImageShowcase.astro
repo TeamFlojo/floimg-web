@@ -1,0 +1,135 @@
+---
+// Rotating image showcase for the hero section
+// Shows a grid of generated images that demonstrates floimg's capabilities
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+
+// Showcase images from T-2025-001
+const showcaseImages = [
+  {
+    src: "/showcase/ai-generation/futuristic-city.png",
+    alt: "AI-generated futuristic cityscape",
+    category: "AI",
+  },
+  {
+    src: "/showcase/data-viz/quarterly-revenue.png",
+    alt: "Revenue chart visualization",
+    category: "Charts",
+  },
+  {
+    src: "/showcase/pipelines/output/avatar-128.png",
+    alt: "Processed avatar",
+    category: "Pipeline",
+  },
+  { src: "/showcase/qr-codes/qr-brand.png", alt: "Branded QR code", category: "QR" },
+  {
+    src: "/showcase/ai-generation/robot-mascot.png",
+    alt: "AI-generated robot mascot",
+    category: "AI",
+  },
+  {
+    src: "/showcase/data-viz/framework-usage.png",
+    alt: "Framework usage chart",
+    category: "Charts",
+  },
+  {
+    src: "/showcase/pipelines/output/filter-vintage.png",
+    alt: "Vintage filter applied",
+    category: "Pipeline",
+  },
+  {
+    src: "/showcase/ai-generation/product-headphones.png",
+    alt: "Product photography",
+    category: "AI",
+  },
+];
+---
+
+<div class={`image-showcase ${className}`}>
+  <div class="showcase-grid">
+    {
+      showcaseImages.map((img, i) => (
+        <div class="showcase-item" style={`--delay: ${i * 0.1}s`}>
+          <img src={img.src} alt={img.alt} loading="lazy" />
+          <span class="category-badge">{img.category}</span>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .image-showcase {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .showcase-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .showcase-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: var(--delay);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .showcase-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .showcase-item:hover img {
+    transform: scale(1.05);
+  }
+
+  .category-badge {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+    backdrop-filter: blur(4px);
+  }
+
+  :global(.dark) .showcase-item {
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.3),
+      0 2px 4px -2px rgb(0 0 0 / 0.2);
+  }
+</style>
