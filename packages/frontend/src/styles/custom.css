@@ -661,6 +661,35 @@ starlight-toc a[aria-current="true"],
   color: var(--sl-color-accent);
 }
 
+/* Light mode hover/active - needs higher specificity */
+:root[data-theme="light"] starlight-toc a:hover,
+:root[data-theme="light"] .right-sidebar-panel a:hover,
+:root[data-theme="light"] starlight-toc a[aria-current="true"],
+:root[data-theme="light"] .right-sidebar-panel a[aria-current="true"] {
+  color: var(--sl-color-accent);
+}
+
+/* Dark mode hover/active - needs higher specificity */
+:root[data-theme="dark"] starlight-toc a:hover,
+:root[data-theme="dark"] .right-sidebar-panel a:hover,
+:root[data-theme="dark"] starlight-toc a[aria-current="true"],
+:root[data-theme="dark"] .right-sidebar-panel a[aria-current="true"],
+:root.dark starlight-toc a:hover,
+:root.dark .right-sidebar-panel a:hover,
+:root.dark starlight-toc a[aria-current="true"],
+:root.dark .right-sidebar-panel a[aria-current="true"] {
+  color: var(--sl-color-accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) starlight-toc a:hover,
+  :root:not([data-theme="light"]) .right-sidebar-panel a:hover,
+  :root:not([data-theme="light"]) starlight-toc a[aria-current="true"],
+  :root:not([data-theme="light"]) .right-sidebar-panel a[aria-current="true"] {
+    color: var(--sl-color-accent);
+  }
+}
+
 /* ===========================================
    Table Styling - Light/Dark Mode Fix
    =========================================== */
