@@ -1,0 +1,589 @@
+---
+import type { GalleryTemplate } from "../data/templates";
+import { getStudioUrl } from "../data/templates";
+
+interface Props {
+  template: GalleryTemplate;
+}
+
+const { template } = Astro.props;
+
+// Generator badge colors
+const generatorColors: Record<string, { bg: string; text: string }> = {
+  quickchart: { bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-300" },
+  mermaid: { bg: "bg-pink-100 dark:bg-pink-900/30", text: "text-pink-700 dark:text-pink-300" },
+  qr: { bg: "bg-green-100 dark:bg-green-900/30", text: "text-green-700 dark:text-green-300" },
+  d3: { bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-700 dark:text-orange-300" },
+  screenshot: {
+    bg: "bg-purple-100 dark:bg-purple-900/30",
+    text: "text-purple-700 dark:text-purple-300",
+  },
+  openai: {
+    bg: "bg-emerald-100 dark:bg-emerald-900/30",
+    text: "text-emerald-700 dark:text-emerald-300",
+  },
+  pipeline: {
+    bg: "bg-violet-100 dark:bg-violet-900/30",
+    text: "text-violet-700 dark:text-violet-300",
+  },
+};
+
+const colors = generatorColors[template.generator] || {
+  bg: "bg-zinc-100 dark:bg-zinc-800",
+  text: "text-zinc-600 dark:text-zinc-400",
+};
+---
+
+<article
+  class="template-card group"
+  data-category={template.category}
+  data-has-code={template.codeExample ? "true" : "false"}
+>
+  <!-- Preview Image -->
+  <div class="preview-container">
+    {
+      template.preview?.imageUrl ? (
+        <img
+          src={template.preview.imageUrl}
+          alt={template.name}
+          class="preview-image"
+          loading="lazy"
+        />
+      ) : (
+        <div class="preview-placeholder">
+          <div class="placeholder-icon">
+            {template.generator === "quickchart" && "📊"}
+            {template.generator === "mermaid" && "📐"}
+            {template.generator === "qr" && "📱"}
+            {template.generator === "d3" && "📈"}
+            {template.generator === "screenshot" && "🖼️"}
+            {template.generator === "openai" && "🎨"}
+            {template.generator === "pipeline" && "⚡"}
+          </div>
+          <span class="placeholder-text">Preview coming soon</span>
+        </div>
+      )
+    }
+
+    <!-- Hover Overlay -->
+    <div class="preview-overlay">
+      <a
+        href={getStudioUrl(template.id)}
+        class="action-button action-primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open in Studio
+      </a>
+      {
+        template.codeExample && (
+          <button
+            class="action-button action-secondary view-code-btn"
+            data-template-id={template.id}
+          >
+            View Code
+          </button>
+        )
+      }
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="card-content">
+    <!-- Header with badges -->
+    <div class="card-header">
+      <h3 class="card-title">{template.name}</h3>
+      <span class={`generator-badge ${colors.bg} ${colors.text}`}>
+        {template.generator}
+      </span>
+    </div>
+
+    <p class="card-description">{template.description}</p>
+
+    <!-- Capability Badges -->
+    {
+      template.capabilities && (
+        <div class="capability-badges">
+          {template.capabilities.claudeCodeReady && (
+            <span class="capability-badge claude-ready">
+              <svg
+                class="badge-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+              Claude Code
+            </span>
+          )}
+          {template.capabilities.pipeline && (
+            <span class="capability-badge pipeline">
+              <svg
+                class="badge-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M13 17l5-5-5-5M6 17l5-5-5-5" />
+              </svg>
+              Pipeline
+            </span>
+          )}
+        </div>
+      )
+    }
+
+    <!-- Tags -->
+    {
+      template.tags && template.tags.length > 0 && (
+        <div class="tag-list">
+          {template.tags.slice(0, 3).map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- Actions -->
+    <div class="card-actions">
+      <a
+        href={getStudioUrl(template.id)}
+        class="studio-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open in Studio
+        <svg class="link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Code Modal (hidden by default) -->
+  {
+    template.codeExample && (
+      <div class="code-modal" id={`code-modal-${template.id}`} data-modal>
+        <div class="modal-backdrop" />
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>{template.name}</h4>
+            <button class="close-modal" aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <pre class="code-block">
+            <code set:text={template.codeExample} />
+          </pre>
+          <div class="modal-footer">
+            <button class="copy-code-btn" data-code={template.codeExample}>
+              Copy Code
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+</article>
+
+<style>
+  .template-card {
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition:
+      box-shadow 0.2s,
+      transform 0.2s;
+  }
+
+  .template-card:hover {
+    box-shadow:
+      0 10px 25px -5px rgb(0 0 0 / 0.1),
+      0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  :global(.dark) .template-card:hover {
+    box-shadow:
+      0 10px 25px -5px rgb(124 58 237 / 0.1),
+      0 8px 10px -6px rgb(124 58 237 / 0.1);
+  }
+
+  /* Preview Container */
+  .preview-container {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, var(--sl-color-gray-6), var(--sl-color-gray-5));
+    overflow: hidden;
+  }
+
+  .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+  }
+
+  .preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 0.5rem;
+  }
+
+  .placeholder-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: rgb(124 58 237 / 0.1);
+    border-radius: 0.5rem;
+  }
+
+  .placeholder-text {
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  /* Hover Overlay */
+  .preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .template-card:hover .preview-overlay {
+    opacity: 1;
+  }
+
+  .action-button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+  }
+
+  .action-primary {
+    background: rgb(124 58 237);
+    color: white;
+  }
+
+  .action-primary:hover {
+    background: rgb(109 40 217);
+  }
+
+  .action-secondary {
+    background: rgb(255 255 255 / 0.2);
+    color: white;
+  }
+
+  .action-secondary:hover {
+    background: rgb(255 255 255 / 0.3);
+  }
+
+  /* Card Content */
+  .card-content {
+    padding: 1rem;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    margin: 0;
+  }
+
+  .generator-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .card-description {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-2);
+    margin: 0 0 0.75rem;
+    line-height: 1.5;
+  }
+
+  /* Capability Badges */
+  .capability-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .capability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+  }
+
+  .badge-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .claude-ready {
+    background: rgb(124 58 237 / 0.1);
+    color: rgb(124 58 237);
+  }
+
+  :global(.dark) .claude-ready {
+    background: rgb(124 58 237 / 0.2);
+    color: rgb(167 139 250);
+  }
+
+  .pipeline {
+    background: rgb(234 179 8 / 0.1);
+    color: rgb(161 98 7);
+  }
+
+  :global(.dark) .pipeline {
+    background: rgb(234 179 8 / 0.2);
+    color: rgb(250 204 21);
+  }
+
+  /* Tags */
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 0.125rem 0.375rem;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    border-radius: 0.25rem;
+  }
+
+  /* Actions */
+  .card-actions {
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .studio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgb(124 58 237);
+    text-decoration: none;
+  }
+
+  .studio-link:hover {
+    color: rgb(109 40 217);
+  }
+
+  :global(.dark) .studio-link {
+    color: rgb(167 139 250);
+  }
+
+  :global(.dark) .studio-link:hover {
+    color: rgb(196 181 253);
+  }
+
+  .link-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Code Modal */
+  .code-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+  }
+
+  .code-modal.open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    background: var(--sl-color-bg);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .modal-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    margin: 0;
+  }
+
+  .close-modal {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--sl-color-gray-3);
+    cursor: pointer;
+    border-radius: 0.25rem;
+  }
+
+  .close-modal:hover {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-text);
+  }
+
+  .close-modal svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .code-block {
+    flex: 1;
+    overflow: auto;
+    margin: 0;
+    padding: 1rem;
+    background: rgb(24 24 27);
+    font-size: 0.85rem;
+  }
+
+  .code-block code {
+    color: rgb(212 212 216);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    white-space: pre;
+  }
+
+  .modal-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .copy-code-btn {
+    padding: 0.5rem 1rem;
+    background: rgb(124 58 237);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .copy-code-btn:hover {
+    background: rgb(109 40 217);
+  }
+</style>
+
+<script>
+  function initTemplateCards() {
+    // View Code buttons
+    document.querySelectorAll(".view-code-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const templateId = (btn as HTMLElement).dataset.templateId;
+        const modal = document.getElementById(`code-modal-${templateId}`);
+        if (modal) modal.classList.add("open");
+      });
+    });
+
+    // Close modal buttons
+    document.querySelectorAll(".close-modal, .modal-backdrop").forEach((el) => {
+      el.addEventListener("click", () => {
+        document.querySelectorAll(".code-modal.open").forEach((modal) => {
+          modal.classList.remove("open");
+        });
+      });
+    });
+
+    // Copy code buttons
+    document.querySelectorAll(".copy-code-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const code = (btn as HTMLElement).dataset.code;
+        if (code) {
+          await navigator.clipboard.writeText(code);
+          const originalText = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => {
+            btn.textContent = originalText;
+          }, 2000);
+        }
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        document.querySelectorAll(".code-modal.open").forEach((modal) => {
+          modal.classList.remove("open");
+        });
+      }
+    });
+  }
+
+  initTemplateCards();
+  document.addEventListener("astro:after-swap", initTemplateCards);
+</script>

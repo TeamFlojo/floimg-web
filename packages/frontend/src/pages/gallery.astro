@@ -1,205 +1,397 @@
 ---
-import MarketingLayout from '../layouts/MarketingLayout.astro';
-import { templates, getCategories, getStudioUrl } from '../data/templates';
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import TemplateCard from "../components/TemplateCard.astro";
+import { templates, getCategories } from "../data/templates";
 
 const categories = getCategories();
 
-// Generator badge colors
-const generatorColors: Record<string, { bg: string; text: string }> = {
-  quickchart: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-800 dark:text-blue-300' },
-  mermaid: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-800 dark:text-pink-300' },
-  qr: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-800 dark:text-green-300' },
-  d3: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-800 dark:text-orange-300' },
-  screenshot: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-800 dark:text-purple-300' },
+// Category icons and descriptions
+const categoryInfo: Record<string, { icon: string; description: string }> = {
+  "AI Workflows": {
+    icon: "🤖",
+    description: "AI-powered image generation with DALL-E and other models",
+  },
+  "Data Viz": {
+    icon: "📊",
+    description: "Charts, graphs, diagrams, and data visualization",
+  },
+  Marketing: {
+    icon: "🎨",
+    description: "Social media assets, branding, and promotional images",
+  },
+  Utilities: {
+    icon: "🔧",
+    description: "QR codes, thumbnails, format conversion, and more",
+  },
 };
 ---
 
-<MarketingLayout title="Gallery" description="Example images and workflows built with floimg">
+<MarketingLayout title="Gallery" description="Explore templates and workflows built with floimg">
   <main>
     <!-- Hero -->
-    <section class="bg-gradient-to-b from-violet-50 to-white dark:from-violet-950/50 dark:to-zinc-950 py-16">
-      <div class="max-w-6xl mx-auto px-6">
-        <h1 class="text-4xl font-bold text-center mb-4 text-zinc-900 dark:text-white">Gallery</h1>
-        <p class="text-xl text-zinc-600 dark:text-zinc-400 text-center max-w-2xl mx-auto">
-          Explore example workflows built with floimg. Each template can be opened
-          in Studio and customized for your needs.
+    <section class="hero-section">
+      <div class="hero-container">
+        <h1 class="hero-title">Template Gallery</h1>
+        <p class="hero-subtitle">
+          Explore ready-to-use templates organized by use case. Each template can be opened in
+          Studio, customized for your needs, or used directly via Claude Code.
         </p>
-      </div>
-    </section>
-
-    <!-- Filter tabs -->
-    <section class="border-b border-zinc-200 dark:border-white/10 sticky top-0 bg-white dark:bg-zinc-950 z-10">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="flex gap-1 overflow-x-auto py-4" id="category-tabs">
-          <button
-            class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-violet-600 text-white"
-            data-category="all"
-          >
-            All
-          </button>
-          {categories.map(category => (
-            <button
-              class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-              data-category={category}
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value">{templates.length}</span>
+            <span class="stat-label">Templates</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{categories.length}</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value"
+              >{templates.filter((t) => t.capabilities?.claudeCodeReady).length}</span
             >
-              {category}
-            </button>
-          ))}
+            <span class="stat-label">Claude Code Ready</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Gallery grid -->
-    <section class="py-16 bg-white dark:bg-zinc-950">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
-          {templates.map(template => {
-            const colors = generatorColors[template.generator] || { bg: 'bg-zinc-100 dark:bg-zinc-800', text: 'text-zinc-600 dark:text-zinc-400' };
-            return (
-              <article
-                class="gallery-item bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-white/10 overflow-hidden hover:shadow-lg dark:hover:shadow-violet-500/10 transition-shadow group"
-                data-category={template.category}
-              >
-                <!-- Preview image or placeholder -->
-                <div class="aspect-video bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 flex items-center justify-center relative">
-                  {template.preview?.imageUrl ? (
-                    <img
-                      src={template.preview.imageUrl}
-                      alt={template.name}
-                      class="w-full h-full object-contain p-4"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div class="text-center p-4">
-                      <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center">
-                        <span class="text-violet-600 dark:text-violet-400 text-xl">
-                          {template.generator === 'quickchart' && '📊'}
-                          {template.generator === 'mermaid' && '📐'}
-                          {template.generator === 'qr' && '📱'}
-                          {template.generator === 'd3' && '📈'}
-                          {template.generator === 'screenshot' && '🖼️'}
-                        </span>
-                      </div>
-                      <span class="text-xs text-zinc-500 dark:text-zinc-400">Preview coming soon</span>
-                    </div>
-                  )}
-
-                  <!-- Overlay on hover -->
-                  <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                    <a
-                      href={getStudioUrl(template.id)}
-                      class="px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Open in Studio
-                    </a>
-                    {template.preview?.imageUrl && (
-                      <a
-                        href={template.preview.imageUrl}
-                        class="px-4 py-2 bg-white/20 text-white rounded-lg text-sm font-medium hover:bg-white/30"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Full
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <!-- Content -->
-                <div class="p-4">
-                  <div class="flex items-start justify-between gap-2 mb-2">
-                    <h3 class="font-semibold text-zinc-900 dark:text-white">{template.name}</h3>
-                    <span class={`text-xs px-2 py-1 rounded-full ${colors.bg} ${colors.text} whitespace-nowrap`}>
-                      {template.generator}
-                    </span>
-                  </div>
-                  <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-3">{template.description}</p>
-
-                  {/* Tags */}
-                  {template.tags && template.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-1 mb-3">
-                      {template.tags.slice(0, 3).map(tag => (
-                        <span class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500 rounded text-xs">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <a
-                    href={getStudioUrl(template.id)}
-                    class="inline-flex items-center gap-1 text-sm text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Open in Studio
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                </div>
-              </article>
-            );
-          })}
+    <!-- Category Filter -->
+    <section class="filter-section">
+      <div class="filter-container">
+        <div class="filter-tabs" id="category-tabs">
+          <button class="filter-tab active" data-category="all"> All Templates </button>
+          {
+            categories.map((category) => (
+              <button class="filter-tab" data-category={category}>
+                <span class="tab-icon">{categoryInfo[category]?.icon}</span>
+                {category}
+              </button>
+            ))
+          }
         </div>
+      </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="gallery-section">
+      <div class="gallery-container">
+        <!-- Category sections -->
+        {
+          categories.map((category) => {
+            const categoryTemplates = templates.filter((t) => t.category === category);
+            return (
+              <div class="category-section" data-category-section={category}>
+                <div class="category-header">
+                  <div class="category-title-group">
+                    <span class="category-icon">{categoryInfo[category]?.icon}</span>
+                    <h2 class="category-title">{category}</h2>
+                    <span class="category-count">{categoryTemplates.length}</span>
+                  </div>
+                  <p class="category-description">{categoryInfo[category]?.description}</p>
+                </div>
+                <div class="template-grid">
+                  {categoryTemplates.map((template) => (
+                    <TemplateCard template={template} />
+                  ))}
+                </div>
+              </div>
+            );
+          })
+        }
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="py-16 bg-zinc-50 dark:bg-zinc-900/50">
-      <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-2xl font-bold mb-4 text-zinc-900 dark:text-white">Build Your Own</h2>
-        <p class="text-zinc-600 dark:text-zinc-400 mb-8">
-          Ready to create images like these? Use floimg Studio's visual editor or
-          integrate the library directly into your code.
+    <section class="cta-section">
+      <div class="cta-container">
+        <h2 class="cta-title">Build Your Own</h2>
+        <p class="cta-description">
+          Ready to create images like these? Use floimg Studio's visual editor or integrate the
+          library directly into your code.
         </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a
-            href="https://studio.floimg.com"
-            class="px-6 py-3 bg-violet-600 text-white rounded-lg font-medium hover:bg-violet-700"
-          >
-            Launch Studio
-          </a>
-          <a
-            href="/docs/getting-started/quick-start"
-            class="px-6 py-3 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 rounded-lg font-medium hover:bg-zinc-50 dark:hover:bg-zinc-700"
-          >
-            Quick Start Guide
-          </a>
+        <div class="cta-buttons">
+          <a href="https://studio.floimg.com" class="cta-primary"> Launch Studio </a>
+          <a href="/docs/getting-started/quick-start" class="cta-secondary"> Quick Start Guide </a>
         </div>
       </div>
     </section>
   </main>
 
   <script>
-    // Category filtering
-    const tabs = document.querySelectorAll('.category-tab');
-    const items = document.querySelectorAll('.gallery-item');
+    function initGallery() {
+      const tabs = document.querySelectorAll(".filter-tab");
+      const sections = document.querySelectorAll(".category-section");
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const category = (tab as HTMLElement).dataset.category;
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const category = (tab as HTMLElement).dataset.category;
 
-        // Update active tab
-        tabs.forEach(t => {
-          t.classList.remove('bg-violet-600', 'text-white');
-          t.classList.add('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-600', 'dark:text-zinc-400');
-        });
-        tab.classList.remove('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-600', 'dark:text-zinc-400');
-        tab.classList.add('bg-violet-600', 'text-white');
+          // Update active tab
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
 
-        // Filter items
-        items.forEach(item => {
-          const itemCategory = (item as HTMLElement).dataset.category;
-          if (category === 'all' || itemCategory === category) {
-            (item as HTMLElement).style.display = 'block';
-          } else {
-            (item as HTMLElement).style.display = 'none';
-          }
+          // Filter sections
+          sections.forEach((section) => {
+            const sectionCategory = (section as HTMLElement).dataset.categorySection;
+            if (category === "all" || sectionCategory === category) {
+              (section as HTMLElement).style.display = "block";
+            } else {
+              (section as HTMLElement).style.display = "none";
+            }
+          });
         });
       });
-    });
+    }
+
+    initGallery();
+    document.addEventListener("astro:after-swap", initGallery);
   </script>
 </MarketingLayout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(to bottom, rgb(124 58 237 / 0.05), transparent);
+    padding: 4rem 1.5rem;
+    text-align: center;
+  }
+
+  .hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: var(--sl-color-gray-2);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgb(124 58 237);
+  }
+
+  :global(.dark) .stat-value {
+    color: rgb(167 139 250);
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  /* Filter Section */
+  .filter-section {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--sl-color-bg);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    padding: 1rem 1.5rem;
+  }
+
+  .filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .filter-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-2);
+    transition: all 0.2s;
+  }
+
+  .filter-tab:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .filter-tab.active {
+    background: rgb(124 58 237);
+    color: white;
+  }
+
+  .tab-icon {
+    font-size: 1rem;
+  }
+
+  /* Gallery Section */
+  .gallery-section {
+    padding: 3rem 1.5rem;
+    background: var(--sl-color-bg);
+  }
+
+  .gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .category-section {
+    margin-bottom: 4rem;
+  }
+
+  .category-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .category-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .category-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .category-icon {
+    font-size: 1.5rem;
+  }
+
+  .category-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin: 0;
+  }
+
+  .category-count {
+    font-size: 0.875rem;
+    padding: 0.125rem 0.5rem;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    border-radius: 9999px;
+  }
+
+  .category-description {
+    font-size: 0.95rem;
+    color: var(--sl-color-gray-2);
+    margin: 0;
+  }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .template-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .template-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-stats {
+      gap: 1.5rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 4rem 1.5rem;
+    background: var(--sl-color-gray-6);
+    border-top: 1px solid var(--sl-color-gray-5);
+    text-align: center;
+  }
+
+  .cta-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .cta-description {
+    color: var(--sl-color-gray-2);
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-primary {
+    padding: 0.75rem 1.5rem;
+    background: rgb(124 58 237);
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .cta-primary:hover {
+    background: rgb(109 40 217);
+  }
+
+  .cta-secondary {
+    padding: 0.75rem 1.5rem;
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-text);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .cta-secondary:hover {
+    background: var(--sl-color-gray-5);
+  }
+</style>
