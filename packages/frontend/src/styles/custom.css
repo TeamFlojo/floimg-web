@@ -16,6 +16,11 @@
   --sl-color-gray-5: #27272a;
   --sl-color-gray-6: #18181b;
   --sl-color-black: #09090b;
+  --sl-color-bg: #fafafa;
+  --sl-color-bg-nav: #f4f4f5;
+  --sl-color-bg-sidebar: #f4f4f5;
+  --sl-color-text: #18181b;
+  --sl-color-text-accent: #7c3aed;
 }
 
 /* Dark mode - triggered by system preference */
@@ -32,11 +37,54 @@
     --sl-color-gray-5: #d4d4d8;
     --sl-color-gray-6: #e4e4e7;
     --sl-color-black: #fafafa;
+    --sl-color-bg: #18181b;
+    --sl-color-bg-nav: #27272a;
+    --sl-color-bg-sidebar: #27272a;
+    --sl-color-text: #fafafa;
+    --sl-color-text-accent: #a78bfa;
   }
 }
 
-/* Also support Starlight's data-theme attribute */
-:root[data-theme='dark'] {
+/* Explicit light mode when manually selected */
+:root[data-theme="light"] {
+  --sl-color-accent-low: #2e1065;
+  --sl-color-accent: #7c3aed;
+  --sl-color-accent-high: #c4b5fd;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #f4f4f5;
+  --sl-color-gray-2: #e4e4e7;
+  --sl-color-gray-3: #a1a1aa;
+  --sl-color-gray-4: #52525b;
+  --sl-color-gray-5: #27272a;
+  --sl-color-gray-6: #18181b;
+  --sl-color-black: #09090b;
+  --sl-color-bg: #fafafa;
+  --sl-color-bg-nav: #f4f4f5;
+  --sl-color-bg-sidebar: #f4f4f5;
+  --sl-color-text: #18181b;
+  --sl-color-text-accent: #7c3aed;
+  --sl-color-hairline-light: #e4e4e7;
+  --sl-color-hairline: #d4d4d8;
+  color-scheme: light;
+}
+
+/* Light mode text color overrides */
+:root[data-theme="light"] h1,
+:root[data-theme="light"] h2,
+:root[data-theme="light"] h3,
+:root[data-theme="light"] h4,
+:root[data-theme="light"] h5,
+:root[data-theme="light"] h6 {
+  color: #09090b !important;
+}
+
+:root[data-theme="light"] .sidebar-content .group-label,
+:root[data-theme="light"] .sidebar summary {
+  color: #52525b !important;
+}
+
+/* Explicit dark mode when manually selected */
+:root[data-theme="dark"] {
   --sl-color-accent-low: #2e1065;
   --sl-color-accent: #8b5cf6;
   --sl-color-accent-high: #c4b5fd;
@@ -48,6 +96,11 @@
   --sl-color-gray-5: #d4d4d8;
   --sl-color-gray-6: #e4e4e7;
   --sl-color-black: #fafafa;
+  --sl-color-bg: #18181b;
+  --sl-color-bg-nav: #27272a;
+  --sl-color-bg-sidebar: #27272a;
+  --sl-color-text: #fafafa;
+  --sl-color-text-accent: #a78bfa;
 }
 
 /* Marketing page styles */
@@ -74,4 +127,81 @@
 /* Fix duplicate logo in Starlight header (renders both light/dark variants) */
 .site-title img + img {
   display: none !important;
+}
+
+/* ===========================================
+   Code Block Styling - Light/Dark Mode Fix
+   =========================================== */
+
+/*
+ * Shiki uses dual-theme CSS variables:
+ * --0 = dark theme color
+ * --1 = light theme color
+ *
+ * We need to switch between them based on the active theme.
+ */
+
+/* Default/Light mode: use --1 (light theme colors) */
+:root pre code span[style*="--"] {
+  color: var(--1) !important;
+}
+
+/* Default/Light mode code block background */
+:root .expressive-code pre,
+:root pre:not(.expressive-code pre) {
+  background-color: #fafafa !important;
+  border: 1px solid #e4e4e7;
+}
+
+/* Explicit light mode (overrides system preference) */
+:root[data-theme="light"] pre code span[style*="--"] {
+  color: var(--1) !important;
+}
+
+:root[data-theme="light"] .expressive-code pre,
+:root[data-theme="light"] pre:not(.expressive-code pre) {
+  background-color: #fafafa !important;
+  border: 1px solid #e4e4e7;
+}
+
+/* Dark mode: use --0 (dark theme colors) */
+:root[data-theme="dark"] pre code span[style*="--"] {
+  color: var(--0) !important;
+}
+
+/* Dark mode code block background */
+:root[data-theme="dark"] .expressive-code pre,
+:root[data-theme="dark"] pre:not(.expressive-code pre) {
+  background-color: #1e1e2e !important;
+  border: 1px solid #3f3f46;
+}
+
+/* System preference dark mode fallback */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) pre code span[style*="--"] {
+    color: var(--0) !important;
+  }
+
+  :root:not([data-theme="light"]) .expressive-code pre,
+  :root:not([data-theme="light"]) pre:not(.expressive-code pre) {
+    background-color: #1e1e2e !important;
+    border: 1px solid #3f3f46;
+  }
+}
+
+/* Frame/terminal styling for code blocks */
+.frame.is-terminal {
+  --frame-tab-bg: var(--sl-color-gray-2);
+}
+
+:root[data-theme="dark"] .frame.is-terminal {
+  --frame-tab-bg: var(--sl-color-gray-2);
+}
+
+/* Ensure proper contrast for inline code */
+:not(pre) > code {
+  background-color: var(--sl-color-gray-2);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
 }
