@@ -1,0 +1,96 @@
+---
+import type { GitHubContributor } from "../lib/github";
+
+interface Props {
+  contributors: GitHubContributor[];
+  limit?: number;
+}
+
+const { contributors, limit = 20 } = Astro.props;
+const displayContributors = contributors.slice(0, limit);
+---
+
+<div class="contributors-grid">
+  {
+    displayContributors.map((contributor) => (
+      <a
+        href={contributor.html_url}
+        class="contributor"
+        target="_blank"
+        rel="noopener noreferrer"
+        title={`${contributor.login} - ${contributor.contributions} contributions`}
+      >
+        <img src={contributor.avatar_url} alt={contributor.login} loading="lazy" class="avatar" />
+        <span class="username">{contributor.login}</span>
+        <span class="contributions">{contributor.contributions}</span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .contributors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+
+  .contributor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .contributor:hover {
+    border-color: var(--sl-color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid var(--sl-color-gray-5);
+  }
+
+  .contributor:hover .avatar {
+    border-color: var(--sl-color-accent);
+  }
+
+  .username {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--sl-color-white);
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .contributions {
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  @media (max-width: 640px) {
+    .contributors-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .contributor {
+      padding: 0.75rem;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

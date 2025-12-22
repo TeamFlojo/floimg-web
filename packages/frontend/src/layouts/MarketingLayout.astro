@@ -4,8 +4,9 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Universal image workflow engine for developers and AI agents' } = Astro.props;
-const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.floimg.com';
+const { title, description = "Universal image workflow engine for developers and AI agents" } =
+  Astro.props;
+const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
 ---
 
 <!doctype html>
@@ -23,23 +24,64 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.floimg.com';
         <div class="flex items-center justify-between">
           <a href="/" class="text-xl font-bold text-zinc-900 dark:text-white">floimg</a>
           <div class="flex items-center gap-8">
-            <a href="https://studio.floimg.com" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Studio</a>
-            <a href="/docs" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Docs</a>
-            <a href="/gallery" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Gallery</a>
-            <a href="/pricing" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Pricing</a>
-            <a href="https://github.com/TeamFlojo/floimg" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a
+              href="https://studio.floimg.com"
+              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              >Studio</a
+            >
+            <a
+              href="/docs"
+              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              >Docs</a
+            >
+            <a
+              href="/plugins"
+              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              >Plugins</a
+            >
+            <a
+              href="/gallery"
+              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              >Gallery</a
+            >
+            <a
+              href="/community"
+              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              >Community</a
+            >
+            <a
+              href="https://github.com/TeamFlojo/floimg"
+              class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              target="_blank"
+              rel="noopener noreferrer">GitHub</a
+            >
 
             <!-- Auth buttons - shown when not logged in -->
             <div id="auth-guest" class="flex items-center gap-4">
-              <a href="/login" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Sign in</a>
-              <a href="/signup" class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 transition-colors">Get Started</a>
+              <a
+                href="/login"
+                class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >Sign in</a
+              >
+              <a
+                href="/signup"
+                class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 transition-colors"
+                >Get Started</a
+              >
             </div>
 
             <!-- User menu - shown when logged in -->
             <div id="auth-user" class="hidden flex items-center gap-4">
-              <a href="/dashboard" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Dashboard</a>
+              <a
+                href="/dashboard"
+                class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >Dashboard</a
+              >
               <div class="relative">
-                <button id="user-menu-btn" class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-white text-sm font-medium">
+                <button
+                  id="user-menu-btn"
+                  class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-white text-sm font-medium"
+                >
                   <span id="user-initial">?</span>
                 </button>
               </div>
@@ -65,37 +107,105 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.floimg.com';
           <div>
             <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Product</h3>
             <ul class="mt-4 space-y-2">
-              <li><a href="https://studio.floimg.com" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Studio</a></li>
-              <li><a href="/docs" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="/gallery" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Gallery</a></li>
-              <li><a href="/pricing" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Pricing</a></li>
+              <li>
+                <a
+                  href="https://studio.floimg.com"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Studio</a>
+              </li>
+              <li>
+                <a
+                  href="/docs"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Documentation</a>
+              </li>
+              <li>
+                <a
+                  href="/gallery"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Gallery</a>
+              </li>
+              <li>
+                <a
+                  href="/pricing"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Pricing</a>
+              </li>
             </ul>
           </div>
           <div>
             <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Open Source</h3>
             <ul class="mt-4 space-y-2">
-              <li><a href="https://github.com/TeamFlojo/floimg" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">floimg Core</a></li>
-              <li><a href="https://github.com/TeamFlojo/floimg-studio" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">floimg Studio</a></li>
-              <li><a href="https://www.npmjs.com/package/@teamflojo/floimg" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">npm</a></li>
+              <li>
+                <a
+                  href="https://github.com/TeamFlojo/floimg"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer">floimg Core</a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/TeamFlojo/floimg-studio"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer">floimg Studio</a>
+              </li>
+              <li>
+                <a
+                  href="/community"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Community</a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/TeamFlojo/floimg/issues"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer">Contribute</a>
+              </li>
             </ul>
           </div>
           <div>
             <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Resources</h3>
             <ul class="mt-4 space-y-2">
-              <li><a href="/docs/getting-started/installation" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Getting Started</a></li>
-              <li><a href="/docs/plugins/quickchart" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Plugins</a></li>
-              <li><a href="/docs/mcp/claude-integration" class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">MCP Integration</a></li>
+              <li>
+                <a
+                  href="/docs/getting-started/installation"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Getting Started</a>
+              </li>
+              <li>
+                <a
+                  href="/docs/plugins/quickchart"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Plugins</a>
+              </li>
+              <li>
+                <a
+                  href="/docs/mcp/claude-integration"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >MCP Integration</a>
+              </li>
             </ul>
           </div>
         </div>
-        <div class="mt-12 border-t border-zinc-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-500">
+        <div
+          class="mt-12 border-t border-zinc-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-500"
+        >
           <div class="flex items-center gap-4">
-            <a href="/terms" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Terms of Service</a>
+            <a href="/terms" class="hover:text-zinc-900 dark:hover:text-white transition-colors"
+              >Terms of Service</a
+            >
             <span class="hidden md:inline">|</span>
             <span>MIT License</span>
           </div>
           <p>
-            A <a href="https://flojo.io" class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">Flojo, Inc</a> product
+            A <a
+              href="https://flojo.io"
+              class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              target="_blank"
+              rel="noopener noreferrer">Flojo, Inc</a
+            > product
           </p>
         </div>
       </div>
@@ -104,19 +214,19 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.floimg.com';
 </html>
 
 <style is:global>
-  @import '../styles/custom.css';
+  @import "../styles/custom.css";
 </style>
 
 <script define:vars={{ API_URL }}>
   // Check auth state and update header
   async function updateAuthState() {
-    const guestEl = document.getElementById('auth-guest');
-    const userEl = document.getElementById('auth-user');
-    const initialEl = document.getElementById('user-initial');
+    const guestEl = document.getElementById("auth-guest");
+    const userEl = document.getElementById("auth-user");
+    const initialEl = document.getElementById("user-initial");
 
     try {
       const res = await fetch(`${API_URL}/api/auth/me`, {
-        credentials: 'include',
+        credentials: "include",
       });
 
       if (res.ok) {
@@ -124,8 +234,8 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.floimg.com';
         const user = data.user;
 
         // Show user menu, hide guest buttons
-        guestEl?.classList.add('hidden');
-        userEl?.classList.remove('hidden');
+        guestEl?.classList.add("hidden");
+        userEl?.classList.remove("hidden");
 
         // Set user initial
         if (initialEl) {
