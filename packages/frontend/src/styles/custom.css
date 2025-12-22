@@ -568,10 +568,25 @@ mobile-starlight-toc {
 /* Light mode TOC summary */
 starlight-toc summary,
 mobile-starlight-toc summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
   background: #f4f4f5;
   border: 1px solid #e4e4e7;
   border-radius: 0.5rem;
   color: #18181b;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Hide default marker */
+starlight-toc summary::marker,
+mobile-starlight-toc summary::marker,
+starlight-toc summary::-webkit-details-marker,
+mobile-starlight-toc summary::-webkit-details-marker {
+  display: none;
 }
 
 :root[data-theme="light"] starlight-toc summary,
