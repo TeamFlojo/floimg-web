@@ -1,0 +1,152 @@
+---
+title: Image Architect Agent
+description: Specialized agent for complex image generation and workflow planning
+---
+
+The Image Architect is a specialized agent that handles complex image tasks. It understands image requirements, selects optimal generators, and plans efficient multi-step workflows.
+
+## When to Use the Agent
+
+The Image Architect automatically activates for:
+
+- Complex image tasks requiring multiple steps
+- Requests that need generator selection advice
+- Multi-image workflows (dashboards, asset sets)
+- Tasks requiring optimization decisions
+
+## Capabilities
+
+### Generator Expertise
+
+The agent deeply understands each floimg generator:
+
+| Generator | Best For | Key Parameters |
+|-----------|----------|----------------|
+| OpenAI/DALL-E | Photorealistic images, illustrations, creative scenes | prompt, size, quality |
+| QuickChart | Data visualization, charts, graphs | type, data, options |
+| Mermaid | Technical diagrams, flowcharts, sequences | code |
+| QR | QR codes, barcodes | text, errorCorrectionLevel |
+| Screenshot | Webpage captures | url, fullPage, width |
+| D3 | Custom data visualizations | render, data |
+
+### Generator Selection
+
+The agent analyzes your request and picks the right tool:
+
+**AI Images (OpenAI)** - Creative, photorealistic, or artistic content
+- "a sunset over mountains"
+- "product mockup on marble table"
+- "illustration of a robot"
+
+**Charts (QuickChart)** - Data visualization
+- "bar chart of sales by quarter"
+- "pie chart showing market share"
+- "line graph of user growth"
+
+**Diagrams (Mermaid)** - Technical/architectural visuals
+- "flowchart of user registration"
+- "sequence diagram of API calls"
+- "entity relationship diagram"
+
+**QR Codes** - Encoded data
+- "QR code for website URL"
+- "QR with WiFi credentials"
+
+**Screenshots (Playwright)** - Webpage captures
+- "screenshot of competitor's landing page"
+- "capture the mobile view of our site"
+
+### Workflow Planning
+
+For complex requests, the agent designs optimized pipelines:
+
+1. **Analyze requirements** - What final output is needed?
+2. **Decompose into steps** - Generate -> Transform(s) -> Save
+3. **Choose optimal generators** - Match capability to need
+4. **Plan transforms** - Apply in optimal order (resize last for quality)
+5. **Execute efficiently** - Use pipelines for multi-step work
+
+### Transform Knowledge
+
+The agent knows when and how to apply transforms:
+
+| Operation | When to Use | Quality Tips |
+|-----------|-------------|--------------|
+| resize | Final sizing | Apply last to preserve quality |
+| blur | Privacy, backgrounds | Low sigma (1-3) for subtle |
+| sharpen | After resize | Low sigma (0.5-1) |
+| addCaption | Branding, context | Use contrast colors |
+| roundCorners | UI elements, avatars | Match design system |
+| preset | Quick styling | vintage, vibrant, dramatic, soft |
+
+## Example Interactions
+
+### Dashboard Creation
+
+**You**: "Create a dashboard with 3 charts showing our quarterly data"
+
+**Agent approach**:
+1. Create three separate chart generations
+2. For each: generate with appropriate chart type
+3. Optionally resize all to consistent dimensions
+4. Report imageIds and paths for each
+
+### Social Media Assets
+
+**You**: "Generate a hero image for our landing page and prepare social versions"
+
+**Agent approach**:
+1. Generate high-quality AI image (1792x1024, hd quality)
+2. Create pipeline with resize variants:
+   - 1200x630 for Open Graph
+   - 800x418 for Twitter
+   - 1080x1080 for Instagram
+3. Save each variant to specified destination
+
+### Branded Documentation
+
+**You**: "Create a technical architecture diagram and add our company watermark"
+
+**Agent approach**:
+1. Generate Mermaid diagram with proper code
+2. Transform: addText with company name/logo position
+3. Save to cloud for documentation
+
+## Agent Behavior
+
+The Image Architect focuses on getting the job done well:
+
+- Asks clarifying questions only when truly needed
+- Explains its generator choices briefly
+- Reports results with file paths and imageIds
+- Offers follow-up options for variations or transforms
+
+### Clarifying Questions
+
+The agent may ask about:
+
+- **Final use case** - Social media? Documentation? Print?
+- **Size/format requirements** - Dimensions? File format?
+- **Storage destination** - Local? S3? R2?
+
+### Result Reporting
+
+After completing a task, the agent reports:
+
+- What was created
+- Where it's saved (path or URL)
+- ImageId for follow-up operations
+- Options for additional transforms
+
+## Triggering the Agent
+
+The agent activates automatically for complex tasks. You can also invoke it directly by describing complex image needs:
+
+```
+I need to create a data visualization dashboard with:
+- A bar chart of monthly sales
+- A pie chart of product categories
+- All charts should be 800x600 and saved to ./charts/
+```
+
+The agent will plan and execute the entire workflow.

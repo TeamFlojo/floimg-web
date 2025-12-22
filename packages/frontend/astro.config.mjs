@@ -56,6 +56,15 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Claude Code',
+          items: [
+            { label: 'Overview', slug: 'docs/claude-code' },
+            { label: 'Commands', slug: 'docs/claude-code/commands' },
+            { label: 'Image Architect Agent', slug: 'docs/claude-code/agent' },
+            { label: 'Auto-Discovery Skills', slug: 'docs/claude-code/skills' },
+          ],
+        },
+        {
           label: 'MCP',
           items: [
             { label: 'Overview', slug: 'docs/mcp' },

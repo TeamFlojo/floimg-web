@@ -1,0 +1,183 @@
+---
+title: Auto-Discovery Skills
+description: How Claude automatically detects and handles image tasks
+---
+
+The floimg plugin includes an auto-discovery skill that lets Claude automatically detect image-related tasks and use floimg without explicit commands.
+
+## How It Works
+
+When you mention image-related tasks in natural language, Claude recognizes the intent and activates floimg's capabilities. No slash command needed.
+
+### Trigger Words
+
+Claude activates floimg when you mention:
+
+- **Charts & Graphs**: chart, graph, visualization, bar chart, pie chart, line graph
+- **Diagrams**: diagram, flowchart, sequence, architecture, mindmap
+- **QR Codes**: QR, qr code, barcode
+- **Screenshots**: screenshot, capture, webpage capture
+- **Images**: image, picture, photo, illustration
+
+### Example Conversations
+
+**You**: "Can you create a bar chart showing our Q1 through Q4 revenue?"
+
+Claude recognizes this as a chart request and automatically uses floimg's QuickChart generator.
+
+**You**: "I need a flowchart for our user authentication process"
+
+Claude identifies this as a diagram request and generates Mermaid code.
+
+**You**: "Screenshot the homepage of our competitor's website"
+
+Claude uses the screenshot generator with appropriate viewport settings.
+
+## Available Tools
+
+The skill provides access to these MCP tools:
+
+### generate_image
+
+Create any type of image with intent-based routing.
+
+```json
+{
+  "intent": "bar chart showing monthly sales",
+  "params": { "type": "bar", "data": {...} },
+  "saveTo": "./charts/sales.png"
+}
+```
+
+### transform_image
+
+Apply transforms to an existing image.
+
+```json
+{
+  "imageId": "img_abc123",
+  "operation": "resize",
+  "params": { "width": 800, "height": 600 }
+}
+```
+
+### save_image
+
+Save an image to filesystem or cloud.
+
+```json
+{
+  "imageId": "img_abc123",
+  "destination": "s3://my-bucket/images/chart.png"
+}
+```
+
+### run_pipeline
+
+Execute multiple steps in one call.
+
+```json
+{
+  "steps": [
+    { "generate": { "intent": "hero image", "params": {...} } },
+    { "transform": { "operation": "resize", "params": { "width": 1200 } } },
+    { "save": { "destination": "./output/hero.png" } }
+  ]
+}
+```
+
+### analyze_image
+
+Analyze an image with AI vision.
+
+```json
+{
+  "imageId": "img_abc123",
+  "prompt": "Describe what data this chart is showing"
+}
+```
+
+## Generator Selection Guide
+
+The skill uses these rules to route requests:
+
+| User Intent | Generator | Required Params |
+|-------------|-----------|-----------------|
+| Photo/illustration/scene | openai | (prompt from intent) |
+| Bar/line/pie chart | quickchart | type, data |
+| Flowchart/sequence/diagram | mermaid | code |
+| QR code/barcode | qr | text |
+| Webpage screenshot | screenshot | url |
+| Custom D3 visualization | d3 | render, data |
+
+## Workflow Patterns
+
+### Pattern 1: Simple Generation
+
+**You**: "Create a bar chart showing January: 100, February: 150, March: 200"
+
+Claude calls `generate_image` with:
+- intent: "bar chart"
+- params: structured Chart.js configuration
+- saveTo: auto-generated path
+
+### Pattern 2: Generate and Transform
+
+**You**: "Create a QR code for my website and make it 500px wide"
+
+Claude:
+1. Calls `generate_image` for the QR code
+2. Calls `transform_image` with resize operation
+3. Reports the final file location
+
+### Pattern 3: Full Pipeline
+
+**You**: "Create a hero image, resize for social, add caption, upload to S3"
+
+Claude uses `run_pipeline` with:
+```json
+{
+  "steps": [
+    { "generate": { "intent": "hero image...", "params": {...} } },
+    { "transform": { "operation": "resize", "params": { "width": 1200, "height": 630 } } },
+    { "transform": { "operation": "addCaption", "params": { "text": "...", "position": "bottom" } } },
+    { "save": { "destination": "s3://bucket/hero.png" } }
+  ]
+}
+```
+
+## Best Practices
+
+1. **Be specific with data**: For charts, provide clear labels and values
+2. **Mention the output format**: "PNG", "500px wide", "for social media"
+3. **Describe the style**: "minimal", "corporate", "colorful"
+4. **Specify destinations**: "save to ./images/" or "upload to S3"
+
+## Skill Configuration
+
+The skill is defined in the plugin's `skills/image-workflows/` directory:
+
+```
+skills/
+└── image-workflows/
+    ├── SKILL.md      # Skill definition and routing
+    ├── reference.md  # API reference
+    └── examples.md   # Common patterns
+```
+
+### Skill Metadata
+
+```yaml
+name: image-workflows
+description: Create and execute image workflows using floimg
+allowed-tools:
+  - mcp__floimg__generate_image
+  - mcp__floimg__transform_image
+  - mcp__floimg__save_image
+  - mcp__floimg__run_pipeline
+  - mcp__floimg__analyze_image
+```
+
+## Disabling Auto-Discovery
+
+If you prefer explicit commands only, you can configure Claude Code to skip skill auto-discovery. However, the slash commands will still work.

@@ -1,0 +1,120 @@
+---
+title: Claude Code Overview
+description: Generate images directly from Claude Code with the floimg plugin
+---
+
+The floimg Claude Code plugin brings powerful image generation directly into your Claude Code workflow. Generate charts, diagrams, QR codes, screenshots, and AI images without leaving your terminal.
+
+## Why Use floimg in Claude Code?
+
+Claude Code with floimg gives you:
+
+- **Natural language image generation** - Describe what you want, get the right image
+- **Intelligent routing** - Claude automatically picks the best generator for your task
+- **Multi-step workflows** - Chain generation, transforms, and cloud uploads
+- **Project integration** - Images saved directly to your working directory
+
+## Features
+
+### Slash Commands
+
+Six commands for common image tasks:
+
+| Command | What It Does |
+|---------|--------------|
+| `/floimg-claude:image` | Generate any image (AI, chart, diagram, QR, screenshot) |
+| `/floimg-claude:chart` | Create data visualizations with QuickChart |
+| `/floimg-claude:diagram` | Generate Mermaid diagrams |
+| `/floimg-claude:qr` | Create QR codes |
+| `/floimg-claude:screenshot` | Capture webpages |
+| `/floimg-claude:workflow` | Execute multi-step pipelines |
+
+### Image Architect Agent
+
+A specialized agent for complex image tasks. It understands your requirements, selects optimal generators, and plans efficient workflows.
+
+### Auto-Discovery Skill
+
+Claude automatically detects image-related tasks and uses floimg when you mention charts, diagrams, QR codes, screenshots, or image generation.
+
+## Quick Start
+
+### 1. Install Prerequisites
+
+First, install floimg and any plugins you need:
+
+```bash
+npm install -g @teamflojo/floimg
+
+# Install plugins for the features you want
+npm install -g @teamflojo/floimg-quickchart   # Charts
+npm install -g @teamflojo/floimg-mermaid      # Diagrams
+npm install -g @teamflojo/floimg-qr           # QR codes
+npm install -g @teamflojo/floimg-screenshot   # Screenshots
+```
+
+### 2. Install the Claude Code Plugin
+
+```bash
+npm install -g @teamflojo/floimg-claude
+```
+
+Then add it to Claude Code:
+
+```bash
+claude --plugin-dir $(npm root -g)/@teamflojo/floimg-claude
+```
+
+Or add to your project's Claude settings (`.claude/settings.json`):
+
+```json
+{
+  "plugins": ["@teamflojo/floimg-claude"]
+}
+```
+
+### 3. Generate Your First Image
+
+In Claude Code, try:
+
+```
+/floimg-claude:chart bar chart showing Q1: $100K, Q2: $150K, Q3: $175K, Q4: $200K
+```
+
+## Configuration
+
+Set environment variables for optional features:
+
+```bash
+# AI image generation (DALL-E)
+export OPENAI_API_KEY=sk-...
+
+# Cloud storage (S3, R2, Tigris)
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_REGION=us-east-1
+```
+
+## Package Contents
+
+```
+floimg-claude/
+├── .claude-plugin/plugin.json    # Plugin manifest
+├── .mcp.json                     # MCP server configuration
+├── commands/                     # 6 slash commands
+├── agents/                       # Image Architect agent
+└── skills/                       # Auto-discovery skill
+```
+
+## Requirements
+
+- Node.js 18+
+- Claude Code 1.0+
+- @teamflojo/floimg 0.2.0+
+
+## See Also
+
+- [Commands Reference](/docs/claude-code/commands) - All 6 commands in detail
+- [Image Architect Agent](/docs/claude-code/agent) - The specialized agent
+- [Auto-Discovery Skills](/docs/claude-code/skills) - How auto-detection works
+- [MCP Integration](/docs/mcp) - Using floimg with other AI tools
