@@ -1,0 +1,282 @@
+---
+title: Configuration
+description: Configure floimg for S3 storage, AI providers, and more
+---
+
+floimg can be configured through files, environment variables, or CLI commands. Configuration is optional - most commands work without any setup.
+
+## Configuration Priority
+
+Settings are loaded in this order (later sources override earlier ones):
+
+1. **Global config** - `~/.floimg/config.json`
+2. **Local config** - `.floimgrc.json` or `floimg.config.ts` in current directory
+3. **Environment variables** - Shell environment or `.env` file
+4. **CLI arguments** - Passed directly to commands
+
+## Quick Setup
+
+The easiest way to configure floimg is with the interactive setup:
+
+```bash
+floimg config init
+```
+
+This prompts you for:
+- S3 bucket and region (for cloud storage)
+- OpenAI API key (for AI-powered generators)
+
+And saves to `~/.floimg/config.json`.
+
+## Config File Formats
+
+### JSON (`.floimgrc.json`)
+
+```json
+{
+  "save": {
+    "default": "s3",
+    "s3": {
+      "bucket": "my-images",
+      "region": "us-east-1",
+      "endpoint": "https://s3.amazonaws.com"
+    }
+  },
+  "ai": {
+    "default": "openai",
+    "openai": {
+      "apiKey": "sk-..."
+    }
+  }
+}
+```
+
+### TypeScript (`floimg.config.ts`)
+
+```typescript
+import type { FloimgConfig } from '@teamflojo/floimg';
+
+const config: FloimgConfig = {
+  save: {
+    default: 's3',
+    s3: {
+      bucket: process.env.S3_BUCKET || 'my-images',
+      region: 'us-east-1',
+    },
+  },
+  ai: {
+    default: 'openai',
+    openai: {
+      apiKey: process.env.OPENAI_API_KEY,
+    },
+  },
+};
+
+export default config;
+```
+
+TypeScript configs are great for:
+- Environment variable interpolation
+- Type checking
+- Conditional configuration
+
+## Environment Variables
+
+### S3 / AWS
+
+| Variable | Description |
+|----------|-------------|
+| `AWS_ACCESS_KEY_ID` | AWS access key |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret key |
+| `AWS_REGION` | AWS region (e.g., `us-east-1`) |
+| `S3_BUCKET` | Default S3 bucket name |
+| `S3_ENDPOINT` | Custom S3-compatible endpoint |
+
+### Tigris Storage
+
+floimg supports [Tigris](https://www.tigrisdata.com/) (S3-compatible storage on Fly.io):
+
+| Variable | Description |
+|----------|-------------|
+| `TIGRIS_ACCESS_KEY_ID` | Tigris access key |
+| `TIGRIS_SECRET_ACCESS_KEY` | Tigris secret key |
+| `TIGRIS_BUCKET_NAME` | Tigris bucket name |
+| `TIGRIS_REGION` | Tigris region (usually `auto`) |
+
+When Tigris variables are set, floimg automatically uses the Tigris endpoint.
+
+### AI Providers
+
+| Variable | Description |
+|----------|-------------|
+| `OPENAI_API_KEY` | OpenAI API key for DALL-E and other AI features |
+
+## CLI Config Commands
+
+### `floimg config init`
+
+Interactive setup wizard that prompts for common settings:
+
+```bash
+floimg config init
+```
+
+Output:
+```
+floimg configuration setup
+=========================
+
+S3 Configuration (optional - press Enter to skip):
+  S3 Bucket name: my-images
+  S3 Region [us-east-1]: us-west-2
+
+OpenAI Configuration (optional - press Enter to skip):
+  OpenAI API Key: sk-...
+
+✓ Configuration saved to: ~/.floimg/config.json
+```
+
+### `floimg config set`
+
+Set individual configuration values:
+
+```bash
+# S3 settings
+floimg config set s3.bucket my-images
+floimg config set s3.region us-west-2
+
+# OpenAI settings
+floimg config set openai.apiKey sk-...
+```
+
+### `floimg config get`
+
+View current configuration:
+
+```bash
+# Show all config
+floimg config get
+
+# Show specific key
+floimg config get s3.bucket
+```
+
+### `floimg config path`
+
+Show where configuration files are searched:
+
+```bash
+floimg config path
+```
+
+Output:
+```
+Configuration file locations (in order of priority):
+  1. ./floimg.config.ts (current directory)
+  2. ./.floimgrc.json (current directory)
+  3. ~/.floimg/config.json (global)
+  4. Environment variables
+
+Global config location: /Users/you/.floimg/config.json
+```
+
+## Checking Your Configuration
+
+Use the `doctor` command to verify your setup:
+
+```bash
+floimg doctor
+```
+
+Output:
+```
+floimg doctor
+==============
+
+Version: 0.3.1
+Node version: v22.0.0
+
+Configuration file search:
+  ✗ Local TypeScript config: not found
+  ✗ Local JSON config: not found
+  ✓ Global config: ~/.floimg/config.json
+
+Current configuration:
+  S3 Storage:
+    - Bucket: my-images
+    - Region: us-west-2
+    - Endpoint: default (AWS)
+    - Credentials: configured
+  OpenAI:
+    - API Key: set
+
+Environment variables:
+  AWS/S3:
+    - AWS_REGION: us-west-2
+    - S3_BUCKET: my-images
+    - AWS_ACCESS_KEY_ID: set
+  AI:
+    - OPENAI_API_KEY: set
+
+Installed plugins:
+  ✓ @teamflojo/floimg-qr
+  ✓ @teamflojo/floimg-quickchart
+
+✨ Ready to use!
+```
+
+## npx Usage
+
+When running via `npx`, floimg uses:
+
+1. Environment variables from your shell
+2. Any `.env` file in the current directory (if you use a tool like dotenv)
+3. Global config at `~/.floimg/config.json` (run `floimg config init` once to set up)
+
+Most shorthand commands (`qr`, `resize`, `convert`, `chart`) work without any configuration since they don't require cloud storage or AI.
+
+## Example: Setting Up S3 Storage
+
+```bash
+# Option 1: Environment variables
+export AWS_ACCESS_KEY_ID="AKIA..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_REGION="us-east-1"
+export S3_BUCKET="my-images"
+
+# Option 2: Config file
+floimg config set s3.bucket my-images
+floimg config set s3.region us-east-1
+
+# Now you can save to S3
+floimg generate --generator shapes --params '{"type":"gradient"}' \
+  --out s3://my-images/gradient.png
+```
+
+## Example: Setting Up OpenAI
+
+```bash
+# Option 1: Environment variable
+export OPENAI_API_KEY="sk-..."
+
+# Option 2: Config file
+floimg config set openai.apiKey sk-...
+
+# Now you can use AI generators
+floimg generate --generator openai \
+  --params '{"prompt":"A sunset over mountains"}' \
+  --out ai-sunset.png
+```
+
+## Security Notes
+
+- Never commit API keys or credentials to version control
+- Use environment variables in CI/CD pipelines
+- The global config file (`~/.floimg/config.json`) is stored in your home directory
+- `floimg config set` masks sensitive values (keys, secrets) in output
+
+## See Also
+
+- [CLI Overview](/docs/cli) - All CLI commands
+- [SDK Save](/docs/sdk/save) - Programmatic storage configuration
+- [MCP Integration](/docs/mcp/claude-integration) - Using floimg with AI agents
