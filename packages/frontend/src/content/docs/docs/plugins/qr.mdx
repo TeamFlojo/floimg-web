@@ -3,6 +3,9 @@ title: QR Codes
 description: Generate QR codes from data
 ---
 
+import CodePreview from '../../../../components/docs/CodePreview.astro';
+import StudioCTA from '../../../../components/docs/StudioCTA.astro';
+
 The QR plugin generates QR codes from text, URLs, or structured data.
 
 ## Installation
@@ -31,6 +34,13 @@ const code = await floimg.generate({
   }
 });
 ```
+
+<CodePreview
+  src="/showcase/qr-codes/qr-basic.png"
+  alt="Basic QR code encoding a URL"
+  caption="Generated QR code"
+  eager
+/>
 
 ## Parameters
 
@@ -70,6 +80,12 @@ const qrCode = await floimg.generate({
   }
 });
 ```
+
+<CodePreview
+  src="/showcase/qr-codes/qr-brand.png"
+  alt="Branded QR code with custom purple color and light background"
+  caption="Styled QR code with brand colors"
+/>
 
 ### High Error Correction
 
@@ -134,3 +150,5 @@ const wifiQR = await floimg.generate({
 
 - [Generate](/docs/sdk/generate) - Core generation method
 - [Transform](/docs/sdk/transform) - Modify generated QR codes
+
+<StudioCTA plugin="qr" />

@@ -506,12 +506,12 @@ const colors = generatorColors[template.generator] || {
     overflow: auto;
     margin: 0;
     padding: 1rem;
-    background: rgb(24 24 27);
+    background: var(--m-code-bg, #1e1e2e);
     font-size: 0.85rem;
   }
 
   .code-block code {
-    color: rgb(212 212 216);
+    color: var(--m-code-text, #e4e4e7);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     white-space: pre;
   }

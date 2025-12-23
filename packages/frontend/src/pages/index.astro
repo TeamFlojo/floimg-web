@@ -340,10 +340,14 @@ const generators = [
 
   .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     max-width: 700px;
     margin: 0 auto 2.5rem;
     line-height: 1.6;
+  }
+
+  :global(.dark) .hero-subtitle {
+    color: #a1a1aa;
   }
 
   .hero-ctas {
@@ -372,7 +376,7 @@ const generators = [
   .cta-secondary {
     padding: 0.875rem 1.75rem;
     background: transparent;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid #d4d4d8;
     color: var(--sl-color-text);
     border-radius: 0.5rem;
     font-weight: 500;
@@ -380,8 +384,16 @@ const generators = [
     transition: all 0.2s;
   }
 
+  :global(.dark) .cta-secondary {
+    border-color: #3f3f46;
+  }
+
   .cta-secondary:hover {
-    background: var(--sl-color-gray-6);
+    background: #f4f4f5;
+  }
+
+  :global(.dark) .cta-secondary:hover {
+    background: #27272a;
   }
 
   .hero-showcase {
@@ -419,9 +431,13 @@ const generators = [
 
   .section-subtitle {
     font-size: 1.125rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     text-align: center;
     margin-bottom: 3rem;
+  }
+
+  :global(.dark) .section-subtitle {
+    color: #a1a1aa;
   }
 
   /* Features Section */
@@ -481,8 +497,12 @@ const generators = [
   .feature-card {
     padding: 1.25rem;
     background: var(--sl-color-bg);
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid #e4e4e7;
     border-radius: 0.75rem;
+  }
+
+  :global(.dark) .feature-card {
+    border-color: #27272a;
   }
 
   .feature-icon {
@@ -500,17 +520,27 @@ const generators = [
 
   .feature-description {
     font-size: 0.875rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     line-height: 1.5;
     margin: 0;
+  }
+
+  :global(.dark) .feature-description {
+    color: #a1a1aa;
   }
 
   /* Two Ways Section */
   .two-ways-section {
     padding: 5rem 1.5rem;
-    background: var(--sl-color-gray-6);
-    border-top: 1px solid var(--sl-color-gray-5);
-    border-bottom: 1px solid var(--sl-color-gray-5);
+    background: #f4f4f5;
+    border-top: 1px solid #e4e4e7;
+    border-bottom: 1px solid #e4e4e7;
+  }
+
+  :global(.dark) .two-ways-section {
+    background: #18181b;
+    border-top-color: #27272a;
+    border-bottom-color: #27272a;
   }
 
   .ways-grid {
@@ -529,8 +559,12 @@ const generators = [
   .way-card {
     padding: 2rem;
     background: var(--sl-color-bg);
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid #e4e4e7;
     border-radius: 1rem;
+  }
+
+  :global(.dark) .way-card {
+    border-color: #27272a;
   }
 
   .way-icon {
@@ -546,9 +580,13 @@ const generators = [
   }
 
   .way-description {
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     line-height: 1.6;
     margin-bottom: 1.5rem;
+  }
+
+  :global(.dark) .way-description {
+    color: #a1a1aa;
   }
 
   .way-features {
@@ -561,9 +599,13 @@ const generators = [
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     font-size: 0.95rem;
     padding: 0.375rem 0;
+  }
+
+  :global(.dark) .way-features li {
+    color: #a1a1aa;
   }
 
   .check {
@@ -593,12 +635,21 @@ const generators = [
   }
 
   .way-cta-secondary {
-    background: var(--sl-color-gray-5);
-    color: var(--sl-color-text);
+    background: #e4e4e7;
+    color: #18181b;
+  }
+
+  :global(.dark) .way-cta-secondary {
+    background: #3f3f46;
+    color: #fafafa;
   }
 
   .way-cta-secondary:hover {
-    background: var(--sl-color-gray-4);
+    background: #d4d4d8;
+  }
+
+  :global(.dark) .way-cta-secondary:hover {
+    background: #52525b;
   }
 
   /* Generators Section */
@@ -630,9 +681,14 @@ const generators = [
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: var(--sl-color-gray-6);
-    border: 1px solid var(--sl-color-gray-5);
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
     border-radius: 0.5rem;
+  }
+
+  :global(.dark) .generator-card {
+    background: #18181b;
+    border-color: #27272a;
   }
 
   .generator-icon {
@@ -657,7 +713,11 @@ const generators = [
 
   .generator-desc {
     font-size: 0.85rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
+  }
+
+  :global(.dark) .generator-desc {
+    color: #a1a1aa;
   }
 
   .generators-link {
@@ -682,8 +742,13 @@ const generators = [
   /* Contributor Section */
   .contributor-section {
     padding: 5rem 1.5rem;
-    background: var(--sl-color-gray-6);
-    border-top: 1px solid var(--sl-color-gray-5);
+    background: #f4f4f5;
+    border-top: 1px solid #e4e4e7;
+  }
+
+  :global(.dark) .contributor-section {
+    background: #18181b;
+    border-top-color: #27272a;
   }
 
   .contributor-content {
@@ -700,9 +765,13 @@ const generators = [
   }
 
   .contributor-description {
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     line-height: 1.6;
     margin-bottom: 2rem;
+  }
+
+  :global(.dark) .contributor-description {
+    color: #a1a1aa;
   }
 
   .contributor-ctas {
@@ -737,7 +806,7 @@ const generators = [
 
   .contributor-cta-secondary {
     padding: 0.75rem 1.5rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid #d4d4d8;
     color: var(--sl-color-text);
     border-radius: 0.5rem;
     font-weight: 500;
@@ -745,15 +814,27 @@ const generators = [
     transition: all 0.2s;
   }
 
+  :global(.dark) .contributor-cta-secondary {
+    border-color: #3f3f46;
+  }
+
   .contributor-cta-secondary:hover {
-    background: var(--sl-color-gray-5);
+    background: #e4e4e7;
+  }
+
+  :global(.dark) .contributor-cta-secondary:hover {
+    background: #27272a;
   }
 
   /* CTA Section */
   .cta-section {
     padding: 5rem 1.5rem;
     text-align: center;
-    border-top: 1px solid var(--sl-color-gray-5);
+    border-top: 1px solid #e4e4e7;
+  }
+
+  :global(.dark) .cta-section {
+    border-top-color: #27272a;
   }
 
   .cta-title {
@@ -764,14 +845,19 @@ const generators = [
   }
 
   .cta-description {
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     margin-bottom: 1.5rem;
+  }
+
+  :global(.dark) .cta-description {
+    color: #a1a1aa;
   }
 
   .cta-code {
     display: inline-block;
     padding: 0.75rem 1.25rem;
-    background: rgb(24 24 27);
+    background: var(--m-code-bg, #1e1e2e);
+    border: 1px solid var(--m-code-border, #3f3f46);
     border-radius: 0.5rem;
     margin-bottom: 2rem;
   }

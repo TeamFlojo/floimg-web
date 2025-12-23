@@ -1,0 +1,87 @@
+---
+/**
+ * CodePreview - Shows an image preview of code output
+ * Use after code blocks in docs to show what the code generates
+ *
+ * Usage in MDX:
+ * ```typescript
+ * const chart = await floimg.generate({...});
+ * ```
+ * <CodePreview
+ *   src="/showcase/docs/quickchart-bar.png"
+ *   alt="Bar chart showing quarterly revenue"
+ *   caption="Generated bar chart"
+ * />
+ */
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  eager?: boolean; // Set true for first image on page
+}
+
+const { src, alt, caption, eager = false } = Astro.props;
+---
+
+<figure class="code-preview">
+  <div class="preview-container">
+    <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" />
+  </div>
+  {caption && <figcaption class="preview-caption">{caption}</figcaption>}
+</figure>
+
+<style is:global>
+  .code-preview {
+    margin: 1rem 0 1.5rem;
+    padding: 0;
+  }
+
+  .preview-container {
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .preview-container img {
+    max-width: 100%;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    border-radius: 0.25rem;
+  }
+
+  .preview-caption {
+    text-align: center;
+    color: #71717a;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Dark mode */
+  :root[data-theme="dark"] .preview-container,
+  :root.dark .preview-container {
+    background: #27272a;
+    border-color: #3f3f46;
+  }
+
+  :root[data-theme="dark"] .preview-caption,
+  :root.dark .preview-caption {
+    color: #a1a1aa;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .preview-container {
+      background: #27272a;
+      border-color: #3f3f46;
+    }
+
+    :root:not([data-theme="light"]) .preview-caption {
+      color: #a1a1aa;
+    }
+  }
+</style>

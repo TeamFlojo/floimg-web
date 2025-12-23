@@ -1,0 +1,109 @@
+---
+/**
+ * StudioCTA - Subtle call-to-action linking to floimg-studio
+ * Place at the bottom of plugin documentation pages
+ *
+ * Usage in MDX:
+ * <StudioCTA plugin="quickchart" />
+ * <StudioCTA plugin="mermaid" text="Build flowcharts visually" />
+ */
+
+interface Props {
+  plugin: string;
+  text?: string;
+}
+
+const { plugin, text } = Astro.props;
+
+const pluginNames: Record<string, string> = {
+  quickchart: "QuickChart",
+  mermaid: "Mermaid",
+  qr: "QR Code",
+  d3: "D3",
+  screenshot: "Screenshot",
+};
+
+const displayName = pluginNames[plugin] || plugin;
+const studioUrl = `https://studio.floimg.com?plugin=${plugin}`;
+const ctaText = text || `Try ${displayName} in floimg-studio`;
+---
+
+<div class="studio-cta">
+  <hr class="cta-divider" />
+  <p class="cta-content">
+    <strong>Want to experiment visually?</strong>{" "}
+    <a href={studioUrl} target="_blank" rel="noopener noreferrer">
+      {ctaText} &rarr;
+    </a>
+  </p>
+</div>
+
+<style>
+  .studio-cta {
+    margin-top: 3rem;
+  }
+
+  .cta-divider {
+    border: none;
+    border-top: 1px solid #e4e4e7;
+    margin-bottom: 1rem;
+  }
+
+  .cta-content {
+    color: #52525b;
+    font-size: 0.9375rem;
+  }
+
+  .cta-content strong {
+    color: #3f3f46;
+  }
+
+  .cta-content a {
+    color: #0d9488;
+    text-decoration: none;
+  }
+
+  .cta-content a:hover {
+    text-decoration: underline;
+  }
+
+  /* Dark mode - explicit data-theme */
+  :global(:root[data-theme="dark"]) .cta-divider,
+  :global(:root.dark) .cta-divider {
+    border-top-color: #3f3f46;
+  }
+
+  :global(:root[data-theme="dark"]) .cta-content,
+  :global(:root.dark) .cta-content {
+    color: #a1a1aa;
+  }
+
+  :global(:root[data-theme="dark"]) .cta-content strong,
+  :global(:root.dark) .cta-content strong {
+    color: #d4d4d8;
+  }
+
+  :global(:root[data-theme="dark"]) .cta-content a,
+  :global(:root.dark) .cta-content a {
+    color: #2dd4bf;
+  }
+
+  /* System dark mode preference */
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .cta-divider {
+      border-top-color: #3f3f46;
+    }
+
+    :global(:root:not([data-theme="light"])) .cta-content {
+      color: #a1a1aa;
+    }
+
+    :global(:root:not([data-theme="light"])) .cta-content strong {
+      color: #d4d4d8;
+    }
+
+    :global(:root:not([data-theme="light"])) .cta-content a {
+      color: #2dd4bf;
+    }
+  }
+</style>

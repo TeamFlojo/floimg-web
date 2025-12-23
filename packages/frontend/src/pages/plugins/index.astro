@@ -199,11 +199,16 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
     min-height: 100vh;
   }
 
-  /* Hero */
+  /* Hero - always dark with white text */
   .hero-section {
     padding: 4rem 1.5rem 3rem;
-    background: linear-gradient(135deg, var(--sl-color-bg) 0%, var(--sl-color-gray-6) 100%);
-    border-bottom: 1px solid var(--sl-color-gray-5);
+    background: linear-gradient(
+      135deg,
+      var(--m-dark-bg-gradient-start) 0%,
+      var(--m-dark-bg-gradient-mid) 50%,
+      var(--m-dark-bg-gradient-end) 100%
+    );
+    border-bottom: 1px solid var(--m-dark-border);
   }
 
   .hero-container {
@@ -216,12 +221,12 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 1rem;
-    color: var(--sl-color-white);
+    color: var(--m-dark-text);
   }
 
   .hero-subtitle {
     font-size: 1.125rem;
-    color: var(--sl-color-gray-3);
+    color: var(--m-dark-text-secondary);
     margin: 0 0 2rem;
     line-height: 1.6;
   }
@@ -247,16 +252,16 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
 
   .stat-label {
     font-size: 0.875rem;
-    color: var(--sl-color-gray-3);
+    color: var(--m-dark-text-secondary);
   }
 
-  /* Filters */
+  /* Filters - follows theme */
   .filter-section {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--sl-color-bg);
-    border-bottom: 1px solid var(--sl-color-gray-5);
+    background: var(--m-bg);
+    border-bottom: 1px solid var(--m-border);
     padding: 1rem 1.5rem;
   }
 
@@ -282,16 +287,16 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
     left: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--sl-color-gray-3);
+    color: var(--m-text-muted);
   }
 
   .search-input {
     width: 100%;
     padding: 0.5rem 0.75rem 0.5rem 2.5rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid var(--m-border);
     border-radius: 6px;
-    background: var(--sl-color-gray-6);
-    color: var(--sl-color-white);
+    background: var(--m-bg-elevated);
+    color: var(--m-text);
     font-size: 0.875rem;
   }
 
@@ -308,18 +313,18 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
 
   .filter-btn {
     padding: 0.375rem 0.75rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid var(--m-border);
     border-radius: 6px;
-    background: var(--sl-color-bg);
-    color: var(--sl-color-gray-3);
+    background: var(--m-bg);
+    color: var(--m-text-secondary);
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.15s ease;
   }
 
   .filter-btn:hover {
-    border-color: var(--sl-color-gray-4);
-    color: var(--sl-color-white);
+    border-color: var(--m-text-muted);
+    color: var(--m-text);
   }
 
   .filter-btn.active {
@@ -347,7 +352,7 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
   .no-results {
     text-align: center;
     padding: 3rem;
-    color: var(--sl-color-gray-3);
+    color: var(--m-text-muted);
   }
 
   .reset-btn {
@@ -360,11 +365,11 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
     cursor: pointer;
   }
 
-  /* CTA */
+  /* CTA - always dark section */
   .cta-section {
     padding: 4rem 1.5rem;
-    background: var(--sl-color-gray-6);
-    border-top: 1px solid var(--sl-color-gray-5);
+    background: var(--m-dark-bg);
+    border-top: 1px solid var(--m-dark-border);
   }
 
   .cta-container {
@@ -377,11 +382,11 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
     font-size: 1.75rem;
     font-weight: 700;
     margin: 0 0 1rem;
-    color: var(--sl-color-white);
+    color: var(--m-dark-text);
   }
 
   .cta-description {
-    color: var(--sl-color-gray-3);
+    color: var(--m-dark-text-secondary);
     margin: 0 0 1.5rem;
     line-height: 1.6;
   }
@@ -411,12 +416,12 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
 
   .cta-btn.secondary {
     background: transparent;
-    color: var(--sl-color-white);
-    border: 1px solid var(--sl-color-gray-4);
+    color: var(--m-dark-text);
+    border: 1px solid var(--m-dark-border);
   }
 
   .cta-btn.secondary:hover {
-    border-color: var(--sl-color-white);
+    border-color: var(--m-dark-text);
   }
 
   @media (max-width: 640px) {

@@ -3,6 +3,9 @@ title: QuickChart
 description: Generate charts using Chart.js
 ---
 
+import CodePreview from '../../../../components/docs/CodePreview.astro';
+import StudioCTA from '../../../../components/docs/StudioCTA.astro';
+
 The QuickChart plugin generates charts and graphs using the Chart.js library.
 
 ## Installation
@@ -44,6 +47,13 @@ const chart = await floimg.generate({
   }
 });
 ```
+
+<CodePreview
+  src="/showcase/data-viz/quarterly-revenue.png"
+  alt="Bar chart showing quarterly revenue with four bars representing Q1 through Q4"
+  caption="Generated bar chart"
+  eager
+/>
 
 ## Parameters
 
@@ -96,6 +106,12 @@ await floimg.generate({
 });
 ```
 
+<CodePreview
+  src="/showcase/data-viz/monthly-users.png"
+  alt="Line chart showing monthly user growth trend over several months"
+  caption="Generated line chart"
+/>
+
 ### Pie Chart
 
 ```typescript
@@ -113,6 +129,12 @@ await floimg.generate({
   }
 });
 ```
+
+<CodePreview
+  src="/showcase/data-viz/traffic-by-device.png"
+  alt="Pie chart showing traffic distribution by device type"
+  caption="Generated pie chart"
+/>
 
 ### Doughnut Chart
 
@@ -207,3 +229,5 @@ await floimg.generate({
 - [Generate](/docs/sdk/generate) - Core generation method
 - [Mermaid](/docs/plugins/mermaid) - Diagrams and flowcharts
 - [D3](/docs/plugins/d3) - Custom visualizations
+
+<StudioCTA plugin="quickchart" />

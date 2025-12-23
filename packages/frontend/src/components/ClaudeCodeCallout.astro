@@ -125,10 +125,14 @@
 
   .callout-description {
     font-size: 1.125rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     max-width: 600px;
     margin: 0 auto 2rem;
     line-height: 1.7;
+  }
+
+  :global(.dark) .callout-description {
+    color: #a1a1aa;
   }
 
   .callout-description code {
@@ -165,7 +169,11 @@
     padding: 1rem;
     background: var(--sl-color-bg);
     border-radius: 0.75rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid #e4e4e7;
+  }
+
+  :global(.dark) .feature {
+    border-color: #27272a;
   }
 
   .feature-icon {
@@ -181,12 +189,17 @@
 
   .feature p {
     font-size: 0.875rem;
-    color: var(--sl-color-gray-3);
+    color: #52525b;
     margin: 0;
   }
 
+  :global(.dark) .feature p {
+    color: #a1a1aa;
+  }
+
   .callout-code {
-    background: rgb(24 24 27);
+    background: var(--m-code-bg, #1e1e2e);
+    border: 1px solid var(--m-code-border, #3f3f46);
     border-radius: 0.75rem;
     overflow: hidden;
     text-align: left;
@@ -195,14 +208,14 @@
   }
 
   .code-header {
-    background: rgb(39 39 42);
+    background: rgba(255, 255, 255, 0.05);
     padding: 0.5rem 1rem;
-    border-bottom: 1px solid rgb(63 63 70);
+    border-bottom: 1px solid var(--m-code-border, #3f3f46);
   }
 
   .code-label {
     font-size: 0.75rem;
-    color: rgb(161 161 170);
+    color: #a1a1aa;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 
@@ -210,10 +223,11 @@
     margin: 0;
     padding: 1rem;
     overflow-x: auto;
+    background: transparent;
   }
 
   .callout-code code {
-    color: rgb(212 212 216);
+    color: var(--m-code-text, #e4e4e7);
     font-size: 0.85rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }

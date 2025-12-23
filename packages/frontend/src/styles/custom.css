@@ -3,43 +3,102 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light mode (default) */
+/* ===========================================
+   Marketing Page Variables
+   These follow Tailwind's convention (light default, dark override)
+   Use these in marketing pages instead of --sl-color-* variables
+   =========================================== */
+
 :root {
-  --sl-color-accent-low: #042f2e;
+  /* Marketing - follows brand guidelines */
+  --m-bg: #ffffff;
+  --m-bg-surface: #fafafa;
+  --m-bg-elevated: #f4f4f5;
+  --m-border: #e4e4e7;
+  --m-text: #18181b;
+  --m-text-secondary: #52525b;
+  --m-text-muted: #71717a;
+
+  /* Always dark sections (hero, code blocks) */
+  --m-dark-bg: #27272a;
+  --m-dark-bg-gradient-start: #27272a;
+  --m-dark-bg-gradient-mid: #3f3f46;
+  --m-dark-bg-gradient-end: #52525b;
+  --m-dark-text: #fafafa;
+  --m-dark-text-secondary: #a1a1aa;
+  --m-dark-border: #3f3f46;
+
+  /* Code blocks */
+  --m-code-bg: #1e1e2e;
+  --m-code-text: #e4e4e7;
+  --m-code-border: #3f3f46;
+}
+
+:root.dark {
+  /* Marketing dark mode - follows brand guidelines */
+  --m-bg: #09090b;
+  --m-bg-surface: #18181b;
+  --m-bg-elevated: #27272a;
+  --m-border: rgba(255, 255, 255, 0.1);
+  --m-text: #fafafa;
+  --m-text-secondary: #a1a1aa;
+  --m-text-muted: #71717a;
+
+  /* Always dark sections stay the same */
+}
+
+/* ===========================================
+   Starlight Variables (for docs pages)
+   =========================================== */
+
+/* Light mode (default)
+   NOTE: Starlight uses --sl-color-white/black semantically, NOT literally:
+   - --sl-color-white = foreground/text color (dark in light mode)
+   - --sl-color-black = background color (light in light mode)
+   - gray-1 to gray-6 go from background to foreground shades
+*/
+:root {
+  --sl-color-accent-low: #ccfbf1;
   --sl-color-accent: #0d9488;
-  --sl-color-accent-high: #99f6e4;
-  --sl-color-white: #ffffff;
-  --sl-color-gray-1: #f4f4f5;
-  --sl-color-gray-2: #e4e4e7;
-  --sl-color-gray-3: #a1a1aa;
-  --sl-color-gray-4: #52525b;
-  --sl-color-gray-5: #27272a;
-  --sl-color-gray-6: #18181b;
-  --sl-color-black: #09090b;
+  --sl-color-accent-high: #042f2e;
+  --sl-color-white: #09090b;
+  --sl-color-gray-1: #18181b;
+  --sl-color-gray-2: #27272a;
+  --sl-color-gray-3: #52525b;
+  --sl-color-gray-4: #71717a;
+  --sl-color-gray-5: #a1a1aa;
+  --sl-color-gray-6: #e4e4e7;
+  --sl-color-black: #fafafa;
   --sl-color-bg: #fafafa;
   --sl-color-bg-nav: #f4f4f5;
   --sl-color-bg-sidebar: #f4f4f5;
+  --sl-color-hairline-light: #d4d4d8;
+  --sl-color-hairline: #a1a1aa;
   --sl-color-text: #18181b;
   --sl-color-text-accent: #0d9488;
 }
 
-/* Dark mode - triggered by system preference */
+/* Dark mode - triggered by system preference
+   NOTE: --sl-color-white = text (light in dark mode)
+         --sl-color-black = background (dark in dark mode) */
 @media (prefers-color-scheme: dark) {
   :root {
     --sl-color-accent-low: #042f2e;
     --sl-color-accent: #14b8a6;
     --sl-color-accent-high: #99f6e4;
-    --sl-color-white: #18181b;
-    --sl-color-gray-1: #27272a;
-    --sl-color-gray-2: #3f3f46;
-    --sl-color-gray-3: #71717a;
-    --sl-color-gray-4: #a1a1aa;
-    --sl-color-gray-5: #d4d4d8;
-    --sl-color-gray-6: #e4e4e7;
-    --sl-color-black: #fafafa;
+    --sl-color-white: #fafafa;
+    --sl-color-gray-1: #e4e4e7;
+    --sl-color-gray-2: #d4d4d8;
+    --sl-color-gray-3: #a1a1aa;
+    --sl-color-gray-4: #71717a;
+    --sl-color-gray-5: #3f3f46;
+    --sl-color-gray-6: #27272a;
+    --sl-color-black: #18181b;
     --sl-color-bg: #18181b;
     --sl-color-bg-nav: #27272a;
     --sl-color-bg-sidebar: #27272a;
+    --sl-color-hairline-light: #3f3f46;
+    --sl-color-hairline: #52525b;
     --sl-color-text: #fafafa;
     --sl-color-text-accent: #2dd4bf;
   }
@@ -47,17 +106,17 @@
 
 /* Explicit light mode when manually selected */
 :root[data-theme="light"] {
-  --sl-color-accent-low: #042f2e;
+  --sl-color-accent-low: #ccfbf1;
   --sl-color-accent: #0d9488;
-  --sl-color-accent-high: #99f6e4;
-  --sl-color-white: #ffffff;
-  --sl-color-gray-1: #f4f4f5;
-  --sl-color-gray-2: #e4e4e7;
-  --sl-color-gray-3: #a1a1aa;
-  --sl-color-gray-4: #52525b;
-  --sl-color-gray-5: #27272a;
-  --sl-color-gray-6: #18181b;
-  --sl-color-black: #09090b;
+  --sl-color-accent-high: #042f2e;
+  --sl-color-white: #09090b;
+  --sl-color-gray-1: #18181b;
+  --sl-color-gray-2: #27272a;
+  --sl-color-gray-3: #52525b;
+  --sl-color-gray-4: #71717a;
+  --sl-color-gray-5: #a1a1aa;
+  --sl-color-gray-6: #e4e4e7;
+  --sl-color-black: #fafafa;
   --sl-color-bg: #fafafa;
   --sl-color-bg-nav: #f4f4f5;
   --sl-color-bg-sidebar: #f4f4f5;
@@ -88,17 +147,41 @@
   --sl-color-accent-low: #042f2e;
   --sl-color-accent: #14b8a6;
   --sl-color-accent-high: #99f6e4;
-  --sl-color-white: #18181b;
-  --sl-color-gray-1: #27272a;
-  --sl-color-gray-2: #3f3f46;
-  --sl-color-gray-3: #71717a;
-  --sl-color-gray-4: #a1a1aa;
-  --sl-color-gray-5: #d4d4d8;
-  --sl-color-gray-6: #e4e4e7;
-  --sl-color-black: #fafafa;
+  --sl-color-white: #fafafa;
+  --sl-color-gray-1: #e4e4e7;
+  --sl-color-gray-2: #d4d4d8;
+  --sl-color-gray-3: #a1a1aa;
+  --sl-color-gray-4: #71717a;
+  --sl-color-gray-5: #3f3f46;
+  --sl-color-gray-6: #27272a;
+  --sl-color-black: #18181b;
   --sl-color-bg: #18181b;
   --sl-color-bg-nav: #27272a;
   --sl-color-bg-sidebar: #27272a;
+  --sl-color-hairline-light: #3f3f46;
+  --sl-color-hairline: #52525b;
+  --sl-color-text: #fafafa;
+  --sl-color-text-accent: #2dd4bf;
+}
+
+/* Dark mode via .dark class (for marketing pages using Tailwind) */
+:root.dark {
+  --sl-color-accent-low: #042f2e;
+  --sl-color-accent: #14b8a6;
+  --sl-color-accent-high: #99f6e4;
+  --sl-color-white: #fafafa;
+  --sl-color-gray-1: #e4e4e7;
+  --sl-color-gray-2: #d4d4d8;
+  --sl-color-gray-3: #a1a1aa;
+  --sl-color-gray-4: #71717a;
+  --sl-color-gray-5: #3f3f46;
+  --sl-color-gray-6: #27272a;
+  --sl-color-black: #18181b;
+  --sl-color-bg: #18181b;
+  --sl-color-bg-nav: #27272a;
+  --sl-color-bg-sidebar: #27272a;
+  --sl-color-hairline-light: #3f3f46;
+  --sl-color-hairline: #52525b;
   --sl-color-text: #fafafa;
   --sl-color-text-accent: #2dd4bf;
 }
@@ -109,12 +192,20 @@
 :root[data-theme="dark"] h3,
 :root[data-theme="dark"] h4,
 :root[data-theme="dark"] h5,
-:root[data-theme="dark"] h6 {
+:root[data-theme="dark"] h6,
+:root.dark h1,
+:root.dark h2,
+:root.dark h3,
+:root.dark h4,
+:root.dark h5,
+:root.dark h6 {
   color: #fafafa !important;
 }
 
 :root[data-theme="dark"] .sidebar-content .group-label,
-:root[data-theme="dark"] .sidebar summary {
+:root[data-theme="dark"] .sidebar summary,
+:root.dark .sidebar-content .group-label,
+:root.dark .sidebar summary {
   color: #a1a1aa !important;
 }
 
@@ -156,13 +247,35 @@
   @apply rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50 p-6;
 }
 
-/* Fix duplicate logo in Starlight header (renders both light/dark variants) */
-.site-title img + img {
+/* Logo visibility - Starlight renders both logos and uses CSS to switch.
+   Starlight only has [data-theme] selectors, we need system preference fallbacks. */
+
+/* System preference: light - hide dark logo */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .light\:sl-hidden {
+    display: none !important;
+  }
+}
+
+/* System preference: dark - hide light logo */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dark\:sl-hidden {
+    display: none !important;
+  }
+}
+
+/* Explicit theme selection (Starlight handles these, but adding for completeness) */
+:root[data-theme="light"] .light\:sl-hidden {
+  display: none !important;
+}
+
+:root[data-theme="dark"] .dark\:sl-hidden {
   display: none !important;
 }
 
 /* ===========================================
    Code Block Styling - Light/Dark Mode Fix
+   SCOPED to Starlight docs (.sl-markdown-content)
    =========================================== */
 
 /*
@@ -170,53 +283,56 @@
  * --0 = dark theme color
  * --1 = light theme color
  *
- * We need to switch between them based on the active theme.
+ * These rules ONLY apply within Starlight documentation pages.
  */
 
 /* Default/Light mode: use --1 (light theme colors) */
-:root pre code span[style*="--"] {
-  color: var(--1) !important;
+.sl-markdown-content pre code span[style*="--"] {
+  color: var(--1);
 }
 
 /* Default/Light mode code block background */
-:root .expressive-code pre,
-:root pre:not(.expressive-code pre) {
-  background-color: #fafafa !important;
+.sl-markdown-content .expressive-code pre,
+.sl-markdown-content pre:not(.expressive-code pre) {
+  background-color: #fafafa;
   border: 1px solid #e4e4e7;
 }
 
 /* Explicit light mode (overrides system preference) */
-:root[data-theme="light"] pre code span[style*="--"] {
-  color: var(--1) !important;
+:root[data-theme="light"] .sl-markdown-content pre code span[style*="--"] {
+  color: var(--1);
 }
 
-:root[data-theme="light"] .expressive-code pre,
-:root[data-theme="light"] pre:not(.expressive-code pre) {
-  background-color: #fafafa !important;
+:root[data-theme="light"] .sl-markdown-content .expressive-code pre,
+:root[data-theme="light"] .sl-markdown-content pre:not(.expressive-code pre) {
+  background-color: #fafafa;
   border: 1px solid #e4e4e7;
 }
 
 /* Dark mode: use --0 (dark theme colors) */
-:root[data-theme="dark"] pre code span[style*="--"] {
-  color: var(--0) !important;
+:root[data-theme="dark"] .sl-markdown-content pre code span[style*="--"],
+:root.dark .sl-markdown-content pre code span[style*="--"] {
+  color: var(--0);
 }
 
 /* Dark mode code block background */
-:root[data-theme="dark"] .expressive-code pre,
-:root[data-theme="dark"] pre:not(.expressive-code pre) {
-  background-color: #1e1e2e !important;
+:root[data-theme="dark"] .sl-markdown-content .expressive-code pre,
+:root[data-theme="dark"] .sl-markdown-content pre:not(.expressive-code pre),
+:root.dark .sl-markdown-content .expressive-code pre,
+:root.dark .sl-markdown-content pre:not(.expressive-code pre) {
+  background-color: #1e1e2e;
   border: 1px solid #3f3f46;
 }
 
 /* System preference dark mode fallback */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) pre code span[style*="--"] {
-    color: var(--0) !important;
+  :root:not([data-theme="light"]) .sl-markdown-content pre code span[style*="--"] {
+    color: var(--0);
   }
 
-  :root:not([data-theme="light"]) .expressive-code pre,
-  :root:not([data-theme="light"]) pre:not(.expressive-code pre) {
-    background-color: #1e1e2e !important;
+  :root:not([data-theme="light"]) .sl-markdown-content .expressive-code pre,
+  :root:not([data-theme="light"]) .sl-markdown-content pre:not(.expressive-code pre) {
+    background-color: #1e1e2e;
     border: 1px solid #3f3f46;
   }
 }
@@ -226,14 +342,632 @@
   --frame-tab-bg: var(--sl-color-gray-2);
 }
 
-:root[data-theme="dark"] .frame.is-terminal {
+:root[data-theme="dark"] .frame.is-terminal,
+:root.dark .frame.is-terminal {
   --frame-tab-bg: var(--sl-color-gray-2);
 }
 
-/* Ensure proper contrast for inline code */
+/* ===========================================
+   Inline Code Styling - Light/Dark Mode Fix
+   =========================================== */
+
+/* Light mode inline code: light background, dark text */
 :not(pre) > code {
-  background-color: var(--sl-color-gray-2);
+  background-color: #e4e4e7;
+  color: #18181b;
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
   font-size: 0.875em;
+}
+
+/* Explicit light mode */
+:root[data-theme="light"] :not(pre) > code {
+  background-color: #e4e4e7;
+  color: #18181b;
+}
+
+/* Dark mode inline code: dark background, light text */
+:root[data-theme="dark"] :not(pre) > code,
+:root.dark :not(pre) > code {
+  background-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+/* System preference dark mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) :not(pre) > code {
+    background-color: #3f3f46;
+    color: #e4e4e7;
+  }
+}
+
+/* ===========================================
+   Card Title Contrast Fix
+   =========================================== */
+
+/* Fix Starlight Card titles - they use light pastel colors by default */
+.sl-card .card .title {
+  color: var(--sl-color-text) !important;
+}
+
+/* Alternative selector for Card component */
+.card h2,
+.card h3,
+.sl-link-card .title,
+[class*="card"] .title {
+  color: var(--sl-color-text) !important;
+}
+
+/* Card description text */
+.card .body,
+.sl-link-card .body,
+[class*="card"] .body {
+  color: var(--sl-color-gray-4) !important;
+}
+
+:root[data-theme="dark"] .card .body,
+:root[data-theme="dark"] .sl-link-card .body,
+:root[data-theme="dark"] [class*="card"] .body,
+:root.dark .card .body,
+:root.dark .sl-link-card .body,
+:root.dark [class*="card"] .body {
+  color: var(--sl-color-gray-4) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .card .body,
+  :root:not([data-theme="light"]) .sl-link-card .body,
+  :root:not([data-theme="light"]) [class*="card"] .body {
+    color: var(--sl-color-gray-4) !important;
+  }
+}
+
+/* ===========================================
+   Sidebar Group Labels Fix
+   Remove the colored badge backgrounds
+   =========================================== */
+
+/* Fix sidebar starting scrolled down on page load */
+.sidebar-pane {
+  scroll-behavior: auto;
+}
+
+/* Ensure sidebar content has proper spacing at top */
+.sidebar-content {
+  padding-top: 0.5rem;
+}
+
+/* Fix sidebar summary - use flex layout like Starlight expects, not list-item */
+.sidebar-content summary {
+  display: flex;
+  list-style: none;
+}
+
+.sidebar-content summary::marker,
+.sidebar-content summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Reset sidebar group label styling */
+.sidebar-content .group-label,
+starlight-menu-button + nav .group-label,
+nav[aria-label="Main"] details summary {
+  background: transparent;
+  border: none;
+  padding-left: 0;
+}
+
+/* Sidebar group label text styling */
+.sidebar-content .group-label span,
+.sidebar .top-level > li > details > summary span {
+  background: transparent;
+  color: var(--sl-color-gray-4);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+:root[data-theme="dark"] .sidebar-content .group-label span,
+:root[data-theme="dark"] .sidebar .top-level > li > details > summary span,
+:root.dark .sidebar-content .group-label span,
+:root.dark .sidebar .top-level > li > details > summary span {
+  color: var(--sl-color-gray-4);
+}
+
+/* ===========================================
+   Card Component Fixes
+   Use teal accent instead of random pastels
+   =========================================== */
+
+/* Override Starlight's random card colors - use teal for all */
+:root {
+  /* Set all accent colors to teal */
+  --sl-color-purple: var(--sl-color-accent);
+  --sl-color-purple-low: var(--sl-color-accent-low);
+  --sl-color-purple-high: var(--sl-color-accent-high);
+  --sl-color-orange: var(--sl-color-accent);
+  --sl-color-orange-low: var(--sl-color-accent-low);
+  --sl-color-orange-high: var(--sl-color-accent-high);
+  --sl-color-red: var(--sl-color-accent);
+  --sl-color-red-low: var(--sl-color-accent-low);
+  --sl-color-red-high: var(--sl-color-accent-high);
+  --sl-color-green: var(--sl-color-accent);
+  --sl-color-green-low: var(--sl-color-accent-low);
+  --sl-color-green-high: var(--sl-color-accent-high);
+  --sl-color-blue: var(--sl-color-accent);
+  --sl-color-blue-low: var(--sl-color-accent-low);
+  --sl-color-blue-high: var(--sl-color-accent-high);
+}
+
+/* Override Starlight's card icon accent colors */
+.sl-link-card svg,
+.card svg,
+[class*="card"] .icon {
+  color: var(--sl-color-accent);
+}
+
+/* Card background and border - Light mode */
+.sl-link-card,
+.card:not(.marketing-section .card) {
+  background: #fafafa;
+  border: 1px solid #e4e4e7;
+}
+
+:root[data-theme="light"] .sl-link-card,
+:root[data-theme="light"] .card:not(.marketing-section .card) {
+  background: #fafafa;
+  border-color: #e4e4e7;
+}
+
+/* Card background and border - Dark mode */
+:root[data-theme="dark"] .sl-link-card,
+:root[data-theme="dark"] .card:not(.marketing-section .card),
+:root.dark .sl-link-card,
+:root.dark .card:not(.marketing-section .card) {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sl-link-card,
+  :root:not([data-theme="light"]) .card:not(.marketing-section .card) {
+    background: #27272a;
+    border-color: #3f3f46;
+  }
+}
+
+.sl-link-card:hover,
+.card:not(.marketing-section .card):hover {
+  border-color: var(--sl-color-accent);
+}
+
+/* ===========================================
+   "On this page" Navigation Fix (TOC/Scrollspy)
+   =========================================== */
+
+/* Table of contents header */
+starlight-toc nav > h2,
+.right-sidebar-panel h2 {
+  color: #71717a;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* Remove dark background from mobile TOC */
+starlight-toc,
+mobile-starlight-toc {
+  background: transparent;
+}
+
+/* Light mode TOC summary */
+starlight-toc summary,
+mobile-starlight-toc summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.5rem;
+  color: #18181b;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Hide default marker */
+starlight-toc summary::marker,
+mobile-starlight-toc summary::marker,
+starlight-toc summary::-webkit-details-marker,
+mobile-starlight-toc summary::-webkit-details-marker {
+  display: none;
+}
+
+:root[data-theme="light"] starlight-toc summary,
+:root[data-theme="light"] mobile-starlight-toc summary {
+  background: #f4f4f5;
+  border-color: #e4e4e7;
+  color: #18181b;
+}
+
+/* Dark mode TOC summary */
+:root[data-theme="dark"] starlight-toc summary,
+:root[data-theme="dark"] mobile-starlight-toc summary,
+:root.dark starlight-toc summary,
+:root.dark mobile-starlight-toc summary {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #fafafa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) starlight-toc summary,
+  :root:not([data-theme="light"]) mobile-starlight-toc summary {
+    background: #27272a;
+    border-color: #3f3f46;
+    color: #fafafa;
+  }
+}
+
+starlight-toc[open] summary,
+mobile-starlight-toc[open] summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* TOC dropdown content */
+starlight-toc nav,
+mobile-starlight-toc nav {
+  background: transparent;
+}
+
+/* Light mode TOC links */
+starlight-toc a,
+.right-sidebar-panel a {
+  color: #52525b;
+}
+
+:root[data-theme="light"] starlight-toc a,
+:root[data-theme="light"] .right-sidebar-panel a {
+  color: #52525b;
+}
+
+/* Dark mode TOC links */
+:root[data-theme="dark"] starlight-toc a,
+:root[data-theme="dark"] .right-sidebar-panel a,
+:root.dark starlight-toc a,
+:root.dark .right-sidebar-panel a {
+  color: #a1a1aa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) starlight-toc a,
+  :root:not([data-theme="light"]) .right-sidebar-panel a {
+    color: #a1a1aa;
+  }
+}
+
+/* TOC link hover/active states */
+starlight-toc a:hover,
+.right-sidebar-panel a:hover,
+starlight-toc a[aria-current="true"],
+.right-sidebar-panel a[aria-current="true"] {
+  color: var(--sl-color-accent);
+}
+
+/* Light mode hover/active - needs higher specificity */
+:root[data-theme="light"] starlight-toc a:hover,
+:root[data-theme="light"] .right-sidebar-panel a:hover,
+:root[data-theme="light"] starlight-toc a[aria-current="true"],
+:root[data-theme="light"] .right-sidebar-panel a[aria-current="true"] {
+  color: var(--sl-color-accent);
+}
+
+/* Dark mode hover/active - needs higher specificity */
+:root[data-theme="dark"] starlight-toc a:hover,
+:root[data-theme="dark"] .right-sidebar-panel a:hover,
+:root[data-theme="dark"] starlight-toc a[aria-current="true"],
+:root[data-theme="dark"] .right-sidebar-panel a[aria-current="true"],
+:root.dark starlight-toc a:hover,
+:root.dark .right-sidebar-panel a:hover,
+:root.dark starlight-toc a[aria-current="true"],
+:root.dark .right-sidebar-panel a[aria-current="true"] {
+  color: var(--sl-color-accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) starlight-toc a:hover,
+  :root:not([data-theme="light"]) .right-sidebar-panel a:hover,
+  :root:not([data-theme="light"]) starlight-toc a[aria-current="true"],
+  :root:not([data-theme="light"]) .right-sidebar-panel a[aria-current="true"] {
+    color: var(--sl-color-accent);
+  }
+}
+
+/* ===========================================
+   Table Styling - Light/Dark Mode Fix
+   =========================================== */
+
+/* Light mode tables */
+.sl-markdown-content table {
+  border-collapse: collapse;
+}
+
+.sl-markdown-content th,
+.sl-markdown-content td {
+  border: 1px solid #e4e4e7;
+  padding: 0.5rem 0.75rem;
+}
+
+.sl-markdown-content th {
+  background: #f4f4f5;
+  color: #18181b;
+  font-weight: 600;
+}
+
+.sl-markdown-content td {
+  color: #3f3f46;
+}
+
+.sl-markdown-content tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+/* Explicit light mode */
+:root[data-theme="light"] .sl-markdown-content th {
+  background: #f4f4f5;
+  color: #18181b;
+  border-color: #e4e4e7;
+}
+
+:root[data-theme="light"] .sl-markdown-content td {
+  color: #3f3f46;
+  border-color: #e4e4e7;
+}
+
+/* Dark mode tables */
+:root[data-theme="dark"] .sl-markdown-content th,
+:root.dark .sl-markdown-content th {
+  background: #27272a;
+  color: #fafafa;
+  border-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .sl-markdown-content td,
+:root.dark .sl-markdown-content td {
+  color: #d4d4d8;
+  border-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .sl-markdown-content tr:nth-child(even) td,
+:root.dark .sl-markdown-content tr:nth-child(even) td {
+  background: #18181b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sl-markdown-content th {
+    background: #27272a;
+    color: #fafafa;
+    border-color: #3f3f46;
+  }
+
+  :root:not([data-theme="light"]) .sl-markdown-content td {
+    color: #d4d4d8;
+    border-color: #3f3f46;
+  }
+
+  :root:not([data-theme="light"]) .sl-markdown-content tr:nth-child(even) td {
+    background: #18181b;
+  }
+}
+
+/* ===========================================
+   Pagination (Prev/Next) Links Fix
+   =========================================== */
+
+/* Light mode pagination */
+.pagination-links a {
+  background: #fafafa;
+  border: 1px solid #e4e4e7;
+  color: #18181b;
+}
+
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-accent);
+}
+
+.pagination-links .link-title {
+  color: #18181b;
+}
+
+.pagination-links .link-page {
+  color: #52525b;
+}
+
+/* Explicit light mode */
+:root[data-theme="light"] .pagination-links a {
+  background: #fafafa;
+  border-color: #e4e4e7;
+}
+
+:root[data-theme="light"] .pagination-links .link-title {
+  color: #18181b;
+}
+
+:root[data-theme="light"] .pagination-links .link-page {
+  color: #52525b;
+}
+
+/* Dark mode pagination */
+:root[data-theme="dark"] .pagination-links a,
+:root.dark .pagination-links a {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #fafafa;
+}
+
+:root[data-theme="dark"] .pagination-links .link-title,
+:root.dark .pagination-links .link-title {
+  color: #fafafa;
+}
+
+:root[data-theme="dark"] .pagination-links .link-page,
+:root.dark .pagination-links .link-page {
+  color: #a1a1aa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pagination-links a {
+    background: #27272a;
+    border-color: #3f3f46;
+    color: #fafafa;
+  }
+
+  :root:not([data-theme="light"]) .pagination-links .link-title {
+    color: #fafafa;
+  }
+
+  :root:not([data-theme="light"]) .pagination-links .link-page {
+    color: #a1a1aa;
+  }
+}
+
+/* ===========================================
+   Body Text & Links Fix
+   =========================================== */
+
+/* Light mode body text and links */
+.sl-markdown-content {
+  color: #3f3f46;
+}
+
+.sl-markdown-content a:not(.sl-link-card) {
+  color: var(--sl-color-accent);
+}
+
+:root[data-theme="light"] .sl-markdown-content {
+  color: #3f3f46;
+}
+
+/* Dark mode body text */
+:root[data-theme="dark"] .sl-markdown-content,
+:root.dark .sl-markdown-content {
+  color: #d4d4d8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sl-markdown-content {
+    color: #d4d4d8;
+  }
+}
+
+/* ===========================================
+   Blockquote Styling
+   =========================================== */
+
+/* Light mode blockquotes */
+.sl-markdown-content blockquote {
+  border-left: 4px solid #e4e4e7;
+  background: #f4f4f5;
+  color: #52525b;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+:root[data-theme="light"] .sl-markdown-content blockquote {
+  border-left-color: #e4e4e7;
+  background: #f4f4f5;
+  color: #52525b;
+}
+
+/* Dark mode blockquotes */
+:root[data-theme="dark"] .sl-markdown-content blockquote,
+:root.dark .sl-markdown-content blockquote {
+  border-left-color: #3f3f46;
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sl-markdown-content blockquote {
+    border-left-color: #3f3f46;
+    background: #27272a;
+    color: #a1a1aa;
+  }
+}
+
+/* ===========================================
+   CodePreview Component - Dark Mode
+   =========================================== */
+
+/* Dark mode for image preview container */
+:root[data-theme="dark"] .preview-container,
+:root.dark .preview-container {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .preview-caption,
+:root.dark .preview-caption {
+  color: #a1a1aa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .preview-container {
+    background: #27272a;
+    border-color: #3f3f46;
+  }
+
+  :root:not([data-theme="light"]) .preview-caption {
+    color: #a1a1aa;
+  }
+}
+
+/* ===========================================
+   StudioCTA Component - Dark Mode
+   =========================================== */
+
+:root[data-theme="dark"] .cta-divider,
+:root.dark .cta-divider {
+  border-top-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .cta-content,
+:root.dark .cta-content {
+  color: #a1a1aa;
+}
+
+:root[data-theme="dark"] .cta-content strong,
+:root.dark .cta-content strong {
+  color: #d4d4d8;
+}
+
+:root[data-theme="dark"] .cta-content a,
+:root.dark .cta-content a {
+  color: #2dd4bf;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cta-divider {
+    border-top-color: #3f3f46;
+  }
+
+  :root:not([data-theme="light"]) .cta-content {
+    color: #a1a1aa;
+  }
+
+  :root:not([data-theme="light"]) .cta-content strong {
+    color: #d4d4d8;
+  }
+
+  :root:not([data-theme="light"]) .cta-content a {
+    color: #2dd4bf;
+  }
 }

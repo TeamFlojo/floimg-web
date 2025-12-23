@@ -77,10 +77,28 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Dark mode detection - runs before render to prevent flash -->
+    <script is:inline>
+      (function () {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (prefersDark) {
+          document.documentElement.classList.add("dark");
+        }
+        // Listen for changes
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+          if (e.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        });
+      })();
+    </script>
 
     <!-- Primary Meta Tags -->
     <title>{fullTitle}</title>

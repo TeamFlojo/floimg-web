@@ -240,14 +240,15 @@ await floimg.save(processed, 'output.webp');`,
   }
 
   .panel-description {
-    color: var(--sl-color-gray-3);
+    color: #a1a1aa;
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
     line-height: 1.6;
   }
 
   .panel-code {
-    background: rgb(24 24 27);
+    background: var(--m-code-bg, #1e1e2e);
+    border: 1px solid var(--m-code-border, #3f3f46);
     border-radius: 0.5rem;
     padding: 1.25rem;
     overflow-x: auto;
@@ -255,7 +256,7 @@ await floimg.save(processed, 'output.webp');`,
   }
 
   .panel-code code {
-    color: rgb(212 212 216);
+    color: var(--m-code-text, #e4e4e7);
     white-space: pre;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }

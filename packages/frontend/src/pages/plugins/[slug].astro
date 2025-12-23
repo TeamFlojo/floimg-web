@@ -323,11 +323,16 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     min-height: 100vh;
   }
 
-  /* Hero */
+  /* Hero - always dark */
   .hero-section {
     padding: 2rem 1.5rem 4rem;
-    background: linear-gradient(135deg, var(--sl-color-bg) 0%, var(--sl-color-gray-6) 100%);
-    border-bottom: 1px solid var(--sl-color-gray-5);
+    background: linear-gradient(
+      135deg,
+      var(--m-dark-bg-gradient-start) 0%,
+      var(--m-dark-bg-gradient-mid) 50%,
+      var(--m-dark-bg-gradient-end) 100%
+    );
+    border-bottom: 1px solid var(--m-dark-border);
   }
 
   .hero-container {
@@ -346,7 +351,7 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    color: var(--sl-color-gray-3);
+    color: var(--m-dark-text-secondary);
     text-decoration: none;
     font-size: 0.875rem;
     margin-bottom: 1rem;
@@ -360,7 +365,7 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 0.75rem;
-    color: var(--sl-color-white);
+    color: var(--m-dark-text);
   }
 
   .category-badge {
@@ -374,7 +379,7 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
 
   .hero-description {
     font-size: 1.125rem;
-    color: var(--sl-color-gray-3);
+    color: var(--m-dark-text-secondary);
     margin: 0 0 1.5rem;
     line-height: 1.6;
   }
@@ -420,22 +425,23 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
   }
 
   .btn.secondary {
-    background: var(--sl-color-gray-6);
-    color: var(--sl-color-white);
-    border: 1px solid var(--sl-color-gray-5);
+    background: var(--m-dark-bg);
+    color: var(--m-dark-text);
+    border: 1px solid var(--m-dark-border);
   }
 
   .btn.secondary:hover {
-    border-color: var(--sl-color-gray-4);
+    border-color: var(--m-dark-text-secondary);
   }
 
-  /* Sections */
+  /* Sections - follows theme */
   .section {
     padding: 3rem 1.5rem;
+    background: var(--m-bg);
   }
 
   .section.alt {
-    background: var(--sl-color-gray-6);
+    background: var(--m-bg-elevated);
   }
 
   .section-container {
@@ -447,7 +453,7 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 1.5rem;
-    color: var(--sl-color-white);
+    color: var(--m-text);
   }
 
   /* Install tabs */
@@ -459,17 +465,17 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
 
   .install-tab {
     padding: 0.375rem 0.75rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid var(--m-border);
     border-radius: 6px;
-    background: var(--sl-color-bg);
-    color: var(--sl-color-gray-3);
+    background: var(--m-bg-surface);
+    color: var(--m-text-secondary);
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.15s ease;
   }
 
   .install-tab:hover {
-    color: var(--sl-color-white);
+    color: var(--m-text);
   }
 
   .install-tab.active {
@@ -478,11 +484,11 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     color: white;
   }
 
-  /* Code blocks */
+  /* Code blocks - always dark */
   .code-block {
     position: relative;
-    background: var(--sl-color-bg);
-    border: 1px solid var(--sl-color-gray-5);
+    background: var(--m-code-bg, #1e1e2e);
+    border: 1px solid var(--m-code-border, #3f3f46);
     border-radius: 8px;
     padding: 1rem;
     overflow-x: auto;
@@ -498,8 +504,8 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
   }
 
   .code-block code {
-    color: var(--sl-color-white);
-    font-family: monospace;
+    color: var(--m-code-text, #e4e4e7);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.875rem;
   }
 
@@ -507,6 +513,7 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     margin: 0;
     white-space: pre-wrap;
     word-break: break-word;
+    background: transparent;
   }
 
   .copy-btn {
@@ -514,17 +521,17 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     top: 0.75rem;
     right: 0.75rem;
     padding: 0.375rem;
-    background: var(--sl-color-gray-5);
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 4px;
-    color: var(--sl-color-gray-3);
+    color: #a1a1aa;
     cursor: pointer;
     transition: all 0.15s ease;
   }
 
   .copy-btn:hover {
-    background: var(--sl-color-gray-4);
-    color: var(--sl-color-white);
+    background: rgba(255, 255, 255, 0.2);
+    color: #fafafa;
   }
 
   /* API Table */
@@ -541,20 +548,25 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
   .api-table td {
     text-align: left;
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--sl-color-gray-5);
+    border-bottom: 1px solid var(--m-border);
   }
 
   .api-table th {
     font-weight: 600;
-    color: var(--sl-color-white);
-    background: var(--sl-color-gray-6);
+    color: var(--m-text);
+    background: var(--m-bg-elevated);
+  }
+
+  .api-table td {
+    color: var(--m-text-secondary);
   }
 
   .api-table td code {
-    background: var(--sl-color-gray-6);
+    background: var(--m-bg-elevated);
     padding: 0.125rem 0.375rem;
     border-radius: 4px;
     font-size: 0.8125rem;
+    color: var(--m-text);
   }
 
   .api-table td code.type {
@@ -567,7 +579,7 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
   }
 
   .optional {
-    color: var(--sl-color-gray-3);
+    color: var(--m-text-muted);
   }
 
   /* Examples */
@@ -578,8 +590,8 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
   }
 
   .example-card {
-    background: var(--sl-color-bg);
-    border: 1px solid var(--sl-color-gray-5);
+    background: var(--m-bg-surface);
+    border: 1px solid var(--m-border);
     border-radius: 12px;
     overflow: hidden;
   }
@@ -603,12 +615,12 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 0.25rem;
-    color: var(--sl-color-white);
+    color: var(--m-text);
   }
 
   .example-description {
     font-size: 0.875rem;
-    color: var(--sl-color-gray-3);
+    color: var(--m-text-secondary);
     margin: 0 0 0.75rem;
   }
 
@@ -622,11 +634,11 @@ const colors = categoryColors[plugin.category] || categoryColors["Utilities"];
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 0.75rem;
-    color: var(--sl-color-white);
+    color: var(--m-text);
   }
 
   .cta-description {
-    color: var(--sl-color-gray-3);
+    color: var(--m-text-secondary);
     margin: 0 0 1.5rem;
   }
 
