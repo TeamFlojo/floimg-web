@@ -156,38 +156,31 @@ spec:
 
 ## Building from Source
 
-```bash
-# Clone
-git clone https://github.com/teamflojo/floimg-studio.git
-cd floimg-studio
+Studio is part of the floimg monorepo at `apps/studio/`:
 
-# Install dependencies
+```bash
+# Clone the floimg monorepo
+git clone https://github.com/teamflojo/floimg.git
+cd floimg
+
+# Install all dependencies
 pnpm install
 
-# Build
-pnpm build
+# Build studio
+pnpm build:studio
 
-# Run production server
-pnpm start
+# Run studio dev server
+pnpm dev:studio
 ```
 
 ### Custom Docker Build
 
-```dockerfile
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
-COPY . .
-RUN pnpm build
+From the `apps/studio/` directory:
 
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
-EXPOSE 5100
-CMD ["node", "dist/server.js"]
+```bash
+cd apps/studio
+docker build -t floimg-studio .
+docker run -p 5100:5100 floimg-studio
 ```
 
 ## Health Checks
