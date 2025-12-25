@@ -1,0 +1,158 @@
+---
+title: OpenAI
+description: DALL-E image generation, GPT-4 Vision, and AI transforms
+---
+
+The OpenAI plugin provides DALL-E image generation, GPT-4 Vision analysis, and AI-powered image editing.
+
+## Installation
+
+```bash
+pnpm add @teamflojo/floimg-openai
+```
+
+## Registration
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import openai, { openaiTransform } from '@teamflojo/floimg-openai';
+
+const floimg = createClient();
+
+// Register generator (for DALL-E generation)
+floimg.registerGenerator(openai({
+  apiKey: process.env.OPENAI_API_KEY
+}));
+
+// Register transform provider (for edit/variations)
+floimg.registerTransformProvider(openaiTransform({
+  apiKey: process.env.OPENAI_API_KEY
+}));
+```
+
+## Image Generation (DALL-E)
+
+Generate images using DALL-E 2 or DALL-E 3.
+
+```typescript
+const image = await floimg.generate({
+  generator: 'openai',
+  params: {
+    prompt: 'A serene Japanese garden with cherry blossoms',
+    model: 'dall-e-3',
+    size: '1024x1024',
+    quality: 'hd'
+  }
+});
+```
+
+### Generation Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | Text description of the image |
+| `model` | string | No | `dall-e-2`, `dall-e-3` (default: `dall-e-3`) |
+| `size` | string | No | Image size (see below) |
+| `quality` | string | No | `standard`, `hd` (DALL-E 3 only) |
+| `style` | string | No | `natural`, `vivid` (DALL-E 3 only) |
+| `n` | number | No | Number of images (DALL-E 2: 1-10, DALL-E 3: 1) |
+
+### Size Options
+
+| Model | Available Sizes |
+|-------|-----------------|
+| DALL-E 2 | `256x256`, `512x512`, `1024x1024` |
+| DALL-E 3 | `1024x1024`, `1024x1792`, `1792x1024` |
+
+## Vision Analysis
+
+Analyze images using GPT-4 Vision.
+
+```typescript
+const analysis = await floimg.analyzeImage({
+  blob: image,
+  prompt: 'Describe this image in detail'
+});
+
+console.log(analysis.text);
+// "The image shows a serene Japanese garden..."
+```
+
+## AI Transforms
+
+The OpenAI transform provider offers two operations.
+
+### Edit (Inpainting)
+
+Modify specific areas of an image using a mask.
+
+```typescript
+const edited = await floimg.transform({
+  blob: image,
+  op: 'edit',
+  provider: 'openai-transform',
+  params: {
+    prompt: 'a sunlit indoor lounge area with a pool',
+    mask: maskBlob  // Transparent areas = edit region
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | Description of the desired edit |
+| `mask` | ImageBlob | No | Mask image (transparent = edit area) |
+| `model` | string | No | `dall-e-2` (default) |
+| `size` | string | No | `256x256`, `512x512`, `1024x1024` |
+| `n` | number | No | Number of variations (1-10) |
+
+### Variations
+
+Generate variations of an existing image.
+
+```typescript
+const variation = await floimg.transform({
+  blob: image,
+  op: 'variations',
+  provider: 'openai-transform',
+  params: {
+    n: 1,
+    size: '1024x1024'
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `n` | number | No | Number of variations 1-10 (default: 1) |
+| `size` | string | No | `256x256`, `512x512`, `1024x1024` |
+
+## Text Generation
+
+Generate text using GPT-4.
+
+```typescript
+const result = await floimg.generateText({
+  prompt: 'Write alt text for an image of a sunset over mountains',
+  model: 'gpt-4o'
+});
+
+console.log(result.text);
+// "A breathtaking sunset casts golden and pink hues..."
+```
+
+## API Key
+
+Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys).
+
+Set the environment variable:
+
+```bash
+export OPENAI_API_KEY=sk-...
+```
+
+## See Also
+
+- [Stability AI](/docs/plugins/stability) - Stable Diffusion generation
+- [Replicate](/docs/plugins/replicate) - Face restore, colorize, and more
+- [Generate](/docs/sdk/generate) - Core generation method

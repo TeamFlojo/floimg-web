@@ -1,0 +1,179 @@
+---
+title: Replicate
+description: AI transforms including face restoration, colorization, and text-guided editing
+---
+
+The Replicate plugin provides AI-powered image transformations using popular models from the Replicate platform.
+
+## Installation
+
+```bash
+pnpm add @teamflojo/floimg-replicate
+```
+
+## Registration
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import { replicateTransform } from '@teamflojo/floimg-replicate';
+
+const floimg = createClient();
+
+floimg.registerTransformProvider(replicateTransform({
+  apiToken: process.env.REPLICATE_API_TOKEN
+}));
+```
+
+## AI Transforms
+
+The Replicate transform provider offers four specialized operations.
+
+### Face Restore (GFPGAN)
+
+Enhance and restore faces in photos using GFPGAN.
+
+```typescript
+const restored = await floimg.transform({
+  blob: image,
+  op: 'faceRestore',
+  provider: 'replicate-transform',
+  params: {
+    version: 'v1.4',
+    scale: 2
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `version` | string | No | `v1.3`, `v1.4`, `RestoreFormer` (default: `v1.4`) |
+| `scale` | number | No | Upscale factor 1-4 (default: 2) |
+
+### Colorize (DeOldify)
+
+Add color to black and white photos using DeOldify.
+
+```typescript
+const colorized = await floimg.transform({
+  blob: bwPhoto,
+  op: 'colorize',
+  provider: 'replicate-transform',
+  params: {
+    renderFactor: 35
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `renderFactor` | number | No | Color intensity 7-40 (default: 35) |
+
+### Real-ESRGAN Upscale
+
+AI-powered image upscaling with optional face enhancement.
+
+```typescript
+const upscaled = await floimg.transform({
+  blob: image,
+  op: 'realEsrgan',
+  provider: 'replicate-transform',
+  params: {
+    scale: 4,
+    faceEnhance: true
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `scale` | number | No | 2 or 4 (default: 4) |
+| `faceEnhance` | boolean | No | Also enhance faces (default: false) |
+
+### FLUX Edit (Text-Guided Editing)
+
+Edit images using natural language prompts with FLUX Kontext.
+
+```typescript
+const edited = await floimg.transform({
+  blob: image,
+  op: 'fluxEdit',
+  provider: 'replicate-transform',
+  params: {
+    prompt: 'change the sky to a dramatic sunset'
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | Description of the edit to make |
+| `guidanceScale` | number | No | How closely to follow the prompt (default: 3.5) |
+| `numInferenceSteps` | number | No | Quality vs speed tradeoff (default: 28) |
+| `seed` | number | No | Random seed for reproducibility |
+| `outputFormat` | string | No | `png`, `jpg`, `webp` (default: `png`) |
+| `outputQuality` | number | No | 1-100 for lossy formats (default: 80) |
+
+## Use Cases
+
+### Photo Restoration Pipeline
+
+Combine face restoration with colorization for old photos:
+
+```typescript
+// 1. Restore faces
+const faceRestored = await floimg.transform({
+  blob: oldPhoto,
+  op: 'faceRestore',
+  provider: 'replicate-transform',
+  params: { version: 'RestoreFormer' }
+});
+
+// 2. Colorize
+const colorized = await floimg.transform({
+  blob: faceRestored,
+  op: 'colorize',
+  provider: 'replicate-transform'
+});
+
+// 3. Upscale
+const final = await floimg.transform({
+  blob: colorized,
+  op: 'realEsrgan',
+  provider: 'replicate-transform',
+  params: { scale: 4 }
+});
+
+await floimg.save(final, './restored-photo.png');
+```
+
+### Creative Editing
+
+Use FLUX Edit for creative transformations:
+
+```typescript
+// Change scene elements
+const sunset = await floimg.transform({
+  blob: landscape,
+  op: 'fluxEdit',
+  provider: 'replicate-transform',
+  params: {
+    prompt: 'make it winter with snow on the ground'
+  }
+});
+```
+
+## API Token
+
+Get your API token from [Replicate](https://replicate.com/account/api-tokens).
+
+Set the environment variable:
+
+```bash
+export REPLICATE_API_TOKEN=r8_...
+```
+
+## See Also
+
+- [Stability AI](/docs/plugins/stability) - Background removal, upscale, outpaint
+- [OpenAI](/docs/plugins/openai) - DALL-E image editing
+- [Transform](/docs/sdk/transform) - Core transform method

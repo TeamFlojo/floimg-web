@@ -1,0 +1,107 @@
+---
+title: Google Imagen
+description: Generate images with Google's Imagen model
+---
+
+The Google plugin provides image generation using Google's Imagen model.
+
+## Installation
+
+```bash
+pnpm add @teamflojo/floimg-google
+```
+
+## Registration
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import google from '@teamflojo/floimg-google';
+
+const floimg = createClient();
+
+floimg.registerGenerator(google({
+  apiKey: process.env.GOOGLE_AI_API_KEY
+}));
+```
+
+## Usage
+
+Generate images using Imagen.
+
+```typescript
+const image = await floimg.generate({
+  generator: 'google',
+  params: {
+    prompt: 'A photorealistic image of a mountain lake at sunrise',
+    aspectRatio: '16:9'
+  }
+});
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | Text description of the image |
+| `negativePrompt` | string | No | What to avoid in the image |
+| `aspectRatio` | string | No | `1:1`, `16:9`, `9:16`, `4:3`, `3:4` (default: `1:1`) |
+| `numberOfImages` | number | No | Number of images to generate (1-4) |
+| `personGeneration` | string | No | `allow_adult`, `dont_allow` |
+| `safetyFilterLevel` | string | No | `block_some`, `block_most`, `block_few` |
+
+## Aspect Ratios
+
+| Ratio | Description |
+|-------|-------------|
+| `1:1` | Square (default) |
+| `16:9` | Landscape/widescreen |
+| `9:16` | Portrait/vertical |
+| `4:3` | Standard landscape |
+| `3:4` | Standard portrait |
+
+## Example
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import google from '@teamflojo/floimg-google';
+
+const floimg = createClient();
+floimg.registerGenerator(google({
+  apiKey: process.env.GOOGLE_AI_API_KEY
+}));
+
+// Generate a landscape image
+const landscape = await floimg.generate({
+  generator: 'google',
+  params: {
+    prompt: 'A peaceful forest path in autumn, golden leaves, soft sunlight',
+    aspectRatio: '16:9',
+    negativePrompt: 'people, buildings, cars'
+  }
+});
+
+// Transform and save
+const resized = await floimg.transform({
+  blob: landscape,
+  op: 'resize',
+  params: { width: 1920 }
+});
+
+await floimg.save(resized, './forest-path.png');
+```
+
+## API Key
+
+Get your API key from [Google AI Studio](https://aistudio.google.com/apikey).
+
+Set the environment variable:
+
+```bash
+export GOOGLE_AI_API_KEY=...
+```
+
+## See Also
+
+- [OpenAI](/docs/plugins/openai) - DALL-E image generation
+- [Stability AI](/docs/plugins/stability) - Stable Diffusion models
+- [Generate](/docs/sdk/generate) - Core generation method

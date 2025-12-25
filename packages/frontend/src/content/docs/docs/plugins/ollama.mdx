@@ -1,0 +1,143 @@
+---
+title: Ollama
+description: Local AI with LLaVA vision and Llama text generation
+---
+
+The Ollama plugin enables local AI capabilities using Ollama, with no cloud API required.
+
+## Installation
+
+```bash
+pnpm add @teamflojo/floimg-ollama
+```
+
+## Prerequisites
+
+Install and run [Ollama](https://ollama.ai/) locally:
+
+```bash
+# Install Ollama (macOS)
+brew install ollama
+
+# Pull required models
+ollama pull llava      # For vision
+ollama pull llama3.2   # For text
+
+# Start the Ollama server
+ollama serve
+```
+
+## Registration
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import ollama from '@teamflojo/floimg-ollama';
+
+const floimg = createClient();
+
+floimg.registerGenerator(ollama({
+  baseUrl: 'http://localhost:11434'  // Default Ollama URL
+}));
+```
+
+## Vision Analysis (LLaVA)
+
+Analyze images using LLaVA locally.
+
+```typescript
+const analysis = await floimg.analyzeImage({
+  blob: image,
+  prompt: 'Describe this image in detail'
+});
+
+console.log(analysis.text);
+// "The image shows a cozy living room with..."
+```
+
+### Vision Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `model` | string | No | Vision model (default: `llava`) |
+| `prompt` | string | Yes | Question or instruction about the image |
+
+## Text Generation (Llama)
+
+Generate text using Llama locally.
+
+```typescript
+const result = await floimg.generateText({
+  prompt: 'Write a caption for a beach sunset photo',
+  model: 'llama3.2'
+});
+
+console.log(result.text);
+// "Golden hour magic at the beach..."
+```
+
+### Text Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `model` | string | No | Text model (default: `llama3.2`) |
+| `prompt` | string | Yes | The prompt for text generation |
+
+## Available Models
+
+| Model | Type | Size | Use Case |
+|-------|------|------|----------|
+| `llava` | Vision | 7B | Image analysis, description |
+| `llava:13b` | Vision | 13B | Higher quality analysis |
+| `llama3.2` | Text | 3B | Fast text generation |
+| `llama3.2:7b` | Text | 7B | Better quality text |
+
+Pull additional models with:
+
+```bash
+ollama pull llava:13b
+ollama pull llama3.2:7b
+```
+
+## Example Pipeline
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import ollama from '@teamflojo/floimg-ollama';
+import qr from '@teamflojo/floimg-qr';
+
+const floimg = createClient();
+floimg.registerGenerator(ollama());
+floimg.registerGenerator(qr());
+
+// 1. Analyze an image locally
+const analysis = await floimg.analyzeImage({
+  blob: productImage,
+  prompt: 'Describe this product for an e-commerce listing'
+});
+
+// 2. Generate a caption
+const caption = await floimg.generateText({
+  prompt: `Write a short marketing tagline based on: ${analysis.text}`
+});
+
+// 3. Create a QR code linking to the product
+const qrCode = await floimg.generate({
+  generator: 'qr',
+  params: { data: 'https://example.com/product/123' }
+});
+
+console.log(caption.text);
+```
+
+## Benefits
+
+- **Privacy**: All processing happens locally
+- **No API Costs**: No per-request charges
+- **Offline**: Works without internet connection
+- **Fast**: No network latency for local inference
+
+## See Also
+
+- [OpenAI](/docs/plugins/openai) - Cloud-based AI capabilities
+- [Transform](/docs/sdk/transform) - Image transformations
+- [Generate](/docs/sdk/generate) - Core generation method

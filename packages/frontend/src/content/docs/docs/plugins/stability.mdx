@@ -1,0 +1,165 @@
+---
+title: Stability AI
+description: Generate images with SDXL/SD3 and AI-powered transforms
+---
+
+The Stability AI plugin provides image generation using Stable Diffusion models and AI-powered image transformations.
+
+## Installation
+
+```bash
+pnpm add @teamflojo/floimg-stability
+```
+
+## Registration
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import stability, { stabilityTransform } from '@teamflojo/floimg-stability';
+
+const floimg = createClient();
+
+// Register generator (for image generation)
+floimg.registerGenerator(stability({
+  apiKey: process.env.STABILITY_API_KEY
+}));
+
+// Register transform provider (for AI transforms)
+floimg.registerTransformProvider(stabilityTransform({
+  apiKey: process.env.STABILITY_API_KEY
+}));
+```
+
+## Image Generation
+
+Generate images using Stable Diffusion XL or SD3.
+
+```typescript
+const image = await floimg.generate({
+  generator: 'stability',
+  params: {
+    prompt: 'A futuristic city at sunset, cyberpunk style',
+    model: 'sd3-large',
+    aspectRatio: '16:9',
+    outputFormat: 'png'
+  }
+});
+```
+
+### Generation Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | Text description of the image |
+| `model` | string | No | `sd3-large`, `sd3-medium`, `sdxl` (default: `sd3-large`) |
+| `negativePrompt` | string | No | What to avoid in the image |
+| `aspectRatio` | string | No | `1:1`, `16:9`, `9:16`, `4:3`, `3:4` (default: `1:1`) |
+| `seed` | number | No | Random seed for reproducibility |
+| `outputFormat` | string | No | `png`, `jpeg`, `webp` (default: `png`) |
+
+## AI Transforms
+
+The Stability transform provider offers four AI-powered operations.
+
+### Remove Background
+
+Remove the background from an image, returning a transparent PNG.
+
+```typescript
+const noBg = await floimg.transform({
+  blob: image,
+  op: 'removeBackground',
+  provider: 'stability-transform'
+});
+```
+
+### Upscale
+
+Upscale an image 4x using conservative AI upscaling.
+
+```typescript
+const upscaled = await floimg.transform({
+  blob: image,
+  op: 'upscale',
+  provider: 'stability-transform',
+  params: {
+    prompt: 'high quality, detailed'  // Optional guidance
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | No | Guidance prompt for upscaling |
+| `negativePrompt` | string | No | What to avoid |
+| `creativity` | number | No | 0.0-0.35, how creative the upscale should be |
+| `seed` | number | No | Random seed |
+| `outputFormat` | string | No | `png`, `jpeg`, `webp` |
+
+### Search and Replace
+
+Find and replace objects in an image using AI.
+
+```typescript
+const replaced = await floimg.transform({
+  blob: image,
+  op: 'searchAndReplace',
+  provider: 'stability-transform',
+  params: {
+    prompt: 'a golden retriever',
+    searchPrompt: 'the cat'
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | What to replace with |
+| `searchPrompt` | string | Yes | What to find and replace |
+| `negativePrompt` | string | No | What to avoid |
+| `seed` | number | No | Random seed |
+| `outputFormat` | string | No | `png`, `jpeg`, `webp` |
+
+### Outpaint
+
+Extend the boundaries of an image with AI-generated content.
+
+```typescript
+const extended = await floimg.transform({
+  blob: image,
+  op: 'outpaint',
+  provider: 'stability-transform',
+  params: {
+    left: 200,
+    right: 200,
+    prompt: 'continue the scene naturally'
+  }
+});
+```
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `left` | number | No | Pixels to extend left (default: 0) |
+| `right` | number | No | Pixels to extend right (default: 0) |
+| `up` | number | No | Pixels to extend up (default: 0) |
+| `down` | number | No | Pixels to extend down (default: 0) |
+| `prompt` | string | No | Guidance for the extension |
+| `creativity` | number | No | 0.0-1.0, creative freedom |
+| `seed` | number | No | Random seed |
+| `outputFormat` | string | No | `png`, `jpeg`, `webp` |
+
+## API Key
+
+Get your API key from [Stability AI Platform](https://platform.stability.ai/).
+
+Set the environment variable:
+
+```bash
+export STABILITY_API_KEY=sk-...
+```
+
+## See Also
+
+- [OpenAI](/docs/plugins/openai) - DALL-E image generation
+- [Replicate](/docs/plugins/replicate) - Face restore, colorize, and more
+- [Transform](/docs/sdk/transform) - Core transform method
