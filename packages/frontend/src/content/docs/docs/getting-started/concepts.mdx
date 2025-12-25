@@ -1,13 +1,13 @@
 ---
 title: Core Concepts
-description: Understanding how floimg works
+description: Understanding how FloImg works
 ---
 
-floimg is built around three simple operations: **Generate**, **Transform**, and **Save**.
+FloImg is built around three simple operations: **Generate**, **Transform**, and **Save**.
 
 ## The Workflow Model
 
-Every floimg workflow follows this pattern:
+Every FloImg workflow follows this pattern:
 
 ```
 Generate → Transform (optional, repeatable) → Save
@@ -75,7 +75,7 @@ const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
 
 ## Storage Adapters
 
-floimg can save to different storage backends:
+FloImg can save to different storage backends:
 
 ```typescript
 // Local filesystem
@@ -91,17 +91,17 @@ await floimg.save(image, 'custom://path/image.png');
 
 ## Deterministic Execution
 
-floimg is designed for deterministic execution:
+FloImg is designed for deterministic execution:
 
 > **Same inputs → Same outputs**
 
-This makes floimg ideal for:
+This makes FloImg ideal for:
 - CI/CD pipelines
 - Automated reporting
 - AI agent workflows (MCP)
 - Testing and QA
 
-Unlike AI image generation, floimg workflows produce identical results every time (when using non-AI generators).
+Unlike AI image generation, FloImg workflows produce identical results every time (when using non-AI generators).
 
 ## Next Steps
 

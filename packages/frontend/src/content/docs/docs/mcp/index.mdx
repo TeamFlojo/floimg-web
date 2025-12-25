@@ -1,13 +1,13 @@
 ---
 title: MCP Overview
-description: Use floimg as an AI agent tool
+description: Use FloImg as an AI agent tool
 ---
 
-floimg provides an MCP (Model Context Protocol) server that lets AI agents generate images as part of their workflows.
+FloImg provides an MCP (Model Context Protocol) server that lets AI agents generate images as part of their workflows.
 
 ## What is MCP?
 
-MCP is a protocol that enables AI assistants like Claude to use external tools. With floimg's MCP server, AI agents can:
+MCP is a protocol that enables AI assistants like Claude to use external tools. With FloImg's MCP server, AI agents can:
 
 - Generate charts and visualizations
 - Create diagrams and flowcharts
@@ -15,18 +15,18 @@ MCP is a protocol that enables AI assistants like Claude to use external tools. 
 - Capture screenshots
 - Transform and save images
 
-## Why floimg + MCP?
+## Why FloImg + MCP?
 
 AI agents need deterministic image generation:
 
-| AI Image Generation | floimg |
+| AI Image Generation | FloImg |
 |---------------------|--------|
 | Non-deterministic | Same input → same output |
 | Slow (seconds) | Fast (milliseconds) |
 | Expensive | Free / cheap |
 | Hallucinates data | Accurate to input |
 
-For data visualizations, diagrams, and functional images, floimg gives agents reliable, reproducible results.
+For data visualizations, diagrams, and functional images, FloImg gives agents reliable, reproducible results.
 
 ## Quick Start
 
@@ -38,7 +38,7 @@ npm install -g @teamflojo/floimg-mcp
 
 ### 2. Configure Your AI Client
 
-Add floimg to your MCP configuration:
+Add FloImg to your MCP configuration:
 
 ```json
 {
@@ -53,11 +53,11 @@ Add floimg to your MCP configuration:
 
 ### 3. Use with AI
 
-The AI can now use floimg tools:
+The AI can now use FloImg tools:
 
 > "Create a bar chart showing Q1-Q4 revenue: $12k, $19k, $15k, $25k"
 
-The agent will call the floimg MCP tool to generate the chart.
+The agent will call the FloImg MCP tool to generate the chart.
 
 ## Available Tools
 

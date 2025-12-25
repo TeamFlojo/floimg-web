@@ -1,13 +1,13 @@
 ---
-title: floimg-studio
-description: Visual workflow builder for floimg
+title: FloImg Studio
+description: Visual workflow builder for FloImg
 ---
 
-floimg-studio is a visual drag-and-drop interface for building image generation workflows.
+FloImg Studio is a visual drag-and-drop interface for building image generation workflows.
 
-## What is floimg-studio?
+## What is FloImg Studio?
 
-floimg-studio provides a graphical way to:
+FloImg Studio provides a graphical way to:
 
 - Build image workflows without code
 - Preview results in real-time
@@ -16,7 +16,7 @@ floimg-studio provides a graphical way to:
 
 ## Self-Hosted vs Managed
 
-floimg-studio is **open-source and self-hostable**. Run it on your own infrastructure with your own API keys.
+FloImg Studio is **open-source and self-hostable**. Run it on your own infrastructure with your own API keys.
 
 ```bash
 docker run -p 5100:5100 ghcr.io/teamflojo/floimg-studio
@@ -38,11 +38,13 @@ open http://localhost:5100
 
 ### From Source
 
+FloImg Studio is part of the floimg monorepo:
+
 ```bash
-git clone https://github.com/teamflojo/floimg-studio.git
-cd floimg-studio
+git clone https://github.com/teamflojo/floimg.git
+cd floimg
 pnpm install
-pnpm dev
+pnpm dev:studio
 ```
 
 ## The Interface

@@ -1,21 +1,21 @@
 ---
-title: floimg Documentation
+title: FloImg Documentation
 description: Universal image workflow engine for developers and AI agents
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-# Welcome to floimg
+# Welcome to FloImg
 
-**floimg** is a universal image workflow engine that provides three core operations—**generate**, **transform**, **save**—that work consistently across JavaScript, CLI, YAML, and MCP.
+**FloImg** is a universal image workflow engine that provides three core operations—**generate**, **transform**, **save**—that work consistently across JavaScript, CLI, YAML, and MCP.
 
-## The Problem floimg Solves
+## The Problem FloImg Solves
 
 **LLMs are non-deterministic.** Great for creativity, terrible for "resize to exactly 800x600."
 
 **Image libraries are fragmented.** Charts need Chart.js. Diagrams need Mermaid. QR codes need node-qrcode. Each has different APIs with no way to chain them.
 
-**floimg solves both.** Deterministic execution with a unified abstraction. LLMs handle natural language; floimg handles precise execution.
+**FloImg solves both.** Deterministic execution with a unified abstraction. LLMs handle natural language; FloImg handles precise execution.
 
 ## Quick Example
 
@@ -44,11 +44,11 @@ await floimg.save(resized, 's3://bucket/chart.png');
 
 <CardGrid>
   <Card title="Installation" icon="rocket">
-    Install floimg and your first plugin in under a minute.
+    Install FloImg and your first plugin in under a minute.
     [Get started →](/docs/getting-started/installation)
   </Card>
   <Card title="Core Concepts" icon="open-book">
-    Learn about generators, transforms, and the floimg workflow.
+    Learn about generators, transforms, and the FloImg workflow.
     [Learn more →](/docs/getting-started/concepts)
   </Card>
   <Card title="Plugins" icon="puzzle">
@@ -56,14 +56,14 @@ await floimg.save(resized, 's3://bucket/chart.png');
     [View plugins →](/docs/plugins/quickchart)
   </Card>
   <Card title="MCP Integration" icon="laptop">
-    Connect floimg to Claude and other AI agents.
+    Connect FloImg to Claude and other AI agents.
     [Set up MCP →](/docs/mcp/claude-integration)
   </Card>
 </CardGrid>
 
 ## Interfaces
 
-floimg provides multiple interfaces for different use cases:
+FloImg provides multiple interfaces for different use cases:
 
 | Interface | Best For |
 |-----------|----------|
@@ -74,7 +74,7 @@ floimg provides multiple interfaces for different use cases:
 
 ## Open Source
 
-floimg is MIT licensed and maintained by [Flojo, Inc](https://flojo.io). Contributions are welcome!
+FloImg is MIT licensed and maintained by [Flojo, Inc](https://flojo.io). Contributions are welcome!
 
 - [GitHub Repository](https://github.com/floimg/floimg)
 - [npm Packages](https://www.npmjs.com/org/teamflojo)
