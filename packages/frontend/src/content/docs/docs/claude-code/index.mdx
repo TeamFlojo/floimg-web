@@ -1,26 +1,35 @@
 ---
 title: Claude Code Plugin
-description: Generate images directly from Claude Code with the FloImg plugin
+description: Composable image workflows directly from Claude Code
 ---
 
-The floimg Claude Code plugin brings powerful image generation directly into your Claude Code workflow. Generate charts, diagrams, QR codes, screenshots, and AI images without leaving your terminal.
+The floimg Claude Code plugin brings composable image workflows to your Claude Code terminal. Generate AI images, resize for social media, add captions, upload to S3—all through natural conversation.
+
+## Why FloImg?
+
+**The Regeneration Problem**: When you ask ChatGPT/DALL-E to modify an image, it regenerates—"change the colors" might give you a completely different composition. FloImg applies deterministic transforms: adjust hue, resize, add caption—the image stays intact except for exactly what you asked.
+
+**The Tool Fragmentation Problem**: People wrangle remove.bg, Photoshop, Figma, format converters, cloud services. Each requires learning, signing up, downloading files. FloImg consolidates into one pipeline.
+
+**Better Than Glue Code**: FloImg isn't just integration code—it's accessible through natural language (Claude Code), visual builder (FloImg Studio), SDK, CLI, or MCP. Use whichever fits how you think.
 
 ## Quick Start
 
-Install the plugin and simple commands work immediately:
+Install the plugin:
 
 ```bash
 npm install -g @teamflojo/floimg-claude
 ```
 
-Then try:
+Then describe what you need:
 
 ```
-/floimg:qr https://floimg.com
-/floimg:chart bar chart with Q1: 100, Q2: 150, Q3: 200
+"Create a hero image for my blog, resize to 1200x630, add a caption"
+"Generate a product mockup with a subtle watermark"
+/floimg:workflow AI hero → resize → caption → save to S3
 ```
 
-**That's it!** Simple commands use the CLI under the hood - no additional setup required.
+FloImg handles any mix of creative (AI generation) and practical (resize, format, upload) operations in composable pipelines.
 
 ## Architecture: CLI Simple, MCP Complex
 
@@ -60,7 +69,37 @@ Claude automatically detects image-related tasks and uses floimg when you mentio
 
 ## Usage Examples
 
-### Simple Tasks (Work Immediately)
+### AI Image Workflows (Primary Use Case)
+
+Generate and transform images through natural conversation:
+
+```
+User: "Create a hero image for my tech blog"
+Claude: [generates with DALL-E]
+
+User: "Make it more vibrant"
+Claude: [transforms the same image]
+
+User: "Resize to 1200x630 and add our tagline"
+Claude: [resizes, adds caption]
+
+User: "Save to S3"
+Claude: [uploads to s3://bucket/hero.png]
+```
+
+Session state enables referencing images by ID, not file paths.
+
+### Multi-Step Pipelines
+
+Describe the full workflow:
+
+```
+/floimg:workflow Create a hero image, resize to 1200x630, add caption, save to S3
+```
+
+### Simple Generators
+
+Quick one-shot operations:
 
 ```
 /floimg:qr https://floimg.com
@@ -68,29 +107,6 @@ Claude automatically detects image-related tasks and uses floimg when you mentio
 /floimg:diagram user login flow: user -> form -> auth -> dashboard
 /floimg:screenshot https://github.com
 ```
-
-### Complex Workflows (After MCP Enabled)
-
-For multi-step workflows with iteration:
-
-```
-/floimg:workflow Create a hero image, resize to 1200x630, add caption, save to S3
-```
-
-Or iterate naturally:
-
-```
-User: "Create a hero image for my tech blog"
-Claude: [generates image]
-
-User: "Make it more vibrant"
-Claude: [transforms the same image]
-
-User: "Add our tagline at the bottom"
-Claude: [adds caption]
-```
-
-Session state enables referencing previous images without file paths.
 
 ## Configuration
 

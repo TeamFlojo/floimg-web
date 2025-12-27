@@ -1,0 +1,757 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+---
+
+<MarketingLayout title="Claude Code Plugin">
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-badge">
+        <svg
+          class="badge-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        Claude Code Plugin
+      </div>
+
+      <h1 class="hero-title">
+        Image workflows that <span class="highlight">preserve what you like</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        When you ask ChatGPT to "change the colors," it regenerates the entire image. FloImg applies
+        deterministic transforms—the image stays intact except for exactly what you asked.
+      </p>
+
+      <div class="hero-install">
+        <code>npm install -g @teamflojo/floimg-claude</code>
+        <button
+          class="copy-btn"
+          onclick="navigator.clipboard.writeText('npm install -g @teamflojo/floimg-claude')"
+        >
+          Copy
+        </button>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="/docs/claude-code" class="cta-primary">Read the Docs</a>
+        <a href="https://github.com/TeamFlojo/floimg" class="cta-secondary">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Three Problems -->
+  <section class="problems-section">
+    <div class="section-container">
+      <h2 class="section-title">Three Problems FloImg Solves</h2>
+
+      <div class="problems-grid">
+        <div class="problem-card">
+          <div class="problem-icon">🔄</div>
+          <h3>The Regeneration Problem</h3>
+          <p class="problem-before">
+            <strong>Without FloImg:</strong> Ask DALL-E to "change the colors" and it regenerates the
+            entire image. You lose the composition, the style, everything you liked.
+          </p>
+          <p class="problem-after">
+            <strong>With FloImg:</strong> Adjust hue mathematically. Resize precisely. Add caption. The
+            image stays exactly as it was—only what you asked for changes.
+          </p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">🧩</div>
+          <h3>The Tool Fragmentation Problem</h3>
+          <p class="problem-before">
+            <strong>Without FloImg:</strong> Wrangle remove.bg, Photoshop, Figma, format converters, cloud
+            services. Each requires learning, signing up, downloading files.
+          </p>
+          <p class="problem-after">
+            <strong>With FloImg:</strong> One pipeline. Generate, transform, upload—all through natural
+            conversation in Claude Code.
+          </p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">🔌</div>
+          <h3>Better Than Glue Code</h3>
+          <p class="problem-before">
+            <strong>Without FloImg:</strong> Write integration code: OpenAI SDK + Sharp + AWS SDK + error
+            handling. Maintain it forever.
+          </p>
+          <p class="problem-after">
+            <strong>With FloImg:</strong> Multiple modalities—natural language, visual builder, SDK, CLI,
+            MCP. Use whichever fits how you think.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="pipeline-section">
+    <div class="section-container">
+      <h2 class="section-title">The Pipeline</h2>
+      <p class="section-subtitle">Any source → Any transforms → Any destination</p>
+
+      <div class="pipeline-visual">
+        <div class="pipeline-step">
+          <div class="step-box">
+            <span class="step-label">Generate</span>
+            <ul class="step-items">
+              <li>AI images (DALL-E)</li>
+              <li>Charts</li>
+              <li>Diagrams</li>
+              <li>Screenshots</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-box">
+            <span class="step-label">Transform</span>
+            <ul class="step-items">
+              <li>Resize</li>
+              <li>Add caption</li>
+              <li>Adjust colors</li>
+              <li>Format convert</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-box">
+            <span class="step-label">Save</span>
+            <ul class="step-items">
+              <li>Local file</li>
+              <li>S3</li>
+              <li>R2</li>
+              <li>Tigris</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example Conversation -->
+  <section class="example-section">
+    <div class="section-container">
+      <h2 class="section-title">Natural Conversation</h2>
+      <p class="section-subtitle">Iterate without losing what you like</p>
+
+      <div class="conversation">
+        <div class="message user">
+          <span class="role">You</span>
+          <p>Create a hero image for my AI startup</p>
+        </div>
+        <div class="message claude">
+          <span class="role">Claude</span>
+          <p>Generated image with DALL-E → stored as img_001</p>
+          <div class="image-placeholder">[Hero image generated]</div>
+        </div>
+        <div class="message user">
+          <span class="role">You</span>
+          <p>Make it more vibrant</p>
+        </div>
+        <div class="message claude">
+          <span class="role">Claude</span>
+          <p>Applied saturation transform → img_002</p>
+          <div class="image-placeholder">[Same image, more vibrant]</div>
+        </div>
+        <div class="message user">
+          <span class="role">You</span>
+          <p>Resize to 1200x630 and add "AI for Everyone" caption</p>
+        </div>
+        <div class="message claude">
+          <span class="role">Claude</span>
+          <p>Resized and added caption → img_003</p>
+          <div class="image-placeholder">[OG-sized with caption]</div>
+        </div>
+        <div class="message user">
+          <span class="role">You</span>
+          <p>Upload to S3</p>
+        </div>
+        <div class="message claude">
+          <span class="role">Claude</span>
+          <p>Uploaded to s3://my-bucket/hero.png</p>
+        </div>
+      </div>
+
+      <p class="conversation-note">
+        Each step references the previous image by ID. No file management. No re-uploading. No
+        regenerating. Just iterate naturally.
+      </p>
+    </div>
+  </section>
+
+  <!-- Commands -->
+  <section class="commands-section">
+    <div class="section-container">
+      <h2 class="section-title">Slash Commands</h2>
+
+      <div class="commands-grid">
+        <div class="command-card primary">
+          <code>/floimg:workflow</code>
+          <p>Multi-step pipelines with session state</p>
+          <span class="command-badge">MCP</span>
+        </div>
+        <div class="command-card primary">
+          <code>/floimg:image</code>
+          <p>Universal image generation with transforms</p>
+          <span class="command-badge">MCP</span>
+        </div>
+        <div class="command-card">
+          <code>/floimg:qr</code>
+          <p>QR codes</p>
+          <span class="command-badge secondary">CLI</span>
+        </div>
+        <div class="command-card">
+          <code>/floimg:chart</code>
+          <p>Data visualizations</p>
+          <span class="command-badge secondary">CLI</span>
+        </div>
+        <div class="command-card">
+          <code>/floimg:diagram</code>
+          <p>Mermaid diagrams</p>
+          <span class="command-badge secondary">CLI</span>
+        </div>
+        <div class="command-card">
+          <code>/floimg:screenshot</code>
+          <p>Webpage capture</p>
+          <span class="command-badge secondary">CLI</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install CTA -->
+  <section class="install-section">
+    <div class="section-container">
+      <h2 class="install-title">Get Started</h2>
+      <div class="install-code">
+        <code>npm install -g @teamflojo/floimg-claude</code>
+      </div>
+      <p class="install-note">
+        Simple commands work immediately. Restart Claude Code once to enable MCP for session state.
+      </p>
+      <div class="install-ctas">
+        <a href="/docs/claude-code" class="cta-primary">Full Documentation</a>
+        <a href="/docs/claude-code/commands" class="cta-secondary">Commands Reference</a>
+      </div>
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  /* Hero */
+  .hero-section {
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+    background: linear-gradient(180deg, transparent, rgb(13 148 136 / 0.05));
+  }
+
+  .hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgb(13 148 136);
+    color: white;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+
+  .badge-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--sl-color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  .highlight {
+    color: rgb(13 148 136);
+  }
+
+  :global(.dark) .highlight {
+    color: rgb(45 212 191);
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: #52525b;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  :global(.dark) .hero-subtitle {
+    color: #a1a1aa;
+  }
+
+  .hero-install {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-install code {
+    color: rgb(74 222 128);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9rem;
+  }
+
+  .copy-btn {
+    padding: 0.25rem 0.5rem;
+    background: #27272a;
+    border: none;
+    border-radius: 0.25rem;
+    color: #a1a1aa;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .copy-btn:hover {
+    background: #3f3f46;
+    color: #fafafa;
+  }
+
+  .hero-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-primary {
+    padding: 0.875rem 1.75rem;
+    background: rgb(13 148 136);
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .cta-primary:hover {
+    background: rgb(15 118 110);
+  }
+
+  .cta-secondary {
+    padding: 0.875rem 1.75rem;
+    background: transparent;
+    border: 1px solid #d4d4d8;
+    color: var(--sl-color-text);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  :global(.dark) .cta-secondary {
+    border-color: #3f3f46;
+  }
+
+  .cta-secondary:hover {
+    background: #f4f4f5;
+  }
+
+  :global(.dark) .cta-secondary:hover {
+    background: #27272a;
+  }
+
+  /* Section common */
+  .section-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.125rem;
+    color: #52525b;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  :global(.dark) .section-subtitle {
+    color: #a1a1aa;
+  }
+
+  /* Problems Section */
+  .problems-section {
+    padding: 5rem 0;
+    background: #f4f4f5;
+    border-top: 1px solid #e4e4e7;
+  }
+
+  :global(.dark) .problems-section {
+    background: #18181b;
+    border-top-color: #27272a;
+  }
+
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .problems-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .problem-card {
+    background: var(--sl-color-bg);
+    border: 1px solid #e4e4e7;
+    border-radius: 1rem;
+    padding: 2rem;
+  }
+
+  :global(.dark) .problem-card {
+    border-color: #27272a;
+  }
+
+  .problem-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .problem-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    margin-bottom: 1rem;
+  }
+
+  .problem-before,
+  .problem-after {
+    font-size: 0.9rem;
+    color: #52525b;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  :global(.dark) .problem-before,
+  :global(.dark) .problem-after {
+    color: #a1a1aa;
+  }
+
+  .problem-before strong {
+    color: #dc2626;
+  }
+
+  .problem-after strong {
+    color: rgb(13 148 136);
+  }
+
+  :global(.dark) .problem-after strong {
+    color: rgb(45 212 191);
+  }
+
+  /* Pipeline Section */
+  .pipeline-section {
+    padding: 5rem 0;
+  }
+
+  .pipeline-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pipeline-arrow {
+    font-size: 2rem;
+    color: rgb(13 148 136);
+    font-weight: 300;
+  }
+
+  :global(.dark) .pipeline-arrow {
+    color: rgb(45 212 191);
+  }
+
+  .step-box {
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    min-width: 180px;
+  }
+
+  :global(.dark) .step-box {
+    background: #18181b;
+    border-color: #27272a;
+  }
+
+  .step-label {
+    display: block;
+    font-weight: 600;
+    color: rgb(13 148 136);
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  :global(.dark) .step-label {
+    color: rgb(45 212 191);
+  }
+
+  .step-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+    color: #52525b;
+  }
+
+  :global(.dark) .step-items {
+    color: #a1a1aa;
+  }
+
+  .step-items li {
+    padding: 0.25rem 0;
+  }
+
+  /* Example Section */
+  .example-section {
+    padding: 5rem 0;
+    background: #18181b;
+    border-top: 1px solid #27272a;
+    border-bottom: 1px solid #27272a;
+  }
+
+  .example-section .section-title,
+  .example-section .section-subtitle {
+    color: #fafafa;
+  }
+
+  .example-section .section-subtitle {
+    color: #a1a1aa;
+  }
+
+  .conversation {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+
+  .message {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .message.user {
+    background: #27272a;
+    margin-left: 2rem;
+  }
+
+  .message.claude {
+    background: rgb(13 148 136 / 0.15);
+    margin-right: 2rem;
+  }
+
+  .role {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .message.user .role {
+    color: #a1a1aa;
+  }
+
+  .message.claude .role {
+    color: rgb(45 212 191);
+  }
+
+  .message p {
+    color: #fafafa;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .image-placeholder {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    background: #27272a;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    color: #71717a;
+    text-align: center;
+  }
+
+  .conversation-note {
+    text-align: center;
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Commands Section */
+  .commands-section {
+    padding: 5rem 0;
+  }
+
+  .commands-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .commands-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .commands-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .command-card {
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    position: relative;
+  }
+
+  :global(.dark) .command-card {
+    background: #18181b;
+    border-color: #27272a;
+  }
+
+  .command-card.primary {
+    grid-column: span 1;
+    border-color: rgb(13 148 136 / 0.3);
+    background: rgb(13 148 136 / 0.05);
+  }
+
+  :global(.dark) .command-card.primary {
+    background: rgb(13 148 136 / 0.1);
+    border-color: rgb(13 148 136 / 0.3);
+  }
+
+  .command-card code {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    margin-bottom: 0.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .command-card p {
+    font-size: 0.875rem;
+    color: #52525b;
+    margin: 0;
+  }
+
+  :global(.dark) .command-card p {
+    color: #a1a1aa;
+  }
+
+  .command-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    background: rgb(13 148 136);
+    color: white;
+    border-radius: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .command-badge.secondary {
+    background: #52525b;
+  }
+
+  /* Install Section */
+  .install-section {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, rgb(13 148 136 / 0.05), transparent);
+    text-align: center;
+  }
+
+  .install-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  .install-code {
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .install-code code {
+    color: rgb(74 222 128);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 1rem;
+  }
+
+  .install-note {
+    color: #52525b;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  :global(.dark) .install-note {
+    color: #a1a1aa;
+  }
+
+  .install-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

@@ -3,11 +3,135 @@ title: Commands Reference
 description: Complete reference for all floimg Claude Code commands
 ---
 
-The floimg plugin provides six slash commands. Simple commands use CLI and work immediately. Complex commands use MCP for session state and iteration.
+The floimg plugin provides six slash commands for composable image workflows. The most powerful commands use MCP for session state and iteration. Simple generators work immediately via CLI.
 
-## Simple Commands (CLI)
+## AI Workflow Commands (MCP)
 
-These commands work immediately after installing the plugin - no MCP setup required.
+These commands enable the full power of FloImg: multi-step pipelines, iterative refinement, and session state. Restart Claude Code once after installing the plugin to enable MCP.
+
+### /floimg:image
+
+**Universal image generation** - Generates any type of image based on your description. Uses MCP for transforms and iteration.
+
+#### Usage
+
+```
+/floimg:image <description>
+```
+
+#### Routing Keywords
+
+| Keywords | Generator | Result |
+|----------|-----------|--------|
+| photo, picture, illustration, scene | OpenAI/DALL-E | AI-generated image |
+| chart, graph, bar, line, pie | QuickChart | Data visualization |
+| flowchart, diagram, sequence | Mermaid | Technical diagram |
+| QR, qr code | QR | QR code |
+| screenshot, capture, webpage | Screenshot | Webpage capture |
+
+#### Examples
+
+```
+/floimg:image a golden retriever in a field at sunset
+/floimg:image bar chart of monthly sales data
+/floimg:image flowchart showing user registration process
+```
+
+#### Why MCP?
+
+The `/floimg:image` command benefits from MCP because:
+- **Iteration**: "Make it more vibrant" transforms the existing result
+- **Chaining**: Generate → resize → caption → save in one conversation
+- **Session state**: Reference images by ID across operations
+
+#### Fallback
+
+If MCP is not available, the command falls back to CLI for simple one-shot generation.
+
+---
+
+### /floimg:workflow
+
+**Multi-step pipelines** - Executes generate, transform, and save operations in sequence.
+
+#### Usage
+
+```
+/floimg:workflow <description>
+```
+
+#### Pipeline Structure
+
+Workflows combine three operation types:
+
+1. **Generate** - Create the initial image
+2. **Transform** - Modify the image (resize, blur, caption, etc.)
+3. **Save** - Store to filesystem or cloud
+
+#### Transform Operations
+
+| Operation | Description | Key Parameters |
+|-----------|-------------|----------------|
+| resize | Scale image | width, height, fit |
+| convert | Change format | to (png, jpeg, webp) |
+| blur | Gaussian blur | sigma (0.3-1000) |
+| sharpen | Sharpen edges | sigma |
+| grayscale | Remove color | - |
+| modulate | Adjust colors | brightness, saturation, hue |
+| roundCorners | Border radius | radius |
+| addText | Overlay text | text, x, y, size, color |
+| addCaption | Caption bar | text, position, background |
+| preset | Apply filter | name (vintage, vibrant, dramatic, soft) |
+
+#### Examples
+
+```
+/floimg:workflow Create a hero image for my blog, resize to 1200x630, add "Welcome" caption, save to ./social/
+/floimg:workflow Generate a product photo, create 100px and 200px thumbnails with rounded corners
+/floimg:workflow Create a chart of Q1 sales, add company watermark, upload to S3 bucket
+```
+
+#### Iterative Refinement
+
+With MCP session state:
+
+```
+User: "Create a hero image for my AI startup"
+→ generate_image(...) → imageId: "img_001"
+
+User: "Make it more vibrant"
+→ transform_image({ imageId: "img_001", operation: "modulate", params: { saturation: 1.3 } })
+→ imageId: "img_002"
+
+User: "Add our tagline at the bottom"
+→ transform_image({ imageId: "img_002", operation: "addCaption", params: { text: "AI for Everyone" } })
+→ imageId: "img_003"
+
+User: "Perfect, save it"
+→ save_image({ imageId: "img_003", destination: "./hero.png" })
+```
+
+#### Save Destinations
+
+| Type | Format | Example |
+|------|--------|---------|
+| Local | Relative/absolute path | `./output/image.png` |
+| S3 | s3://bucket/key | `s3://my-bucket/images/hero.png` |
+| R2 | r2://bucket/key | `r2://cdn-bucket/assets/logo.png` |
+| Tigris | tigris://bucket/key | `tigris://media/uploads/photo.jpg` |
+
+#### Why MCP?
+
+The `/floimg:workflow` command requires MCP because:
+- **Session state**: Reference `imageId` without file paths
+- **Efficiency**: Images stay in memory between transforms
+- **Natural language**: Describe what you want, floimg plans the steps
+
+---
+
+## Simple Generators (CLI)
+
+These commands work immediately after installing the plugin - no MCP setup required. They use `npx` under the hood for quick one-shot generation.
 
 ### /floimg:qr
 
@@ -158,137 +282,13 @@ npx -y @teamflojo/floimg screenshot "https://github.com" -o ./screenshot.png
 
 ---
 
-## Complex Commands (MCP)
-
-These commands require MCP for session state and iteration. Restart Claude Code once after installing the plugin to enable MCP.
-
-### /floimg:image
-
-**Universal image generation** - Generates any type of image based on your description. Uses MCP for transforms and iteration.
-
-#### Usage
-
-```
-/floimg:image <description>
-```
-
-#### Routing Keywords
-
-| Keywords | Generator | Result |
-|----------|-----------|--------|
-| photo, picture, illustration, scene | OpenAI/DALL-E | AI-generated image |
-| chart, graph, bar, line, pie | QuickChart | Data visualization |
-| flowchart, diagram, sequence | Mermaid | Technical diagram |
-| QR, qr code | QR | QR code |
-| screenshot, capture, webpage | Screenshot | Webpage capture |
-
-#### Examples
-
-```
-/floimg:image a golden retriever in a field at sunset
-/floimg:image bar chart of monthly sales data
-/floimg:image flowchart showing user registration process
-```
-
-#### Why MCP?
-
-The `/floimg:image` command benefits from MCP because:
-- **Iteration**: "Make it more vibrant" transforms the existing result
-- **Chaining**: Generate → resize → caption → save in one conversation
-- **Session state**: Reference images by ID across operations
-
-#### Fallback
-
-If MCP is not available, the command falls back to CLI for simple one-shot generation.
-
----
-
-### /floimg:workflow
-
-**Multi-step pipelines** - Executes generate, transform, and save operations in sequence.
-
-#### Usage
-
-```
-/floimg:workflow <description>
-```
-
-#### Pipeline Structure
-
-Workflows combine three operation types:
-
-1. **Generate** - Create the initial image
-2. **Transform** - Modify the image (resize, blur, caption, etc.)
-3. **Save** - Store to filesystem or cloud
-
-#### Transform Operations
-
-| Operation | Description | Key Parameters |
-|-----------|-------------|----------------|
-| resize | Scale image | width, height, fit |
-| convert | Change format | to (png, jpeg, webp) |
-| blur | Gaussian blur | sigma (0.3-1000) |
-| sharpen | Sharpen edges | sigma |
-| grayscale | Remove color | - |
-| modulate | Adjust colors | brightness, saturation, hue |
-| roundCorners | Border radius | radius |
-| addText | Overlay text | text, x, y, size, color |
-| addCaption | Caption bar | text, position, background |
-| preset | Apply filter | name (vintage, vibrant, dramatic, soft) |
-
-#### Examples
-
-```
-/floimg:workflow Create a hero image for my blog, resize to 1200x630, add "Welcome" caption, save to ./social/
-/floimg:workflow Generate a product photo, create 100px and 200px thumbnails with rounded corners
-/floimg:workflow Create a chart of Q1 sales, add company watermark, upload to S3 bucket
-```
-
-#### Iterative Refinement
-
-With MCP session state:
-
-```
-User: "Create a hero image for my AI startup"
-→ generate_image(...) → imageId: "img_001"
-
-User: "Make it more vibrant"
-→ transform_image({ imageId: "img_001", operation: "modulate", params: { saturation: 1.3 } })
-→ imageId: "img_002"
-
-User: "Add our tagline at the bottom"
-→ transform_image({ imageId: "img_002", operation: "addCaption", params: { text: "AI for Everyone" } })
-→ imageId: "img_003"
-
-User: "Perfect, save it"
-→ save_image({ imageId: "img_003", destination: "./hero.png" })
-```
-
-#### Save Destinations
-
-| Type | Format | Example |
-|------|--------|---------|
-| Local | Relative/absolute path | `./output/image.png` |
-| S3 | s3://bucket/key | `s3://my-bucket/images/hero.png` |
-| R2 | r2://bucket/key | `r2://cdn-bucket/assets/logo.png` |
-| Tigris | tigris://bucket/key | `tigris://media/uploads/photo.jpg` |
-
-#### Why MCP?
-
-The `/floimg:workflow` command requires MCP because:
-- **Session state**: Reference `imageId` without file paths
-- **Efficiency**: Images stay in memory between transforms
-- **Natural language**: Describe what you want, floimg plans the steps
-
----
-
 ## Summary
 
 | Command | Type | Works Immediately? |
 |---------|------|-------------------|
+| `/floimg:image` | MCP | After restart |
+| `/floimg:workflow` | MCP | After restart |
 | `/floimg:qr` | CLI | Yes |
 | `/floimg:chart` | CLI | Yes |
 | `/floimg:diagram` | CLI | Yes |
 | `/floimg:screenshot` | CLI | Yes |
-| `/floimg:image` | MCP | After restart |
-| `/floimg:workflow` | MCP | After restart |
