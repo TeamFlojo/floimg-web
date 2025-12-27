@@ -3,61 +3,60 @@ title: Commands Reference
 description: Complete reference for all floimg Claude Code commands
 ---
 
-The floimg plugin provides six slash commands for different image generation tasks. Each command is optimized for its specific use case.
+The floimg plugin provides six slash commands. Simple commands use CLI and work immediately. Complex commands use MCP for session state and iteration.
 
-## /floimg-claude:image
+## Simple Commands (CLI)
 
-**Universal image generation** - Generates any type of image based on your description.
+These commands work immediately after installing the plugin - no MCP setup required.
 
-### Usage
+### /floimg:qr
 
-```
-/floimg-claude:image <description>
-```
+**QR code generation** - Creates QR codes for URLs, text, or structured data.
 
-### How It Works
-
-1. Analyzes your description to determine the best generator
-2. Routes to the appropriate backend (OpenAI, QuickChart, Mermaid, QR, Screenshot)
-3. Generates the image and saves it locally
-
-### Routing Keywords
-
-| Keywords | Generator | Result |
-|----------|-----------|--------|
-| photo, picture, illustration, scene | OpenAI/DALL-E | AI-generated image |
-| chart, graph, bar, line, pie | QuickChart | Data visualization |
-| flowchart, diagram, sequence | Mermaid | Technical diagram |
-| QR, qr code | QR | QR code |
-| screenshot, capture, webpage | Screenshot | Webpage capture |
-
-### Examples
+#### Usage
 
 ```
-/floimg-claude:image a golden retriever in a field at sunset
+/floimg:qr <content>
 ```
 
-```
-/floimg-claude:image bar chart of monthly sales data
-```
+#### Examples
 
 ```
-/floimg-claude:image flowchart showing user registration process
+/floimg:qr https://floimg.com
+/floimg:qr https://floimg.com/docs high quality, 500px
+```
+
+#### Content Types
+
+| Type | Format |
+|------|--------|
+| URL | `https://example.com` |
+| Plain text | Any text string |
+| WiFi | `WIFI:T:WPA;S:NetworkName;P:Password;;` |
+| vCard | `BEGIN:VCARD...END:VCARD` |
+| Email | `mailto:user@example.com` |
+| Phone | `tel:+1234567890` |
+
+#### CLI Command
+
+Runs under the hood:
+```bash
+npx -y @teamflojo/floimg qr "CONTENT" -o ./qr-output.png
 ```
 
 ---
 
-## /floimg-claude:chart
+### /floimg:chart
 
 **Data visualization** - Creates charts and graphs using QuickChart.
 
-### Usage
+#### Usage
 
 ```
-/floimg-claude:chart <description with data>
+/floimg:chart <description with data>
 ```
 
-### Supported Chart Types
+#### Supported Chart Types
 
 | Type | Best For |
 |------|----------|
@@ -66,61 +65,35 @@ The floimg plugin provides six slash commands for different image generation tas
 | pie / doughnut | Parts of a whole |
 | radar | Multi-variable comparison |
 | scatter / bubble | Correlation analysis |
-| polarArea | Radial data display |
 
-### Examples
+#### Examples
 
-**Simple bar chart:**
 ```
-/floimg-claude:chart bar chart showing Q1: $100K, Q2: $150K, Q3: $175K, Q4: $200K
-```
-
-**Pie chart:**
-```
-/floimg-claude:chart pie chart of market share: Us 45%, Competitor A 30%, Others 25%
+/floimg:chart bar chart showing Q1: $100K, Q2: $150K, Q3: $175K, Q4: $200K
+/floimg:chart pie chart of market share: Us 45%, Competitor A 30%, Others 25%
+/floimg:chart line chart comparing 2023 vs 2024 revenue by month
 ```
 
-**Line chart with multiple series:**
-```
-/floimg-claude:chart line chart comparing 2023 vs 2024 revenue by month
-```
+#### CLI Command
 
-### Under the Hood
-
-Claude parses your description and structures it as Chart.js configuration:
-
-```json
-{
-  "type": "bar",
-  "data": {
-    "labels": ["Q1", "Q2", "Q3", "Q4"],
-    "datasets": [{
-      "label": "Revenue",
-      "data": [100, 150, 175, 200],
-      "backgroundColor": ["#4ade80", "#22d3ee", "#a78bfa", "#f472b6"]
-    }]
-  },
-  "options": {
-    "plugins": {
-      "title": { "display": true, "text": "Quarterly Revenue" }
-    }
-  }
-}
+Runs under the hood:
+```bash
+npx -y @teamflojo/floimg chart bar --labels "Q1,Q2,Q3,Q4" --values "100,150,175,200" -o ./chart.png
 ```
 
 ---
 
-## /floimg-claude:diagram
+### /floimg:diagram
 
 **Technical diagrams** - Generates Mermaid diagrams for documentation and architecture.
 
-### Usage
+#### Usage
 
 ```
-/floimg-claude:diagram <description>
+/floimg:diagram <description>
 ```
 
-### Diagram Types
+#### Diagram Types
 
 | Type | Syntax | Use Case |
 |------|--------|----------|
@@ -132,168 +105,115 @@ Claude parses your description and structures it as Chart.js configuration:
 | ER | `erDiagram` | Database schemas |
 | Mindmap | `mindmap` | Brainstorming |
 
-### Examples
+#### Examples
 
-**Process flow:**
 ```
-/floimg-claude:diagram user login flow: enter credentials -> validate -> success or show error
-```
-
-**Sequence diagram:**
-```
-/floimg-claude:diagram sequence diagram of API auth: user -> API -> database -> response
+/floimg:diagram user login flow: enter credentials -> validate -> success or show error
+/floimg:diagram sequence diagram of API auth: user -> API -> database -> response
+/floimg:diagram microservices architecture with frontend, API gateway, and three services
 ```
 
-**Architecture:**
+#### CLI Command
+
+Runs under the hood:
+```bash
+npx -y @teamflojo/floimg diagram "graph TD; A-->B-->C" -o ./diagram.png
 ```
-/floimg-claude:diagram microservices architecture with frontend, API gateway, and three services
-```
-
-### Mermaid Syntax Reference
-
-Claude generates valid Mermaid code. For flowcharts:
-
-| Node Shape | Syntax |
-|------------|--------|
-| Rectangle | `A[Text]` |
-| Diamond (decision) | `B{Text}` |
-| Circle | `C((Text))` |
-| Stadium | `D([Text])` |
-| Database | `E[(Text)]` |
-
-| Edge Type | Syntax |
-|-----------|--------|
-| Arrow | `-->` |
-| Line | `---` |
-| Dotted arrow | `-.->` |
-| Thick arrow | `==>` |
-| Labeled arrow | `--text-->` |
 
 ---
 
-## /floimg-claude:qr
-
-**QR code generation** - Creates QR codes for URLs, text, or structured data.
-
-### Usage
-
-```
-/floimg-claude:qr <content>
-```
-
-### Parameters
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| text | Content to encode | (from command) |
-| width | Size in pixels | 300 |
-| errorCorrectionLevel | L, M, Q, or H | M |
-| margin | Quiet zone modules | 4 |
-
-### Error Correction Levels
-
-| Level | Recovery | When to Use |
-|-------|----------|-------------|
-| L | 7% | Clean environments, max data |
-| M | 15% | General use (recommended) |
-| Q | 25% | Some expected damage |
-| H | 30% | Logo overlay needed |
-
-### Examples
-
-**Simple URL:**
-```
-/floimg-claude:qr https://floimg.com
-```
-
-**With options:**
-```
-/floimg-claude:qr https://floimg.com/docs high quality, 500px
-```
-
-### Content Types
-
-| Type | Format |
-|------|--------|
-| URL | `https://example.com` |
-| Plain text | Any text string |
-| WiFi | `WIFI:T:WPA;S:NetworkName;P:Password;;` |
-| vCard | `BEGIN:VCARD...END:VCARD` |
-| Email | `mailto:user@example.com` |
-| Phone | `tel:+1234567890` |
-| SMS | `sms:+1234567890?body=Hello` |
-
----
-
-## /floimg-claude:screenshot
+### /floimg:screenshot
 
 **Webpage capture** - Takes screenshots of any webpage using Playwright.
 
-### Usage
+#### Usage
 
 ```
-/floimg-claude:screenshot <url> [options]
+/floimg:screenshot <url> [options]
 ```
 
-### Parameters
+#### Examples
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| url | Webpage URL (required) | - |
-| fullPage | Capture entire scrollable page | false |
-| width | Viewport width in pixels | 1280 |
-| height | Viewport height in pixels | 720 |
-| deviceScaleFactor | Pixel density (2 for Retina) | 1 |
-
-### Examples
-
-**Basic screenshot:**
 ```
-/floimg-claude:screenshot https://github.com
+/floimg:screenshot https://github.com
+/floimg:screenshot https://docs.floimg.com full page
+/floimg:screenshot https://example.com mobile view iPhone 14
 ```
 
-**Full page capture:**
+#### Common Viewport Sizes
+
+| Device | Width | Height |
+|--------|-------|--------|
+| Desktop HD | 1920 | 1080 |
+| Desktop | 1280 | 720 |
+| iPad Pro | 1024 | 1366 |
+| iPhone 14 Pro | 393 | 852 |
+
+#### CLI Command
+
+Runs under the hood:
+```bash
+npx -y @teamflojo/floimg screenshot "https://github.com" -o ./screenshot.png
 ```
-/floimg-claude:screenshot https://docs.floimg.com full page
-```
-
-**Mobile viewport:**
-```
-/floimg-claude:screenshot https://example.com mobile view iPhone 14
-```
-
-### Common Viewport Sizes
-
-| Device | Width | Height | Scale |
-|--------|-------|--------|-------|
-| Desktop HD | 1920 | 1080 | 1 |
-| Desktop | 1280 | 720 | 1 |
-| Laptop | 1366 | 768 | 1 |
-| iPad Pro | 1024 | 1366 | 2 |
-| iPad | 768 | 1024 | 2 |
-| iPhone 14 Pro | 393 | 852 | 3 |
-| iPhone SE | 375 | 667 | 2 |
-
-### Notes
-
-- Requires `@teamflojo/floimg-screenshot` plugin
-- First screenshot may be slower (browser launch)
-- JavaScript executes before capture
-- Some sites may block automated screenshots
 
 ---
 
-## /floimg-claude:workflow
+## Complex Commands (MCP)
+
+These commands require MCP for session state and iteration. Restart Claude Code once after installing the plugin to enable MCP.
+
+### /floimg:image
+
+**Universal image generation** - Generates any type of image based on your description. Uses MCP for transforms and iteration.
+
+#### Usage
+
+```
+/floimg:image <description>
+```
+
+#### Routing Keywords
+
+| Keywords | Generator | Result |
+|----------|-----------|--------|
+| photo, picture, illustration, scene | OpenAI/DALL-E | AI-generated image |
+| chart, graph, bar, line, pie | QuickChart | Data visualization |
+| flowchart, diagram, sequence | Mermaid | Technical diagram |
+| QR, qr code | QR | QR code |
+| screenshot, capture, webpage | Screenshot | Webpage capture |
+
+#### Examples
+
+```
+/floimg:image a golden retriever in a field at sunset
+/floimg:image bar chart of monthly sales data
+/floimg:image flowchart showing user registration process
+```
+
+#### Why MCP?
+
+The `/floimg:image` command benefits from MCP because:
+- **Iteration**: "Make it more vibrant" transforms the existing result
+- **Chaining**: Generate → resize → caption → save in one conversation
+- **Session state**: Reference images by ID across operations
+
+#### Fallback
+
+If MCP is not available, the command falls back to CLI for simple one-shot generation.
+
+---
+
+### /floimg:workflow
 
 **Multi-step pipelines** - Executes generate, transform, and save operations in sequence.
 
-### Usage
+#### Usage
 
 ```
-/floimg-claude:workflow <description>
+/floimg:workflow <description>
 ```
 
-### Pipeline Structure
+#### Pipeline Structure
 
 Workflows combine three operation types:
 
@@ -301,7 +221,7 @@ Workflows combine three operation types:
 2. **Transform** - Modify the image (resize, blur, caption, etc.)
 3. **Save** - Store to filesystem or cloud
 
-### Transform Operations
+#### Transform Operations
 
 | Operation | Description | Key Parameters |
 |-----------|-------------|----------------|
@@ -316,24 +236,35 @@ Workflows combine three operation types:
 | addCaption | Caption bar | text, position, background |
 | preset | Apply filter | name (vintage, vibrant, dramatic, soft) |
 
-### Examples
+#### Examples
 
-**Social media image:**
 ```
-/floimg-claude:workflow Create a hero image for my blog, resize to 1200x630, add "Welcome" caption, save to ./social/
-```
-
-**Thumbnail generation:**
-```
-/floimg-claude:workflow Generate a product photo, create 100px and 200px thumbnails with rounded corners
+/floimg:workflow Create a hero image for my blog, resize to 1200x630, add "Welcome" caption, save to ./social/
+/floimg:workflow Generate a product photo, create 100px and 200px thumbnails with rounded corners
+/floimg:workflow Create a chart of Q1 sales, add company watermark, upload to S3 bucket
 ```
 
-**Cloud upload:**
+#### Iterative Refinement
+
+With MCP session state:
+
 ```
-/floimg-claude:workflow Create a chart of Q1 sales, add company watermark, upload to S3 bucket
+User: "Create a hero image for my AI startup"
+→ generate_image(...) → imageId: "img_001"
+
+User: "Make it more vibrant"
+→ transform_image({ imageId: "img_001", operation: "modulate", params: { saturation: 1.3 } })
+→ imageId: "img_002"
+
+User: "Add our tagline at the bottom"
+→ transform_image({ imageId: "img_002", operation: "addCaption", params: { text: "AI for Everyone" } })
+→ imageId: "img_003"
+
+User: "Perfect, save it"
+→ save_image({ imageId: "img_003", destination: "./hero.png" })
 ```
 
-### Save Destinations
+#### Save Destinations
 
 | Type | Format | Example |
 |------|--------|---------|
@@ -342,8 +273,22 @@ Workflows combine three operation types:
 | R2 | r2://bucket/key | `r2://cdn-bucket/assets/logo.png` |
 | Tigris | tigris://bucket/key | `tigris://media/uploads/photo.jpg` |
 
-### Best Practices
+#### Why MCP?
 
-- **Order matters**: Resize before adding text/caption for quality
-- **Use pipelines for multi-step**: More efficient than separate commands
-- **Save to cloud last**: Apply all transforms before uploading
+The `/floimg:workflow` command requires MCP because:
+- **Session state**: Reference `imageId` without file paths
+- **Efficiency**: Images stay in memory between transforms
+- **Natural language**: Describe what you want, floimg plans the steps
+
+---
+
+## Summary
+
+| Command | Type | Works Immediately? |
+|---------|------|-------------------|
+| `/floimg:qr` | CLI | Yes |
+| `/floimg:chart` | CLI | Yes |
+| `/floimg:diagram` | CLI | Yes |
+| `/floimg:screenshot` | CLI | Yes |
+| `/floimg:image` | MCP | After restart |
+| `/floimg:workflow` | MCP | After restart |

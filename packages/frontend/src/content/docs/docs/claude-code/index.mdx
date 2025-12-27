@@ -1,18 +1,39 @@
 ---
-title: Claude Code Overview
+title: Claude Code Plugin
 description: Generate images directly from Claude Code with the FloImg plugin
 ---
 
 The floimg Claude Code plugin brings powerful image generation directly into your Claude Code workflow. Generate charts, diagrams, QR codes, screenshots, and AI images without leaving your terminal.
 
-## Why Use FloImg in Claude Code?
+## Quick Start
 
-Claude Code with FloImg gives you:
+Install the plugin and simple commands work immediately:
 
-- **Natural language image generation** - Describe what you want, get the right image
-- **Intelligent routing** - Claude automatically picks the best generator for your task
-- **Multi-step workflows** - Chain generation, transforms, and cloud uploads
-- **Project integration** - Images saved directly to your working directory
+```bash
+npm install -g @teamflojo/floimg-claude
+```
+
+Then try:
+
+```
+/floimg:qr https://floimg.com
+/floimg:chart bar chart with Q1: 100, Q2: 150, Q3: 200
+```
+
+**That's it!** Simple commands use the CLI under the hood - no additional setup required.
+
+## Architecture: CLI Simple, MCP Complex
+
+The plugin uses a hybrid approach for the best experience:
+
+| Command Type | Method | Works Immediately? |
+|--------------|--------|-------------------|
+| Simple (`/floimg:qr`, `/floimg:chart`, `/floimg:diagram`, `/floimg:screenshot`) | CLI via npx | Yes |
+| Complex (`/floimg:image`, `/floimg:workflow`) | MCP | After restart |
+
+**Simple commands** are one-shot operations. They work out of the box via CLI.
+
+**Complex commands** benefit from MCP's session state for iterative refinement ("make it bluer"), multi-step transforms, and referencing previous images by ID. Restart Claude Code once to enable MCP.
 
 ## Features
 
@@ -20,14 +41,14 @@ Claude Code with FloImg gives you:
 
 Six commands for common image tasks:
 
-| Command | What It Does |
-|---------|--------------|
-| `/floimg-claude:image` | Generate any image (AI, chart, diagram, QR, screenshot) |
-| `/floimg-claude:chart` | Create data visualizations with QuickChart |
-| `/floimg-claude:diagram` | Generate Mermaid diagrams |
-| `/floimg-claude:qr` | Create QR codes |
-| `/floimg-claude:screenshot` | Capture webpages |
-| `/floimg-claude:workflow` | Execute multi-step pipelines |
+| Command | What It Does | Method |
+|---------|--------------|--------|
+| `/floimg:qr` | Create QR codes | CLI |
+| `/floimg:chart` | Data visualizations with QuickChart | CLI |
+| `/floimg:diagram` | Mermaid diagrams (flowcharts, sequences) | CLI |
+| `/floimg:screenshot` | Capture webpages | CLI |
+| `/floimg:image` | Generate any image with transforms | MCP |
+| `/floimg:workflow` | Multi-step pipelines | MCP |
 
 ### Image Architect Agent
 
@@ -37,49 +58,39 @@ A specialized agent for complex image tasks. It understands your requirements, s
 
 Claude automatically detects image-related tasks and uses floimg when you mention charts, diagrams, QR codes, screenshots, or image generation.
 
-## Quick Start
+## Usage Examples
 
-### 1. Install Prerequisites
-
-First, install floimg and any plugins you need:
-
-```bash
-npm install -g @teamflojo/floimg
-
-# Install plugins for the features you want
-npm install -g @teamflojo/floimg-quickchart   # Charts
-npm install -g @teamflojo/floimg-mermaid      # Diagrams
-npm install -g @teamflojo/floimg-qr           # QR codes
-npm install -g @teamflojo/floimg-screenshot   # Screenshots
-```
-
-### 2. Install the Claude Code Plugin
-
-```bash
-npm install -g @teamflojo/floimg-claude
-```
-
-Then add it to Claude Code:
-
-```bash
-claude --plugin-dir $(npm root -g)/@teamflojo/floimg-claude
-```
-
-Or add to your project's Claude settings (`.claude/settings.json`):
-
-```json
-{
-  "plugins": ["@teamflojo/floimg-claude"]
-}
-```
-
-### 3. Generate Your First Image
-
-In Claude Code, try:
+### Simple Tasks (Work Immediately)
 
 ```
-/floimg-claude:chart bar chart showing Q1: $100K, Q2: $150K, Q3: $175K, Q4: $200K
+/floimg:qr https://floimg.com
+/floimg:chart pie chart: Desktop 60%, Mobile 30%, Tablet 10%
+/floimg:diagram user login flow: user -> form -> auth -> dashboard
+/floimg:screenshot https://github.com
 ```
+
+### Complex Workflows (After MCP Enabled)
+
+For multi-step workflows with iteration:
+
+```
+/floimg:workflow Create a hero image, resize to 1200x630, add caption, save to S3
+```
+
+Or iterate naturally:
+
+```
+User: "Create a hero image for my tech blog"
+Claude: [generates image]
+
+User: "Make it more vibrant"
+Claude: [transforms the same image]
+
+User: "Add our tagline at the bottom"
+Claude: [adds caption]
+```
+
+Session state enables referencing previous images without file paths.
 
 ## Configuration
 
@@ -95,22 +106,32 @@ export AWS_SECRET_ACCESS_KEY=...
 export AWS_REGION=us-east-1
 ```
 
-## Package Contents
+## MCP Setup (For Complex Workflows)
 
-```
-floimg-claude/
-├── .claude-plugin/plugin.json    # Plugin manifest
-├── .mcp.json                     # MCP server configuration
-├── commands/                     # 6 slash commands
-├── agents/                       # Image Architect agent
-└── skills/                       # Auto-discovery skill
+MCP unlocks:
+- **Multi-step transforms**: generate → resize → caption → save
+- **Iterative refinement**: "make it bluer", "add more contrast"
+- **Session state**: reference images by ID, not file paths
+
+After installing the plugin, restart Claude Code once. The MCP server auto-configures.
+
+Or manually add to your MCP config:
+
+```json
+{
+  "mcpServers": {
+    "floimg": {
+      "command": "npx",
+      "args": ["-y", "@teamflojo/floimg", "mcp"]
+    }
+  }
+}
 ```
 
 ## Requirements
 
 - Node.js 18+
 - Claude Code 1.0+
-- @teamflojo/floimg 0.2.0+
 
 ## See Also
 
