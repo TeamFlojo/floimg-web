@@ -24,8 +24,9 @@ import MarketingLayout from "../layouts/MarketingLayout.astro";
       </h1>
 
       <p class="hero-subtitle">
-        When you ask ChatGPT to "change the colors," it regenerates the entire image. FloImg applies
-        deterministic transforms—the image stays intact except for exactly what you asked.
+        AI image editing is probabilistic—DALL-E generates new images, inpainting runs diffusion.
+        FloImg applies deterministic transforms—the image stays intact except for exactly what you
+        asked.
       </p>
 
       <div class="hero-install">
@@ -52,11 +53,11 @@ import MarketingLayout from "../layouts/MarketingLayout.astro";
 
       <div class="problems-grid">
         <div class="problem-card">
-          <div class="problem-icon">🔄</div>
-          <h3>The Regeneration Problem</h3>
+          <div class="problem-icon">🎲</div>
+          <h3>The Probabilistic Editing Problem</h3>
           <p class="problem-before">
-            <strong>Without FloImg:</strong> Ask DALL-E to "change the colors" and it regenerates the
-            entire image. You lose the composition, the style, everything you liked.
+            <strong>Without FloImg:</strong> AI editing is probabilistic. DALL-E generates new images.
+            Even inpainting runs diffusion. "Change the colors" might give you a different composition.
           </p>
           <p class="problem-after">
             <strong>With FloImg:</strong> Adjust hue mathematically. Resize precisely. Add caption. The
@@ -184,8 +185,8 @@ import MarketingLayout from "../layouts/MarketingLayout.astro";
       </div>
 
       <p class="conversation-note">
-        Each step references the previous image by ID. No file management. No re-uploading. No
-        regenerating. Just iterate naturally.
+        Each step references the previous image by ID. No file management. No re-uploading.
+        Deterministic transforms—just iterate naturally.
       </p>
     </div>
   </section>
