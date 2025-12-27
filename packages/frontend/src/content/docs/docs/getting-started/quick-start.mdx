@@ -7,20 +7,21 @@ This guide walks you through creating a complete image workflow using FloImg.
 
 ## Fastest Way: npx (No Install)
 
-Generate images instantly from your terminal:
+Transform images instantly from your terminal:
 
 ```bash
-# Generate a QR code
-npx @teamflojo/floimg qr "https://floimg.com" -o qr.png
-
-# Create a chart
-npx @teamflojo/floimg chart bar --labels "Q1,Q2,Q3" --values "10,20,30" -o chart.png
-
-# Resize an image
-npx @teamflojo/floimg resize photo.jpg 800x600 -o thumbnail.jpg
+# Resize for social media
+npx @teamflojo/floimg resize hero.png 1200x630 -o og-image.png
 
 # Convert to WebP
 npx @teamflojo/floimg convert image.png -o image.webp
+
+# Add a caption or watermark
+npx @teamflojo/floimg caption photo.jpg "© 2025 Acme" -o watermarked.jpg
+
+# Also: charts, diagrams, QR codes
+npx @teamflojo/floimg qr "https://floimg.com" -o qr.png
+npx @teamflojo/floimg chart bar --labels "Q1,Q2,Q3" --values "10,20,30" -o chart.png
 ```
 
 See the [CLI docs](/docs/cli) for all available commands.

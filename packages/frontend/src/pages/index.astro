@@ -70,12 +70,12 @@ const features = [
 ];
 
 const generators = [
+  { name: "openai", desc: "AI images via DALL-E", icon: "🎨" },
+  { name: "stability", desc: "Stability AI + transforms", icon: "✨" },
   { name: "quickchart", desc: "Charts via Chart.js", icon: "📊" },
   { name: "mermaid", desc: "Diagrams & flowcharts", icon: "📐" },
   { name: "qr", desc: "QR codes & barcodes", icon: "📱" },
-  { name: "d3", desc: "D3 visualizations", icon: "📈" },
   { name: "screenshot", desc: "Playwright screenshots", icon: "🖼️" },
-  { name: "openai", desc: "DALL-E images", icon: "🎨" },
 ];
 ---
 
@@ -106,8 +106,8 @@ const generators = [
       </h1>
 
       <p class="hero-subtitle">
-        Generate charts, diagrams, QR codes, screenshots, and AI images with a unified API. Build
-        deterministic pipelines for production-ready image workflows.
+        Generate AI images, apply deterministic transforms, and save to cloud—all in one pipeline.
+        When LLMs regenerate what you liked, FloImg preserves it.
       </p>
 
       <div class="hero-ctas">
@@ -265,10 +265,10 @@ const generators = [
     <div class="section-container">
       <h2 class="cta-title">Ready to start?</h2>
       <p class="cta-description">
-        Generate your first image in seconds — no installation required.
+        Transform your first image in seconds — no installation required.
       </p>
       <div class="cta-code">
-        <code>npx @teamflojo/floimg qr "https://floimg.com" -o qr.png</code>
+        <code>npx @teamflojo/floimg resize hero.png 1200x630 -o og-image.png</code>
       </div>
       <div class="cta-buttons">
         <a href="/docs/cli" class="cta-primary">CLI Reference</a>
