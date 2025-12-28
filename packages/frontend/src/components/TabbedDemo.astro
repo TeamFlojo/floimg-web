@@ -113,9 +113,8 @@ await floimg.save(processed, 'output.webp');`,
             </div>
             <div class="panel-info">
               <p class="panel-description">{tab.description}</p>
-              <pre class="panel-code">
-                <code set:text={tab.code} />
-              </pre>
+              {/* prettier-ignore */}
+              <pre class="panel-code"><code set:text={tab.code} /></pre>
             </div>
           </div>
         </div>
