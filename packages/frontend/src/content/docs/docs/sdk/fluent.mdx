@@ -1,0 +1,237 @@
+---
+title: Fluent API
+description: Chain operations with a clean, fluent syntax
+---
+
+The fluent API provides a builder pattern for composing image workflows with method chaining.
+
+## Basic Usage
+
+```typescript
+import { floimg } from '@teamflojo/floimg';
+
+// Load → Transform → Save
+await floimg
+  .from('./input.png')
+  .transform('resize', { width: 800 })
+  .transform('blur', { sigma: 2 })
+  .to('./output.png');
+```
+
+## Entry Points
+
+### from()
+
+Start a pipeline from an existing image.
+
+```typescript
+// From file path
+floimg.from('./photo.jpg')
+
+// From URL
+floimg.from('https://example.com/image.png')
+
+// From ImageBlob
+floimg.from(existingBlob)
+```
+
+### generate()
+
+Start a pipeline by generating a new image.
+
+```typescript
+floimg.generate('openai', { prompt: 'A sunset over mountains' })
+floimg.generate('quickchart', { type: 'bar', data: { ... } })
+```
+
+## Chaining Methods
+
+### transform()
+
+Apply image transformations.
+
+```typescript
+await floimg
+  .from('./input.png')
+  .transform('resize', { width: 800, height: 600 })
+  .transform('blur', { sigma: 2 })
+  .transform('convert', { to: 'webp' })
+  .to('./output.webp');
+```
+
+### analyze()
+
+Run vision analysis on the current image.
+
+```typescript
+const results = await floimg
+  .from('./photo.jpg')
+  .analyze('openai-vision', { prompt: 'Describe this image' })
+  .run();
+```
+
+### text()
+
+Generate text based on previous analysis.
+
+```typescript
+const results = await floimg
+  .from('./photo.jpg')
+  .analyze('openai-vision', { prompt: 'Describe this image' })
+  .text('openai-text', { prompt: 'Write a haiku about this' })
+  .run();
+```
+
+## Terminal Methods
+
+Terminal methods execute the pipeline and return results.
+
+### to()
+
+Execute and save to a destination.
+
+```typescript
+// Save to local file
+await floimg
+  .generate('openai', { prompt: 'A forest' })
+  .to('./forest.png');
+
+// Save to S3
+await floimg
+  .generate('openai', { prompt: 'A forest' })
+  .to('s3://my-bucket/images/forest.png');
+```
+
+Returns a `SaveResult` with the saved location.
+
+### toBlob()
+
+Execute and return the final image as a blob.
+
+```typescript
+const blob = await floimg
+  .from('./input.png')
+  .transform('resize', { width: 400 })
+  .transform('convert', { to: 'webp' })
+  .toBlob();
+
+// blob.bytes contains the image data
+// blob.mime is 'image/webp'
+```
+
+### run()
+
+Execute and return all step results.
+
+```typescript
+const results = await floimg
+  .generate('quickchart', { type: 'bar', data: { ... } })
+  .transform('resize', { width: 800 })
+  .run();
+
+// results[0] - generated chart
+// results[1] - resized chart
+```
+
+Useful when you need intermediate results or are chaining vision/text operations.
+
+## Custom Client Configuration
+
+The default `floimg` export uses a pre-configured client. For custom configurations:
+
+```typescript
+import createClient, { createFluent } from '@teamflojo/floimg';
+import openai from '@teamflojo/floimg-openai';
+
+const client = createClient();
+client.registerGenerator(openai({ apiKey: process.env.OPENAI_API_KEY }));
+
+const myFloimg = createFluent(client);
+
+await myFloimg
+  .generate('openai', { prompt: 'A landscape' })
+  .transform('resize', { width: 1920 })
+  .to('./landscape.png');
+```
+
+## Complete Examples
+
+### AI Image Workflow
+
+```typescript
+import { floimg } from '@teamflojo/floimg';
+
+// Generate AI image, resize for social, save to cloud
+await floimg
+  .generate('openai', { prompt: 'Product mockup on marble background' })
+  .transform('resize', { width: 1200, height: 630 })
+  .transform('sharpen', { sigma: 0.5 })
+  .to('s3://my-bucket/og-images/product.png');
+```
+
+### Image Analysis Pipeline
+
+```typescript
+import { floimg } from '@teamflojo/floimg';
+
+// Analyze image and generate content
+const results = await floimg
+  .from('./product-photo.jpg')
+  .analyze('openai-vision', { prompt: 'Describe this product in detail' })
+  .text('openai-text', { prompt: 'Write marketing copy based on: {{context}}' })
+  .run();
+
+const description = results[0].value.content;
+const marketingCopy = results[1].value.content;
+```
+
+### Batch Processing Pattern
+
+```typescript
+import { floimg } from '@teamflojo/floimg';
+
+const images = ['./img1.jpg', './img2.jpg', './img3.jpg'];
+
+await Promise.all(
+  images.map((path, i) =>
+    floimg
+      .from(path)
+      .transform('resize', { width: 800 })
+      .transform('convert', { to: 'webp' })
+      .to(`./output/img${i + 1}.webp`)
+  )
+);
+```
+
+## Fluent vs Imperative API
+
+Choose based on your needs:
+
+| Use Case | Recommended API |
+|----------|-----------------|
+| Simple pipelines | Fluent API |
+| Chained operations | Fluent API |
+| Conditional logic | Imperative API |
+| Complex branching | Imperative API |
+| Fine-grained control | Imperative API |
+
+**Fluent API:**
+```typescript
+await floimg
+  .from('./input.png')
+  .transform('resize', { width: 800 })
+  .to('./output.png');
+```
+
+**Imperative API:**
+```typescript
+const blob = await floimg.load('./input.png');
+const resized = await floimg.transform(blob, { op: 'resize', params: { width: 800 } });
+await floimg.save(resized, './output.png');
+```
+
+## See Also
+
+- [Generate](/docs/sdk/generate) - Imperative generate API
+- [Transform](/docs/sdk/transform) - Available transforms
+- [Save](/docs/sdk/save) - Storage backends

@@ -5,6 +5,13 @@ description: Create images with FloImg generators
 
 The `generate` method creates images from structured parameters using registered generators.
 
+:::tip[Prefer the Fluent API for simple workflows]
+For chained operations like generate → transform → save, the [Fluent API](/docs/sdk/fluent) provides a cleaner syntax:
+```typescript
+await floimg.generate('openai', { prompt: '...' }).transform('resize', { width: 800 }).to('./out.png');
+```
+:::
+
 ## Basic Usage
 
 ```typescript
@@ -62,6 +69,7 @@ Common errors:
 
 ## See Also
 
+- [Fluent API](/docs/sdk/fluent) - Chain operations with builder pattern
 - [Transform](/docs/sdk/transform) - Modify generated images
 - [Save](/docs/sdk/save) - Output images to storage
 - [Plugins](/docs/plugins) - Available generators

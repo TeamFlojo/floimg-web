@@ -42,6 +42,7 @@ export default defineConfig({
         {
           label: 'SDK',
           items: [
+            { label: 'Fluent API', slug: 'docs/sdk/fluent' },
             { label: 'Generate', slug: 'docs/sdk/generate' },
             { label: 'Transform', slug: 'docs/sdk/transform' },
             { label: 'Save', slug: 'docs/sdk/save' },

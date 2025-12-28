@@ -5,6 +5,13 @@ description: Output images to filesystem or cloud storage
 
 The `save` method writes images to storage.
 
+:::tip[Prefer the Fluent API for pipelines]
+For complete workflows, the [Fluent API](/docs/sdk/fluent) chains operations naturally:
+```typescript
+await floimg.from('./input.png').transform('resize', { width: 800 }).to('./output.png');
+```
+:::
+
 ## Basic Usage
 
 ```typescript
@@ -77,5 +84,6 @@ Common errors:
 
 ## See Also
 
+- [Fluent API](/docs/sdk/fluent) - Chain operations with builder pattern
 - [Generate](/docs/sdk/generate) - Create images
 - [Transform](/docs/sdk/transform) - Modify images

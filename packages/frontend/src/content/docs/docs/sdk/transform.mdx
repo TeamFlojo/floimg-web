@@ -5,6 +5,13 @@ description: Modify images with FloImg transforms
 
 The `transform` method applies modifications to existing images.
 
+:::tip[Prefer the Fluent API for chained transforms]
+For multiple transforms in sequence, the [Fluent API](/docs/sdk/fluent) is more ergonomic:
+```typescript
+await floimg.from('./input.png').transform('resize', { width: 800 }).transform('blur', { sigma: 2 }).to('./out.png');
+```
+:::
+
 ## Basic Usage
 
 ```typescript
@@ -110,7 +117,7 @@ await floimg.transform(image, {
 
 ## Chaining Transforms
 
-Transforms can be chained:
+Transforms can be chained with the imperative API:
 
 ```typescript
 let image = await floimg.generate({ ... });
@@ -122,7 +129,19 @@ image = await floimg.transform(image, { op: 'convert', params: { format: 'webp' 
 await floimg.save(image, './output.webp');
 ```
 
+For cleaner chaining, use the [Fluent API](/docs/sdk/fluent):
+
+```typescript
+await floimg
+  .from('./input.png')
+  .transform('resize', { width: 800 })
+  .transform('blur', { sigma: 2 })
+  .transform('convert', { to: 'webp' })
+  .to('./output.webp');
+```
+
 ## See Also
 
+- [Fluent API](/docs/sdk/fluent) - Chain operations with builder pattern
 - [Generate](/docs/sdk/generate) - Create images
 - [Save](/docs/sdk/save) - Output images to storage
