@@ -1,12 +1,18 @@
 # PROJECT STATUS
 
-**Last Updated**: 2025-12-25
+**Last Updated**: 2025-12-28
 
 ## Current Focus
 
 No active tasks. Use `/p [description]` to plan new work.
 
 ## Just Completed
+
+**T-2025-002: Fix Code Example Indentation** (2025-12-28)
+
+- Fixed homepage code examples displaying with incorrect leading whitespace
+- Added prettier-ignore to preserve fix
+- PR #29 merged
 
 **T-2025-001: AI Provider Documentation and Branding** (2025-12-25)
 
