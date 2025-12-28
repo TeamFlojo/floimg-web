@@ -14,11 +14,13 @@ const features = [
         title: "AI Image Generation",
         description: "Generate images with DALL-E and other AI models via a unified API.",
         icon: "🎨",
+        link: "/docs/plugins/openai",
       },
       {
         title: "LLM-Ready",
         description: "MCP integration for Claude and other AI agents out of the box.",
         icon: "🤖",
+        link: "/docs/mcp",
       },
     ],
   },
@@ -29,11 +31,13 @@ const features = [
         title: "Pipeline Engine",
         description: "Chain generators and transforms into reusable, shareable workflows.",
         icon: "⚡",
+        link: "/docs/getting-started/concepts",
       },
       {
         title: "Deterministic",
         description: "Same inputs, same outputs. Reliable execution for production.",
         icon: "🎯",
+        link: "/docs/getting-started/concepts",
       },
     ],
   },
@@ -44,11 +48,13 @@ const features = [
         title: "Charts & Diagrams",
         description: "Chart.js, D3, and Mermaid for data visualization.",
         icon: "📊",
+        link: "/docs/plugins/quickchart",
       },
       {
         title: "QR & Barcodes",
         description: "Generate branded QR codes and barcodes with styling options.",
         icon: "📱",
+        link: "/docs/plugins/qr",
       },
     ],
   },
@@ -59,11 +65,13 @@ const features = [
         title: "Self-Hostable",
         description: "Run anywhere. No vendor lock-in. MIT licensed.",
         icon: "🏠",
+        link: "/docs/studio/self-hosting",
       },
       {
         title: "TypeScript First",
         description: "Full type safety with excellent IDE support.",
         icon: "💻",
+        link: "/docs/sdk/fluent",
       },
     ],
   },
@@ -139,11 +147,11 @@ const generators = [
               <h3 class="category-title">{category.category}</h3>
               <div class="category-items">
                 {category.items.map((item) => (
-                  <div class="feature-card">
+                  <a href={item.link} class="feature-card">
                     <span class="feature-icon">{item.icon}</span>
                     <h4 class="feature-title">{item.title}</h4>
                     <p class="feature-description">{item.description}</p>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -208,13 +216,13 @@ const generators = [
       <div class="generators-grid">
         {
           generators.map((gen) => (
-            <div class="generator-card">
+            <a href={`/docs/plugins/${gen.name}`} class="generator-card">
               <span class="generator-icon">{gen.icon}</span>
               <div class="generator-info">
                 <code class="generator-name">@teamflojo/floimg-{gen.name}</code>
                 <span class="generator-desc">{gen.desc}</span>
               </div>
-            </div>
+            </a>
           ))
         }
       </div>
@@ -495,14 +503,27 @@ const generators = [
   }
 
   .feature-card {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
     padding: 1.25rem;
     background: var(--sl-color-bg);
     border: 1px solid #e4e4e7;
     border-radius: 0.75rem;
+    transition: all 0.2s ease;
+  }
+
+  .feature-card:hover {
+    border-color: rgb(13 148 136);
+    transform: translateY(-2px);
   }
 
   :global(.dark) .feature-card {
     border-color: #27272a;
+  }
+
+  :global(.dark) .feature-card:hover {
+    border-color: rgb(45 212 191);
   }
 
   .feature-icon {
@@ -684,11 +705,23 @@ const generators = [
     background: #f4f4f5;
     border: 1px solid #e4e4e7;
     border-radius: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .generator-card:hover {
+    border-color: rgb(13 148 136);
+    transform: translateY(-2px);
   }
 
   :global(.dark) .generator-card {
     background: #18181b;
     border-color: #27272a;
+  }
+
+  :global(.dark) .generator-card:hover {
+    border-color: rgb(45 212 191);
   }
 
   .generator-icon {

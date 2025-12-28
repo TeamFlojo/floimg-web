@@ -108,9 +108,9 @@ await floimg.save(processed, 'output.webp');`,
           data-panel={tab.id}
         >
           <div class="panel-content">
-            <div class="panel-image">
+            <a href="/gallery" class="panel-image">
               <img src={tab.image} alt={tab.imageAlt} loading="lazy" />
-            </div>
+            </a>
             <div class="panel-info">
               <p class="panel-description">{tab.description}</p>
               {/* prettier-ignore */}
@@ -225,11 +225,18 @@ await floimg.save(processed, 'output.webp');`,
   }
 
   .panel-image {
+    display: block;
+    cursor: pointer;
     border-radius: 0.75rem;
     overflow: hidden;
     box-shadow:
       0 10px 15px -3px rgb(0 0 0 / 0.1),
       0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .panel-image:hover {
+    transform: scale(1.02);
   }
 
   .panel-image img {

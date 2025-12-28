@@ -53,10 +53,10 @@ const showcaseImages = [
   <div class="showcase-grid">
     {
       showcaseImages.map((img, i) => (
-        <div class="showcase-item" style={`--delay: ${i * 0.1}s`}>
+        <a href="/gallery" class="showcase-item" style={`--delay: ${i * 0.1}s`}>
           <img src={img.src} alt={img.alt} loading="lazy" />
           <span class="category-badge">{img.category}</span>
-        </div>
+        </a>
       ))
     }
   </div>
@@ -83,6 +83,9 @@ const showcaseImages = [
   }
 
   .showcase-item {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
     position: relative;
     aspect-ratio: 1;
     border-radius: 0.75rem;
