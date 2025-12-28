@@ -181,9 +181,8 @@ const colors = generatorColors[template.generator] || {
               </svg>
             </button>
           </div>
-          <pre class="code-block">
-            <code set:text={template.codeExample} />
-          </pre>
+          {/* prettier-ignore */}
+          <pre class="code-block"><code set:text={template.codeExample} /></pre>
           <div class="modal-footer">
             <button class="copy-code-btn" data-code={template.codeExample}>
               Copy Code
