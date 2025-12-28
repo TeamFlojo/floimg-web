@@ -1,0 +1,160 @@
+---
+title: Security
+description: API key management, credential handling, and security best practices for FloImg
+---
+
+FloImg runs locally on your machine and makes direct API calls to providers (OpenAI, Stability, AWS, etc.). This page covers how to securely configure credentials across different usage contexts.
+
+## Security Model Overview
+
+FloImg operates as a local tool:
+
+1. **CLI and SDK**: Run on your machine, read credentials from environment or config files
+2. **MCP Server**: Runs as a local subprocess, handles authentication internally
+3. **API Calls**: Made directly from your machine to providers (OpenAI, AWS, etc.)
+
+Your API keys are used locally to authenticate requests. They are not transmitted to FloImg servers (there are none for self-hosted usage).
+
+## API Key Configuration
+
+### Environment Variables (Recommended)
+
+Environment variables are the standard, secure method for providing API keys:
+
+```bash
+# AI Providers
+export OPENAI_API_KEY="sk-..."
+export STABILITY_API_KEY="sk-..."
+export REPLICATE_API_TOKEN="r8_..."
+
+# Cloud Storage (AWS S3)
+export AWS_ACCESS_KEY_ID="AKIA..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_REGION="us-east-1"
+export S3_BUCKET="my-images"
+```
+
+**Why environment variables?**
+- Not stored in files that might be committed to git
+- Standard pattern supported by all deployment platforms
+- Can be scoped to specific shells or processes
+
+### Config Files
+
+For persistent local configuration, use `~/.floimg/config.json`:
+
+```bash
+floimg config init  # Interactive setup
+```
+
+**Security considerations:**
+- Stored in your home directory with user-only permissions
+- Never commit config files containing secrets to version control
+- Add `.floimgrc.json` to `.gitignore` if using local project configs
+
+## Provider-Specific Keys
+
+| Provider | Environment Variable | Used For |
+|----------|---------------------|----------|
+| OpenAI | `OPENAI_API_KEY` | DALL-E image generation |
+| Stability AI | `STABILITY_API_KEY` | Background removal, upscaling |
+| Replicate | `REPLICATE_API_TOKEN` | Face restoration, custom models |
+| AWS | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | S3 storage |
+| Cloudflare | `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | R2 storage |
+
+**Minimal permissions**: Create API keys with only the permissions needed. For S3, use IAM policies that restrict access to specific buckets.
+
+## Cloud Storage Credentials
+
+### AWS S3
+
+FloImg follows the standard AWS credential chain:
+
+1. Environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
+2. Shared credentials file (`~/.aws/credentials`)
+3. IAM role (when running on AWS infrastructure)
+
+```bash
+# Option 1: Environment variables
+export AWS_ACCESS_KEY_ID="AKIA..."
+export AWS_SECRET_ACCESS_KEY="..."
+
+# Option 2: AWS credentials file (~/.aws/credentials)
+[default]
+aws_access_key_id = AKIA...
+aws_secret_access_key = ...
+```
+
+### S3-Compatible Storage (R2, Tigris)
+
+For Cloudflare R2, Tigris, or other S3-compatible services:
+
+```bash
+export S3_ENDPOINT="https://your-account.r2.cloudflarestorage.com"
+export AWS_ACCESS_KEY_ID="..."
+export AWS_SECRET_ACCESS_KEY="..."
+```
+
+## Claude Code Integration
+
+When using FloImg through Claude Code (via the MCP server), there are additional security considerations.
+
+### How MCP Works
+
+The FloImg MCP server runs as a local subprocess:
+
+1. Claude Code spawns the MCP server process
+2. The MCP server reads API keys from your environment
+3. When you request an image operation, the MCP server makes the API call
+4. Only the result (e.g., "image saved to ./output.png") is returned to Claude
+
+**Key point**: Your API keys are used by the local MCP process. They are not included in the results sent back to Claude, and therefore are not transmitted to Anthropic's servers.
+
+### What Gets Sent to Anthropic
+
+When using Claude Code:
+- Your conversation messages are sent to Anthropic
+- Tool call results (what the MCP server returns) are sent to Anthropic
+- Environment variables are **not** automatically transmitted
+
+The FloImg MCP tools are designed to return only results (file paths, success messages, error descriptions), not credentials.
+
+### Potential Risk
+
+If you were to run a command that outputs an API key (e.g., `echo $OPENAI_API_KEY`), that output would be included in the conversation and sent to Anthropic. FloImg tools do not do this, but be cautious with arbitrary shell commands.
+
+## Best Practices
+
+### Do
+
+- **Use environment variables** for API keys
+- **Use IAM roles** when running on cloud infrastructure
+- **Rotate keys periodically** according to your security policy
+- **Use minimal permissions** when creating API keys or IAM policies
+- **Run `floimg doctor`** to verify configuration without exposing secrets
+
+### Don't
+
+- **Don't commit API keys** to version control
+- **Don't paste API keys in prompts** when using Claude Code—use environment variables instead
+- **Don't use `--api-key` flags** in shared scripts or CI logs
+- **Don't store keys in `.env` files** that are committed to git
+
+## Verifying Your Setup
+
+Use the doctor command to check configuration without exposing sensitive values:
+
+```bash
+floimg doctor
+```
+
+This shows:
+- Which credentials are configured (without revealing values)
+- Configuration file locations
+- Environment variable status (set/not set)
+
+## See Also
+
+- [Configuration](/docs/cli/configuration) - Detailed configuration options
+- [MCP Integration](/docs/mcp/claude-integration) - Using FloImg with Claude
+- [Getting Started](/docs/getting-started/installation) - Initial setup
