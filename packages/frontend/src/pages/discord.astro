@@ -1,0 +1,296 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+
+const discordInviteUrl = "https://discord.gg/jcczptnX";
+
+const features = [
+  {
+    title: "Real-Time Help",
+    description: "Get quick answers to your questions from the community.",
+  },
+  {
+    title: "Share Workflows",
+    description: "Show off your creations and get feedback from other developers.",
+  },
+  {
+    title: "Stay Updated",
+    description: "Be the first to know about new features and releases.",
+  },
+];
+---
+
+<MarketingLayout
+  title="Discord"
+  description="Join the FloImg Discord community. Get real-time help, share your workflows, and connect with other developers building image workflows."
+>
+  <main class="discord-page">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-container">
+        <div class="discord-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
+            ></path>
+          </svg>
+        </div>
+        <h1 class="hero-title">Join the FloImg Community</h1>
+        <p class="hero-subtitle">
+          Real-time chat with developers and creators building composable image workflows.
+        </p>
+        <a href={discordInviteUrl} class="btn primary" target="_blank" rel="noopener noreferrer">
+          Join Discord
+        </a>
+      </div>
+    </section>
+
+    <!-- What You'll Find -->
+    <section class="features">
+      <div class="features-container">
+        <h2 class="features-title">What You'll Find</h2>
+        <div class="features-grid">
+          {
+            features.map((feature) => (
+              <div class="feature-card">
+                <h3 class="feature-title">{feature.title}</h3>
+                <p class="feature-description">{feature.description}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Other Ways to Connect -->
+    <section class="alternatives">
+      <div class="alternatives-container">
+        <h2 class="alternatives-title">Other Ways to Connect</h2>
+        <ul class="alternatives-list">
+          <li>
+            <a
+              href="https://github.com/TeamFlojo/floimg/discussions"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Discussions
+            </a>
+            <span>— For async Q&A and feature discussions</span>
+          </li>
+          <li>
+            <a
+              href="https://github.com/TeamFlojo/floimg/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Issues
+            </a>
+            <span>— Report bugs or request features</span>
+          </li>
+          <li>
+            <a href="/docs">Documentation</a>
+            <span>— Guides, API reference, and examples</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <div class="cta-container">
+        <h2 class="cta-title">Ready to join?</h2>
+        <a href={discordInviteUrl} class="btn primary" target="_blank" rel="noopener noreferrer">
+          Join Discord
+        </a>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+
+<style>
+  .discord-page {
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 6rem 1.5rem 4rem;
+    background: linear-gradient(
+      135deg,
+      var(--m-dark-bg-gradient-start) 0%,
+      var(--m-dark-bg-gradient-mid) 50%,
+      var(--m-dark-bg-gradient-end) 100%
+    );
+    border-bottom: 1px solid var(--m-dark-border);
+    text-align: center;
+  }
+
+  .hero-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .discord-icon {
+    color: #5865f2;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--m-dark-text);
+    margin: 0 0 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: var(--m-dark-text-secondary);
+    margin: 0 0 2rem;
+    line-height: 1.6;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .btn.primary {
+    background: var(--sl-color-accent);
+    color: white;
+  }
+
+  .btn.primary:hover {
+    opacity: 0.9;
+  }
+
+  /* Features */
+  .features {
+    padding: 4rem 1.5rem;
+    background: var(--m-bg);
+  }
+
+  .features-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .features-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--m-text);
+    text-align: center;
+    margin: 0 0 2rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--m-bg-surface);
+    border: 1px solid var(--m-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .feature-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--m-text);
+    margin: 0 0 0.5rem;
+  }
+
+  .feature-description {
+    font-size: 0.9375rem;
+    color: var(--m-text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Alternatives */
+  .alternatives {
+    padding: 3rem 1.5rem;
+    background: var(--m-dark-bg);
+    border-top: 1px solid var(--m-dark-border);
+  }
+
+  .alternatives-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .alternatives-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--m-dark-text);
+    margin: 0 0 1.5rem;
+  }
+
+  .alternatives-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .alternatives-list li {
+    font-size: 0.9375rem;
+    color: var(--m-dark-text-secondary);
+  }
+
+  .alternatives-list a {
+    color: var(--sl-color-accent);
+    text-decoration: none;
+  }
+
+  .alternatives-list a:hover {
+    text-decoration: underline;
+  }
+
+  /* Final CTA */
+  .final-cta {
+    padding: 4rem 1.5rem;
+    background: var(--m-bg);
+    text-align: center;
+  }
+
+  .cta-container {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--m-text);
+    margin: 0 0 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
