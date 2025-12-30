@@ -1,0 +1,390 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+
+const lastUpdated = "December 30, 2024";
+---
+
+<MarketingLayout
+  title="Safety"
+  description="How FloImg keeps your platform safe with automated content moderation"
+>
+  <div class="mx-auto max-w-4xl px-6 py-16">
+    <!-- Hero -->
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
+        Safety at FloImg
+      </h1>
+      <p class="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+        We take content safety seriously. Every AI-generated image is scanned before it's saved.
+      </p>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div
+        class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6 text-center"
+      >
+        <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-2">100%</div>
+        <div class="text-zinc-600 dark:text-zinc-400">AI images scanned</div>
+      </div>
+      <div
+        class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6 text-center"
+      >
+        <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-2">Before Save</div>
+        <div class="text-zinc-600 dark:text-zinc-400">Moderation timing</div>
+      </div>
+      <div
+        class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6 text-center"
+      >
+        <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-2">11</div>
+        <div class="text-zinc-600 dark:text-zinc-400">Categories checked</div>
+      </div>
+    </div>
+
+    <div class="prose prose-zinc dark:prose-invert max-w-none">
+      <!-- Our Approach -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">
+          Our Approach: Scan Before Save
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 mb-6">
+          Nothing touches disk without passing moderation. When you generate an image with FloImg
+          Studio, it's scanned for harmful content before being saved. If content is flagged, the
+          save is blocked and the incident is logged.
+        </p>
+
+        <!-- Flow Diagram -->
+        <div
+          class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6 mb-6"
+        >
+          <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+            <div
+              class="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-600 rounded px-4 py-2"
+            >
+              Generate Image
+            </div>
+            <div class="text-zinc-400">&rarr;</div>
+            <div
+              class="bg-teal-100 dark:bg-teal-900/30 border border-teal-300 dark:border-teal-700 rounded px-4 py-2 text-teal-800 dark:text-teal-200"
+            >
+              Moderation Scan
+            </div>
+            <div class="text-zinc-400">&rarr;</div>
+            <div class="flex flex-col gap-2">
+              <div
+                class="bg-emerald-100 dark:bg-emerald-900/30 border border-emerald-300 dark:border-emerald-700 rounded px-4 py-2 text-emerald-800 dark:text-emerald-200 text-sm"
+              >
+                Pass &rarr; Save
+              </div>
+              <div
+                class="bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded px-4 py-2 text-red-800 dark:text-red-200 text-sm"
+              >
+                Fail &rarr; Block
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How We Moderate -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">How We Moderate</h2>
+        <p class="text-zinc-600 dark:text-zinc-300 mb-4">
+          We use <a
+            href="https://platform.openai.com/docs/guides/moderation"
+            class="text-teal-600 dark:text-teal-400 hover:underline"
+            target="_blank"
+            rel="noopener">OpenAI's Moderation API</a
+          >, an industry-standard service that analyzes images for harmful content across multiple
+          categories.
+        </p>
+
+        <div
+          class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6"
+        >
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Categories Checked
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Sexual content</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Sexual content involving minors</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Hate speech</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Threatening hate speech</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Harassment</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Threatening harassment</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Self-harm content</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Self-harm intent/instructions</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Violence</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span class="text-zinc-700 dark:text-zinc-300">Graphic violence</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What Happens When Flagged -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">
+          What Happens When Content is Flagged
+        </h2>
+        <div
+          class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6"
+        >
+          <ol class="space-y-3">
+            <li class="flex items-start gap-3">
+              <span
+                class="flex-shrink-0 w-6 h-6 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full flex items-center justify-center text-sm font-semibold"
+                >1</span
+              >
+              <div>
+                <strong class="text-red-900 dark:text-red-200">Save Blocked</strong>
+                <p class="text-red-700 dark:text-red-300 text-sm">
+                  The image is not written to disk.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span
+                class="flex-shrink-0 w-6 h-6 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full flex items-center justify-center text-sm font-semibold"
+                >2</span
+              >
+              <div>
+                <strong class="text-red-900 dark:text-red-200">Incident Logged</strong>
+                <p class="text-red-700 dark:text-red-300 text-sm">
+                  Details are recorded for admin review and compliance.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span
+                class="flex-shrink-0 w-6 h-6 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full flex items-center justify-center text-sm font-semibold"
+                >3</span
+              >
+              <div>
+                <strong class="text-red-900 dark:text-red-200">Error Returned</strong>
+                <p class="text-red-700 dark:text-red-300 text-sm">
+                  You receive a "Content policy violation" message.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Cloud vs Self-Hosted -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">
+          Cloud vs Self-Hosted
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            class="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg p-6"
+          >
+            <h3 class="text-lg font-semibold text-teal-900 dark:text-teal-200 mb-3">
+              FloImg Studio Cloud
+            </h3>
+            <ul class="space-y-2 text-teal-800 dark:text-teal-300 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400">&#10003;</span>
+                Moderation always enabled
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400">&#10003;</span>
+                Strict mode: blocks on API failures
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400">&#10003;</span>
+                We handle everything for you
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6"
+          >
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Self-Hosted</h3>
+            <ul class="space-y-2 text-zinc-600 dark:text-zinc-300 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="text-zinc-500">&#8226;</span>
+                Requires your own OpenAI API key
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-zinc-500">&#8226;</span>
+                Permissive mode by default
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-zinc-500">&#8226;</span>
+                You control your moderation settings
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technical Details -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">Technical Details</h2>
+        <p class="text-zinc-600 dark:text-zinc-300 mb-4">
+          For developers evaluating FloImg, here's how moderation works under the hood:
+        </p>
+
+        <div
+          class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden"
+        >
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
+              <tr>
+                <td class="px-4 py-3 font-medium text-zinc-900 dark:text-white">Model</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                  <code class="bg-zinc-200 dark:bg-zinc-700 px-1 rounded"
+                    >omni-moderation-latest</code
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium text-zinc-900 dark:text-white"
+                  >Supported Formats</td
+                >
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">PNG, JPEG, GIF, WebP</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium text-zinc-900 dark:text-white">SVG Handling</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300"
+                  >Converted to PNG via Resvg, then scanned</td
+                >
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium text-zinc-900 dark:text-white">Incident Logs</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300"
+                  >JSONL format for compliance auditing</td
+                >
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium text-zinc-900 dark:text-white">Source Code</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                  <a
+                    href="https://github.com/TeamFlojo/floimg/blob/main/apps/studio/backend/src/moderation/moderator.ts"
+                    class="text-teal-600 dark:text-teal-400 hover:underline"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    View on GitHub
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2">
+              What if my content is flagged incorrectly?
+            </h3>
+            <p class="text-zinc-600 dark:text-zinc-300">
+              No moderation system is perfect. If you believe your content was incorrectly flagged,
+              contact us at <a
+                href="mailto:support@flojo.io"
+                class="text-teal-600 dark:text-teal-400 hover:underline">support@flojo.io</a
+              >. We're working on a formal appeals process.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2">
+              Do you store flagged images?
+            </h3>
+            <p class="text-zinc-600 dark:text-zinc-300">
+              No. Flagged content is never written to disk. We only log metadata (timestamp,
+              category, context) for incident review&mdash;not the actual image.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2">
+              Can I disable moderation?
+            </h3>
+            <p class="text-zinc-600 dark:text-zinc-300">
+              On FloImg Studio Cloud, moderation is always enabled for platform safety. Self-hosted
+              users can choose not to configure an OpenAI API key, which disables moderation.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2">
+              Is the moderation code open source?
+            </h3>
+            <p class="text-zinc-600 dark:text-zinc-300">
+              Yes. FloImg Studio is MIT licensed. You can review exactly how moderation works in our
+              <a
+                href="https://github.com/TeamFlojo/floimg/blob/main/apps/studio/backend/src/moderation/moderator.ts"
+                class="text-teal-600 dark:text-teal-400 hover:underline"
+                target="_blank"
+                rel="noopener">GitHub repository</a
+              >.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="text-center">
+        <p class="text-zinc-600 dark:text-zinc-400 mb-4">Questions about our safety practices?</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/docs"
+            class="inline-flex items-center justify-center px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Read the Docs
+          </a>
+          <a
+            href="/terms"
+            class="inline-flex items-center justify-center px-6 py-3 bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-900 dark:text-white font-medium rounded-lg transition-colors"
+          >
+            Terms of Service
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <p class="text-center text-zinc-500 dark:text-zinc-400 text-sm mt-12">
+      Last updated: {lastUpdated}
+    </p>
+  </div>
+</MarketingLayout>
