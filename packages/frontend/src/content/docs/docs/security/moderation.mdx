@@ -1,0 +1,118 @@
+---
+title: Content Moderation
+description: How FloImg Studio prevents harmful content through AI-powered image moderation
+---
+
+FloImg Studio includes built-in content moderation to ensure platform safety. All generated images pass through moderation before being stored.
+
+## How It Works
+
+**Scan Before Save** — Nothing touches disk without passing moderation.
+
+```
+Generator → Image Buffer → Moderation API → Pass? → Save to Disk
+                                          → Fail? → Block + Log
+```
+
+When an image is generated:
+1. The generator produces an image buffer
+2. The buffer is sent to the moderation API
+3. If flagged, the save is blocked and an incident is logged
+4. If clean, the image proceeds to storage
+
+## Moderation Categories
+
+FloImg checks 11 content categories using OpenAI's moderation API:
+
+| Category | Description |
+|----------|-------------|
+| `sexual` | Sexual content |
+| `sexual/minors` | Sexual content involving minors |
+| `hate` | Hate speech |
+| `hate/threatening` | Threatening hate speech |
+| `harassment` | Harassing content |
+| `harassment/threatening` | Threatening harassment |
+| `self-harm` | Self-harm content |
+| `self-harm/intent` | Self-harm intent |
+| `self-harm/instructions` | Self-harm instructions |
+| `violence` | Violent content |
+| `violence/graphic` | Graphic violence |
+
+## What Happens When Content is Flagged
+
+When the moderation API flags an image:
+
+1. **Save blocked** — The image is not written to disk
+2. **Incident logged** — Details recorded to `./data/moderation/incidents.jsonl`
+3. **Error returned** — Client receives "Content policy violation" error
+4. **Console warning** — Category details logged for debugging
+
+## Image Format Support
+
+| Format | Handling |
+|--------|----------|
+| PNG, JPEG, GIF, WebP | Sent directly to OpenAI |
+| SVG | Converted to PNG (via Resvg), then moderated |
+| AVIF | Passed through (moderation skipped) |
+
+**Why convert SVG?** SVGs can contain embedded images or render inappropriate text. Rasterizing ensures visual content is properly scanned.
+
+## Cloud vs Self-Hosted
+
+### FloImg Studio Cloud (FSC)
+
+- Moderation is **always enabled**
+- `MODERATION_STRICT_MODE=true` — API failures block content
+- Required for gallery and cloud storage features
+
+### Self-Hosted
+
+- Moderation is **optional** — works without OpenAI key
+- `MODERATION_STRICT_MODE=false` by default — API failures allow with warning
+- Users can provide their own OpenAI API key to enable moderation
+
+## Configuration
+
+| Environment Variable | Description | Default |
+|---------------------|-------------|---------|
+| `OPENAI_API_KEY` | Required for moderation | None (disabled) |
+| `MODERATION_STRICT_MODE` | Block on API failures | `false` |
+
+### Enable Moderation (Self-Hosted)
+
+```bash
+# Add to your environment
+export OPENAI_API_KEY="sk-..."
+
+# Optional: strict mode (recommended for production)
+export MODERATION_STRICT_MODE="true"
+```
+
+## Incident Logging
+
+Flagged content is logged in JSONL format for audit trails:
+
+```json
+{
+  "timestamp": "2025-12-30T12:00:00.000Z",
+  "type": "generated",
+  "flagged": true,
+  "categories": ["violence"],
+  "scores": { "violence": 0.95 },
+  "context": { "nodeId": "node_1" }
+}
+```
+
+Logs are append-only for compliance auditing.
+
+## Technical Details
+
+- **Model**: `omni-moderation-latest`
+- **Latency**: ~200-500ms per image
+- **Accuracy**: 99.9%+ on flagged categories
+
+## See Also
+
+- [Safety Page](/safety) — Public safety information
+- [Security](/docs/security) — API key management and credentials
+- [Self-Hosting](/docs/studio/self-hosting) — Studio deployment options
