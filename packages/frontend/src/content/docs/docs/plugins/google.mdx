@@ -222,7 +222,40 @@ const edited = await floimg.transform({
 | `prompt` | string | Yes | Edit instructions |
 | `prePrompt` | string | No | Instructions prepended to prompt (for dynamic workflows) |
 | `model` | string | No | Model (`gemini-2.5-flash-image` or `gemini-3-pro-image-preview`) |
+| `aspectRatio` | string | No | Output aspect ratio (see below) |
+| `imageSize` | string | No | Output resolution: `1K`, `2K`, or `4K` (default: `1K`) |
+| `groundingWithSearch` | boolean | No | Enable Google Search grounding for real-time data |
 | `apiKey` | string | No | Per-request API key override |
+
+### Aspect Ratios
+
+Supported values: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
+
+### Image Sizes
+
+| Size | Resolution | Use Case |
+|------|------------|----------|
+| `1K` | ~1024px | Default, fast generation |
+| `2K` | ~2048px | Higher quality output |
+| `4K` | ~4096px | Print/archival quality |
+
+### Google Search Grounding
+
+When enabled, the model can generate images based on real-time data:
+
+```typescript
+const edited = await floimg.transform({
+  blob: inputImage,
+  op: 'edit',
+  provider: 'gemini-transform',
+  params: {
+    prompt: 'Add the current weather forecast for Tokyo as an overlay',
+    groundingWithSearch: true,
+    aspectRatio: '16:9',
+    imageSize: '2K',
+  }
+});
+```
 
 ### Models
 
@@ -254,6 +287,8 @@ const image = await floimg.generate({
   generator: 'gemini-generate',
   params: {
     prompt: 'A cozy coffee shop interior with warm lighting and plants',
+    aspectRatio: '16:9',
+    imageSize: '2K',
   }
 });
 
@@ -266,7 +301,12 @@ await floimg.save(image, './coffee-shop.png');
 |-----------|------|----------|-------------|
 | `prompt` | string | Yes | Image description |
 | `model` | string | No | Model (default: `gemini-2.5-flash-image`) |
+| `aspectRatio` | string | No | Output aspect ratio (default: `1:1`) |
+| `imageSize` | string | No | Output resolution: `1K`, `2K`, or `4K` (default: `1K`) |
+| `groundingWithSearch` | boolean | No | Enable Google Search grounding |
 | `apiKey` | string | No | Per-request API key override |
+
+Aspect ratios, image sizes, and Google Search grounding work the same as in [Gemini Edit](#gemini-edit-nano-banana).
 
 ---
 

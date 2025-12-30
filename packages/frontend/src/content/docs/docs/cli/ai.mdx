@@ -125,6 +125,13 @@ floimg ai edit --image input.jpg --prompt "Make the sky more vibrant" --out edit
 | `--api-key <key>` | No | API key (or use `GOOGLE_AI_API_KEY` env) |
 | `--model <name>` | No | Model (default: `gemini-2.5-flash-image`) |
 | `--pre-prompt <text>` | No | Instructions prepended to prompt |
+| `--aspect-ratio <ratio>` | No | Output aspect ratio (default: `1:1`) |
+| `--image-size <size>` | No | Output resolution: `1K`, `2K`, or `4K` (default: `1K`) |
+| `--grounding` | No | Enable Google Search grounding |
+
+### Aspect Ratios
+
+Supported: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
 
 ### Examples
 
@@ -135,24 +142,26 @@ floimg ai edit \
   --prompt "Remove the background and replace with white" \
   --out clean.jpg
 
-# Style transfer
+# Style transfer with 4K output
 floimg ai edit \
   --image portrait.jpg \
   --prompt "Convert to watercolor painting style" \
+  --image-size 4K \
   --out watercolor.jpg
 
-# Object manipulation
+# Widescreen output
 floimg ai edit \
   --image room.jpg \
   --prompt "Add a potted plant in the corner" \
+  --aspect-ratio 16:9 \
   --out decorated.jpg
 
-# Use pre-prompt for context
+# Use grounding for real-time data
 floimg ai edit \
-  --image product.jpg \
-  --pre-prompt "This is a product photo. " \
-  --prompt "Make it look more premium with dramatic lighting" \
-  --out premium.jpg
+  --image infographic.jpg \
+  --prompt "Update the chart with current stock prices for AAPL" \
+  --grounding \
+  --out updated.jpg
 ```
 
 ### Models
@@ -180,6 +189,9 @@ floimg ai generate --prompt "A cozy coffee shop interior" --out coffee-shop.png
 | `--out <path>` | Yes | Output image path |
 | `--api-key <key>` | No | API key (or use `GOOGLE_AI_API_KEY` env) |
 | `--model <name>` | No | Model (default: `gemini-2.5-flash-image`) |
+| `--aspect-ratio <ratio>` | No | Output aspect ratio (default: `1:1`) |
+| `--image-size <size>` | No | Output resolution: `1K`, `2K`, or `4K` (default: `1K`) |
+| `--grounding` | No | Enable Google Search grounding |
 
 ### Examples
 
@@ -189,9 +201,11 @@ floimg ai generate \
   --prompt "A minimalist workspace with natural lighting" \
   --out workspace.png
 
-# Detailed prompt
+# Widescreen cinematic image
 floimg ai generate \
-  --prompt "A photorealistic mountain lake at sunrise, mist rising from the water, reflection of snow-capped peaks" \
+  --prompt "A photorealistic mountain lake at sunrise, mist rising from the water" \
+  --aspect-ratio 21:9 \
+  --image-size 4K \
   --out landscape.png
 
 # Specific style
