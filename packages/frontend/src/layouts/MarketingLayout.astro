@@ -1,5 +1,6 @@
 ---
 import NavDropdown from "../components/NavDropdown.astro";
+import { ConsentBanner } from "../components/ConsentBanner";
 
 interface Props {
   title: string;
@@ -410,6 +411,13 @@ const structuredData = {
                   >Privacy</a
                 >
               </li>
+              <li>
+                <a
+                  href="/cookie-settings"
+                  class="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  >Cookie Settings</a
+                >
+              </li>
             </ul>
           </div>
           <div>
@@ -495,6 +503,9 @@ const structuredData = {
         </div>
       </div>
     </footer>
+
+    <!-- Cookie Consent Banner -->
+    <ConsentBanner client:load showInlineCustomize={true} />
   </body>
 </html>
 

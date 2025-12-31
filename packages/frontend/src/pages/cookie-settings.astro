@@ -1,0 +1,112 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { CookieSettingsManager } from "../components/CookieSettingsManager";
+---
+
+<MarketingLayout title="Cookie Settings" description="Manage your cookie preferences for FloImg">
+  <div class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="text-4xl font-bold text-zinc-900 dark:text-white mb-4">Cookie Settings</h1>
+    <p class="text-zinc-500 dark:text-zinc-400 mb-8">
+      Manage your cookie preferences. Essential cookies are always active as they're required for
+      the website to function properly.
+    </p>
+
+    <!-- React component for managing preferences -->
+    <CookieSettingsManager client:load />
+
+    <!-- Static information about cookies -->
+    <div class="mt-12 space-y-8">
+      <section>
+        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">About Our Cookies</h2>
+        <p class="text-zinc-600 dark:text-zinc-300 mb-4">
+          Cookies are small text files stored on your device when you visit our website. They help
+          us remember your preferences and understand how you use our site.
+        </p>
+      </section>
+
+      <section>
+        <h3 class="text-xl font-medium text-zinc-900 dark:text-white mb-3">Essential Cookies</h3>
+        <div
+          class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4"
+        >
+          <p class="text-zinc-600 dark:text-zinc-300 mb-3">
+            These cookies are necessary for the website to function and cannot be disabled.
+          </p>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-zinc-500 dark:text-zinc-400">
+                <th class="pb-2 font-medium">Cookie</th>
+                <th class="pb-2 font-medium">Purpose</th>
+                <th class="pb-2 font-medium">Duration</th>
+              </tr>
+            </thead>
+            <tbody class="text-zinc-600 dark:text-zinc-300">
+              <tr>
+                <td class="py-2 font-mono text-xs">floimg_session</td>
+                <td class="py-2">Manages your login session</td>
+                <td class="py-2">30 days</td>
+              </tr>
+              <tr>
+                <td class="py-2 font-mono text-xs">floimg_consent</td>
+                <td class="py-2">Remembers your cookie preferences</td>
+                <td class="py-2">1 year</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h3 class="text-xl font-medium text-zinc-900 dark:text-white mb-3">Analytics</h3>
+        <div
+          class="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg p-4"
+        >
+          <p class="text-zinc-600 dark:text-zinc-300 mb-3">
+            We use <strong>Umami</strong>, a privacy-focused analytics service that:
+          </p>
+          <ul class="list-disc list-inside text-zinc-600 dark:text-zinc-300 space-y-1 mb-3">
+            <li>Does not use cookies</li>
+            <li>Does not track individual users</li>
+            <li>Does not collect personally identifiable information</li>
+            <li>Collects only aggregated, anonymized data</li>
+            <li>Is self-hosted on our own infrastructure</li>
+          </ul>
+          <p class="text-zinc-600 dark:text-zinc-300">
+            Even though Umami is privacy-focused, we still ask for your consent to load it,
+            respecting your choice about any form of tracking.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h3 class="text-xl font-medium text-zinc-900 dark:text-white mb-3">Marketing</h3>
+        <div
+          class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4"
+        >
+          <p class="text-zinc-600 dark:text-zinc-300">
+            We do not currently use marketing cookies or advertising trackers. This setting is
+            available for potential future use. If we add marketing tools, we will update our
+            privacy policy and request your consent again.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h3 class="text-xl font-medium text-zinc-900 dark:text-white mb-3">Cross-Subdomain</h3>
+        <p class="text-zinc-600 dark:text-zinc-300">
+          Your cookie preferences are shared across all FloImg domains (floimg.com and
+          studio.floimg.com). This means you only need to set your preferences once.
+        </p>
+      </section>
+
+      <section class="border-t border-zinc-200 dark:border-zinc-700 pt-8">
+        <p class="text-sm text-zinc-500 dark:text-zinc-400">
+          For more information about how we handle your data, please see our{" "}
+          <a href="/privacy" class="text-teal-600 dark:text-teal-400 hover:underline"
+            >Privacy Policy</a
+          >.
+        </p>
+      </section>
+    </div>
+  </div>
+</MarketingLayout>
