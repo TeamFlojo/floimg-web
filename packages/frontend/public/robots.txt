@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://floimg.com/sitemap-index.xml
+
+# Exclude auth pages (no SEO value)
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /dashboard

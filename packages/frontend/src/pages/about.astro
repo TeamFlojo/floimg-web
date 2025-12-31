@@ -1,0 +1,269 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { fetchRepoStats } from "../lib/github";
+
+const stats = await fetchRepoStats();
+
+const problems = [
+  {
+    title: "The Probabilistic Editing Problem",
+    description:
+      "When you ask ChatGPT to modify an image, DALL-E generates a new image—it doesn't edit pixels. Even AI 'editing' like inpainting is probabilistic. 'Change the colors' might give you a completely different composition.",
+    solution:
+      "FloImg applies deterministic transforms. modulate({hue: 30}) adjusts hue mathematically—guaranteed to preserve everything else.",
+    icon: "dice",
+  },
+  {
+    title: "The Tool Fragmentation Problem",
+    description:
+      "People constantly wrangle remove.bg, Photoshop, Figma, format converters, cloud services. Each requires learning, signing up, downloading files.",
+    solution:
+      "FloImg consolidates into one pipeline. Background removal → transforms → format conversion → upload, no app-hopping.",
+    icon: "puzzle",
+  },
+  {
+    title: "Better Than Glue Code",
+    description:
+      "Developers write custom integration code to wire together OpenAI SDK, Sharp, AWS SDK. Brittle, hard to maintain.",
+    solution:
+      "FloImg is purpose-built orchestration with multiple modalities: Visual Builder, Natural Language (Claude Code), SDK/CLI, MCP, YAML. Use whichever fits how you think.",
+    icon: "code",
+  },
+];
+---
+
+<MarketingLayout
+  title="About"
+  description="FloImg bridges AI creativity with professional precision. Open-source workflow engine for developers. MIT-licensed, self-hostable."
+>
+  <main>
+    <!-- Hero Section (Dark) -->
+    <section class="bg-zinc-950 py-20 md:py-28">
+      <div class="mx-auto max-w-4xl px-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+          Image workflows that just work
+        </h1>
+        <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          FloImg bridges AI creativity with professional precision—any source, any transforms, any
+          destination. We solve the problems that AI image tools can't solve alone.
+        </p>
+      </div>
+    </section>
+
+    <!-- Three Problems We Solve (Light) -->
+    <section class="bg-white dark:bg-zinc-900 py-20">
+      <div class="mx-auto max-w-6xl px-6">
+        <h2 class="text-3xl font-bold text-zinc-900 dark:text-white text-center mb-4">
+          Three Problems We Solve
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-400 text-center max-w-2xl mx-auto mb-12">
+          FloImg exists because current tools leave gaps. Here's what we fix.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {
+            problems.map((problem) => (
+              <div class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6">
+                <div class="w-10 h-10 bg-zinc-200 dark:bg-zinc-700 rounded-lg flex items-center justify-center mb-4">
+                  {problem.icon === "dice" && (
+                    <svg
+                      class="w-5 h-5 text-zinc-600 dark:text-zinc-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                      />
+                    </svg>
+                  )}
+                  {problem.icon === "puzzle" && (
+                    <svg
+                      class="w-5 h-5 text-zinc-600 dark:text-zinc-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
+                      />
+                    </svg>
+                  )}
+                  {problem.icon === "code" && (
+                    <svg
+                      class="w-5 h-5 text-zinc-600 dark:text-zinc-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
+                  {problem.title}
+                </h3>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">{problem.description}</p>
+                <div class="pt-4 border-t border-zinc-200 dark:border-zinc-600">
+                  <p class="text-sm text-zinc-700 dark:text-zinc-300">
+                    <span class="font-medium text-teal-600 dark:text-teal-400">FloImg:</span>{" "}
+                    {problem.solution}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Open Source at the Core (Dark) -->
+    <section class="bg-zinc-950 py-20">
+      <div class="mx-auto max-w-4xl px-6 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">Open Source at the Core</h2>
+        <p class="text-zinc-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+          FloImg's engine and Studio are MIT licensed. We believe image workflows should be
+          composable, extensible, and community-driven. No rug-pull licensing—ever.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-6 mb-8">
+          <a
+            href="https://github.com/TeamFlojo/floimg/stargazers"
+            class="flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 hover:border-zinc-600 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              ></path>
+            </svg>
+            <span class="text-white font-medium">{stats.stargazers_count} stars</span>
+          </a>
+          <a
+            href="https://github.com/TeamFlojo/floimg/network/members"
+            class="flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 hover:border-zinc-600 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg
+              class="w-5 h-5 text-zinc-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+              ></path>
+            </svg>
+            <span class="text-white font-medium">{stats.forks_count} forks</span>
+          </a>
+        </div>
+
+        <a
+          href="https://github.com/TeamFlojo/floimg"
+          class="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+            ></path>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+    </section>
+
+    <!-- How We Make Money (Light) -->
+    <section class="bg-white dark:bg-zinc-900 py-20">
+      <div class="mx-auto max-w-4xl px-6 text-center">
+        <h2 class="text-3xl font-bold text-zinc-900 dark:text-white mb-4">How We Make Money</h2>
+        <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+          Transparency builds trust. Here's our business model.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 text-left">
+          <div
+            class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6"
+          >
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+              Free Forever (MIT)
+            </h3>
+            <ul class="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                FloImg Core library
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                FloImg Studio (self-hosted)
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                All plugins and integrations
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                No usage limits, no vendor lock-in
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg p-6"
+          >
+            <h3 class="text-lg font-semibold text-teal-900 dark:text-teal-100 mb-2">
+              FloImg Studio Cloud
+            </h3>
+            <ul class="space-y-2 text-sm text-teal-800 dark:text-teal-300">
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                No infrastructure to manage
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                No API key setup required
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                Bundled storage and AI capabilities
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-teal-600 dark:text-teal-400 mt-0.5">&#10003;</span>
+                Team collaboration features
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="text-zinc-600 dark:text-zinc-400 mb-8">
+          Self-hosting is always free. Cloud is convenience for teams who want to focus on creative
+          work, not infrastructure.
+        </p>
+
+        <a
+          href="/pricing"
+          class="inline-flex items-center justify-center px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-medium rounded-lg transition-colors"
+        >
+          View Pricing
+        </a>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
