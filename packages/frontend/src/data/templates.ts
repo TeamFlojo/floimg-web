@@ -44,7 +44,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/ai-generation/product-headphones.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
     codeExample: `const image = await floimg.generate({
@@ -66,7 +65,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/ai-generation/futuristic-city.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
     codeExample: `const image = await floimg.generate({
@@ -88,7 +86,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/ai-generation/robot-mascot.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -107,7 +104,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/data-viz/quarterly-revenue.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
     codeExample: `const chart = await floimg.generate({
@@ -135,7 +131,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/data-viz/framework-usage.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -150,7 +145,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/data-viz/monthly-users.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -165,7 +159,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/data-viz/traffic-by-device.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -177,7 +170,6 @@ export const templates: GalleryTemplate[] = [
     generator: "mermaid",
     tags: ["sequence", "api", "authentication", "diagram"],
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -189,7 +181,6 @@ export const templates: GalleryTemplate[] = [
     generator: "mermaid",
     tags: ["architecture", "microservices", "flowchart"],
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -208,7 +199,6 @@ export const templates: GalleryTemplate[] = [
       imageUrl: "/showcase/pipelines/output/og-image.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
       pipeline: true,
     },
@@ -230,7 +220,6 @@ const socialKit = await floimg.pipeline(heroImage, [
       imageUrl: "/showcase/pipelines/output/avatar-128.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
       pipeline: true,
     },
@@ -252,7 +241,6 @@ const socialKit = await floimg.pipeline(heroImage, [
       imageUrl: "/showcase/pipelines/output/watermark-branded.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
       pipeline: true,
     },
@@ -268,7 +256,6 @@ const socialKit = await floimg.pipeline(heroImage, [
       imageUrl: "/showcase/pipelines/output/filter-vintage.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
       pipeline: true,
     },
@@ -288,7 +275,6 @@ const socialKit = await floimg.pipeline(heroImage, [
       imageUrl: "/showcase/qr-codes/qr-brand.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
     codeExample: `const qr = await floimg.generate({
@@ -312,7 +298,6 @@ const socialKit = await floimg.pipeline(heroImage, [
       imageUrl: "/showcase/qr-codes/qr-dark.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -324,7 +309,6 @@ const socialKit = await floimg.pipeline(heroImage, [
     generator: "qr",
     tags: ["qr", "wifi", "network", "guest"],
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
     },
   },
@@ -339,7 +323,6 @@ const socialKit = await floimg.pipeline(heroImage, [
       imageUrl: "/showcase/pipelines/output/thumb-200.png",
     },
     capabilities: {
-      claudeCodeReady: true,
       studioCompatible: true,
       pipeline: true,
     },

@@ -37,7 +37,7 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
         <h1 class="hero-title">Template Gallery</h1>
         <p class="hero-subtitle">
           Explore ready-to-use templates organized by use case. Each template can be opened in
-          Studio, customized for your needs, or used directly via Claude Code.
+          Studio, customized for your needs, or integrated via code.
         </p>
         <div class="hero-stats">
           <div class="stat">
@@ -47,12 +47,6 @@ const categoryInfo: Record<string, { icon: string; description: string }> = {
           <div class="stat">
             <span class="stat-value">{categories.length}</span>
             <span class="stat-label">Categories</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value"
-              >{templates.filter((t) => t.capabilities?.claudeCodeReady).length}</span
-            >
-            <span class="stat-label">Claude Code Ready</span>
           </div>
         </div>
       </div>
