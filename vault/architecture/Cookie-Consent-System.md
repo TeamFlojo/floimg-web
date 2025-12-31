@@ -120,6 +120,50 @@ window.addEventListener("consent-updated", (e) => {
 
 4. **Increment version** in consent store to trigger re-consent
 
+## Deferred Work
+
+The following items are intentionally deferred and should be implemented when needed:
+
+### FSC (FloImg Studio Cloud) Integration
+
+**Status**: Deferred until marketing trackers are added
+
+**What's needed**:
+
+- Copy `stores/consent.ts` logic to `floimg-cloud/packages/studio-cloud/src/stores/`
+- The cross-subdomain cookie (`Domain=.floimg.com`) already works - FSC can read consent set on floimg.com
+- When marketing trackers are added, gate them behind `hasConsent("marketing")`
+
+**Why deferred**: Since Umami doesn't require consent, there's no immediate need for FSC to read consent state. The infrastructure exists and works, but there's nothing to gate yet.
+
+### Marketing Tracker Integration
+
+**Status**: Not implemented (no marketing trackers currently used)
+
+**When to implement**: If/when adding:
+
+- Google Tag Manager (GTM)
+- Google Ads conversion tracking
+- Facebook Pixel
+- Any other marketing/advertising scripts
+
+**Implementation checklist**:
+
+1. Add script loading gated behind `hasConsent("marketing")`
+2. Update Privacy Policy with new tracking details
+3. Increment `CURRENT_VERSION` in consent store to trigger re-consent for existing users
+4. Port consent reading to FSC if marketing trackers are used there
+
+### Consent Version Re-prompting
+
+**Status**: Infrastructure exists, not yet used
+
+The consent store tracks a `version` field (currently "1.0"). When the Privacy Policy changes significantly:
+
+1. Increment `CURRENT_VERSION` in `stores/consent.ts`
+2. Users with older consent versions will see the banner again
+3. This ensures users re-consent to updated policies
+
 ## OSS Considerations
 
 This consent system is specific to FloImg's cloud services (floimg.com, studio.floimg.com). The self-hosted OSS version of FloImg Studio does NOT include this infrastructure - self-hosters are responsible for their own GDPR compliance.
