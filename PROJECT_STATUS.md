@@ -16,7 +16,7 @@ None - pending PR merge.
 - Consent shares across subdomains via `Domain=.floimg.com`
 - Umami analytics loads unconditionally (privacy-focused, no consent required)
 - Documented architecture in `vault/architecture/Cookie-Consent-System.md`
-- PR #42 pending review
+- PR #42 merged
 
 **T-2025-003: Homepage Link Audit** (2025-12-28)
 
