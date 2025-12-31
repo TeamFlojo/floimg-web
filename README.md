@@ -36,3 +36,13 @@ pnpm build
 - [floimg](../floimg) - Core library
 - [floimg-studio](../floimg-studio) - Visual builder
 - floimg-cloud (private) - Cloud API that powers gallery and auth
+
+## Contributors
+
+<a href="https://github.com/teamflojo/floimg-web/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=teamflojo/floimg-web" />
+</a>
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=teamflojo/floimg-web&type=Date)](https://star-history.com/#teamflojo/floimg-web&Date)
