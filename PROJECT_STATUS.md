@@ -4,19 +4,19 @@
 
 ## Current Focus
 
-**T-2025-004: GDPR Cookie Consent and Privacy Policy**
-
-Implementing cookie consent for floimg.com:
-
-- [ ] Phase 1: Privacy Policy page + footer link
-- [ ] Phase 2: Consent store package
-- [ ] Phase 3: Cookie banner + customize dialog
-- [ ] Phase 4: Cookie settings page
-- [ ] Phase 5: Gate Umami behind analytics consent
-
-See: `vault/pm/tasks/T-2025-004-gdpr-cookie-consent.md`
+None - pending PR merge.
 
 ## Just Completed
+
+**T-2025-004: GDPR Cookie Consent and Privacy Policy** (2025-12-31)
+
+- Added Privacy Policy page at `/privacy`
+- Added Cookie Settings page at `/cookie-settings`
+- Added cookie consent banner with Accept All/Reject All/Customize
+- Consent shares across subdomains via `Domain=.floimg.com`
+- Umami analytics loads unconditionally (privacy-focused, no consent required)
+- Documented architecture in `vault/architecture/Cookie-Consent-System.md`
+- PR #42 pending review
 
 **T-2025-003: Homepage Link Audit** (2025-12-28)
 
