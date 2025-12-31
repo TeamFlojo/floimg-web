@@ -83,7 +83,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: "Do you offer discounts for students or nonprofits?",
         answer:
-          "Yes. We offer 50% off all paid plans for verified students, educators, and registered nonprofits. Contact us at hello@floimg.com with verification.",
+          "Yes. We offer 50% off all paid plans for verified students, educators, and registered nonprofits. Contact us at contact@goflojo.com with verification.",
       },
     ],
   },
@@ -207,7 +207,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: "How do I get support?",
         answer:
-          "Free tier: Community support via GitHub Discussions and Discord. Starter/Pro: Email support (hello@floimg.com) with 48-hour response time. Enterprise: Dedicated support with SLA guarantees.",
+          "Free tier: Community support via GitHub Discussions and Discord. Starter/Pro: Email support (contact@goflojo.com) with 48-hour response time. Enterprise: Dedicated support with SLA guarantees.",
       },
       {
         question: "How do I reset my password?",
