@@ -1,6 +1,11 @@
 ---
+import { getCollection } from "astro:content";
 import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import BlogCard from "../../components/blog/BlogCard.astro";
 import { resolveProfile, getSocialLinks, type ProfileData } from "../../lib/profile";
+
+// Server-side render: we can't prerender all possible usernames
+export const prerender = false;
 
 const { username } = Astro.params;
 
@@ -22,6 +27,13 @@ if (profile?.type === "fsc") {
 
 // Social links for FSC profiles
 const socialLinks = profile?.type === "fsc" ? getSocialLinks(profile.user) : [];
+
+// Get blog posts authored by this user (query by username)
+const authoredPosts = username
+  ? (await getCollection("blog", ({ data }) => !data.draft && data.author === username)).sort(
+      (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+    )
+  : [];
 
 const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
 ---
@@ -154,6 +166,11 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
                 <button class="tab-btn" data-tab="projects">
                   Projects
                 </button>
+                {authoredPosts.length > 0 && (
+                  <button class="tab-btn" data-tab="blog">
+                    Blog ({authoredPosts.length})
+                  </button>
+                )}
                 {profile.user.githubHandle && (
                   <button class="tab-btn" data-tab="contributions">
                     Contributions
@@ -188,6 +205,16 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
                   <p>No public projects yet.</p>
                 </div>
               </div>
+
+              {authoredPosts.length > 0 && (
+                <div id="tab-blog" class="tab-content hidden">
+                  <div class="blog-posts-grid">
+                    {authoredPosts.map((post) => (
+                      <BlogCard post={post} />
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div id="tab-contributions" class="tab-content hidden">
                 <div class="contributions-cta">
@@ -898,6 +925,19 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Blog Posts Grid */
+  .blog-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .blog-posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .hidden {

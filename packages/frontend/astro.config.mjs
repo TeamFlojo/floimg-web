@@ -2,9 +2,13 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
+import node from '@astrojs/node';
 
 export default defineConfig({
   site: 'https://floimg.com',
+  adapter: node({
+    mode: 'standalone',
+  }),
   integrations: [
     starlight({
       title: 'floimg',
