@@ -90,6 +90,57 @@ export async function resolveProfile(username: string): Promise<ProfileData> {
 }
 
 /**
+ * Check if a GitHub handle has an associated FSC account.
+ * Returns the FSC username if found, null otherwise.
+ */
+export async function checkFSCAccountByGitHub(
+  githubHandle: string
+): Promise<{ found: boolean; username?: string }> {
+  try {
+    const response = await fetch(`${API_URL}/api/users/by-github/${githubHandle}`, {
+      headers: { Accept: "application/json" },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.error(`Error checking FSC account for ${githubHandle}:`, error);
+  }
+
+  return { found: false };
+}
+
+/**
+ * Batch check multiple GitHub handles for FSC accounts.
+ * Returns a map of github_handle -> fsc_username (or undefined if not found).
+ */
+export async function batchCheckFSCAccounts(
+  githubHandles: string[]
+): Promise<Map<string, string | undefined>> {
+  const results = new Map<string, string | undefined>();
+
+  // Check in parallel with a limit to avoid overwhelming the API
+  const batchSize = 10;
+  for (let i = 0; i < githubHandles.length; i += batchSize) {
+    const batch = githubHandles.slice(i, i + batchSize);
+    const checks = await Promise.all(
+      batch.map(async (handle) => {
+        const result = await checkFSCAccountByGitHub(handle);
+        return { handle, username: result.found ? result.username : undefined };
+      })
+    );
+
+    for (const check of checks) {
+      results.set(check.handle, check.username);
+    }
+  }
+
+  return results;
+}
+
+/**
  * Get social links for display.
  */
 export function getSocialLinks(profile: FSCProfile["user"]) {

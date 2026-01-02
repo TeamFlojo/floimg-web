@@ -4,27 +4,52 @@ import type { GitHubContributor } from "../lib/github";
 interface Props {
   contributors: GitHubContributor[];
   limit?: number;
+  /** Map of github_handle -> fsc_username for contributors with FSC accounts */
+  fscMappings?: Map<string, string | undefined>;
 }
 
-const { contributors, limit = 20 } = Astro.props;
+const { contributors, limit = 20, fscMappings = new Map() } = Astro.props;
 const displayContributors = contributors.slice(0, limit);
+
+/**
+ * Get the profile URL for a contributor.
+ * If they have an FSC account, link to their FloImg profile.
+ * Otherwise, link to their GitHub profile.
+ */
+function getProfileUrl(contributor: GitHubContributor): { url: string; isInternal: boolean } {
+  const fscUsername = fscMappings.get(contributor.login);
+  if (fscUsername) {
+    return { url: `/u/${fscUsername}`, isInternal: true };
+  }
+  return { url: contributor.html_url, isInternal: false };
+}
 ---
 
 <div class="contributors-grid">
   {
-    displayContributors.map((contributor) => (
-      <a
-        href={contributor.html_url}
-        class="contributor"
-        target="_blank"
-        rel="noopener noreferrer"
-        title={`${contributor.login} - ${contributor.contributions} contributions`}
-      >
-        <img src={contributor.avatar_url} alt={contributor.login} loading="lazy" class="avatar" />
-        <span class="username">{contributor.login}</span>
-        <span class="contributions">{contributor.contributions}</span>
-      </a>
-    ))
+    displayContributors.map((contributor) => {
+      const { url, isInternal } = getProfileUrl(contributor);
+      return (
+        <a
+          href={url}
+          class="contributor"
+          target={isInternal ? undefined : "_blank"}
+          rel={isInternal ? undefined : "noopener noreferrer"}
+          title={`${contributor.login} - ${contributor.contributions} contributions`}
+        >
+          <img src={contributor.avatar_url} alt={contributor.login} loading="lazy" class="avatar" />
+          <span class="username">{contributor.login}</span>
+          <span class="contributions">{contributor.contributions}</span>
+          {isInternal && (
+            <span class="fsc-badge" title="FloImg Creator">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+          )}
+        </a>
+      );
+    })
   }
 </div>
 
@@ -76,6 +101,24 @@ const displayContributors = contributors.slice(0, limit);
   .contributions {
     font-size: 0.75rem;
     color: var(--m-text-muted);
+  }
+
+  .fsc-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--sl-color-accent);
+    color: white;
+    border-radius: 50%;
+  }
+
+  .contributor {
+    position: relative;
   }
 
   @media (max-width: 640px) {
