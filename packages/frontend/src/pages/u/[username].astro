@@ -1,4 +1,13 @@
 ---
+/**
+ * Unified Creator Profile Page
+ *
+ * NOTE: This page makes API calls to api.floimg.com at runtime.
+ * It's a floimg.com-specific feature. Without the FSC backend,
+ * only GitHub contributor profiles will be displayed.
+ *
+ * SSR is required because we can't know all possible usernames at build time.
+ */
 import { getCollection } from "astro:content";
 import MarketingLayout from "../../layouts/MarketingLayout.astro";
 import BlogCard from "../../components/blog/BlogCard.astro";
