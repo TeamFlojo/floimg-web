@@ -1,12 +1,9 @@
 ---
 /**
- * Unified Creator Profile Page
+ * Creator Profile Page
  *
- * NOTE: This page makes API calls to api.floimg.com at runtime.
- * It's a floimg.com-specific feature. Without the FSC backend,
- * only GitHub contributor profiles will be displayed.
- *
- * SSR is required because we can't know all possible usernames at build time.
+ * Displays registered user profiles or GitHub contributor profiles.
+ * SSR is required because usernames are dynamic.
  */
 import { getCollection } from "astro:content";
 import MarketingLayout from "../../layouts/MarketingLayout.astro";
@@ -25,7 +22,7 @@ const profile: ProfileData = username ? await resolveProfile(username) : null;
 let pageTitle = "User Not Found";
 let pageDescription = "This user doesn't exist or their profile is private.";
 
-if (profile?.type === "fsc") {
+if (profile?.type === "user") {
   const displayName = profile.user.name || `@${profile.user.username}`;
   pageTitle = `${displayName} - FloImg Creator`;
   pageDescription = profile.user.bio || `View ${displayName}'s FloImg creations and workflows.`;
@@ -34,8 +31,8 @@ if (profile?.type === "fsc") {
   pageDescription = `${profile.contributor.login} is an open source contributor to FloImg with ${profile.contributor.contributions} contributions.`;
 }
 
-// Social links for FSC profiles
-const socialLinks = profile?.type === "fsc" ? getSocialLinks(profile.user) : [];
+// Social links for user profiles
+const socialLinks = profile?.type === "user" ? getSocialLinks(profile.user) : [];
 
 // Get blog posts authored by this user (query by username)
 const authoredPosts = username
@@ -64,7 +61,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
               </a>
             </div>
           </div>
-        ) : profile.type === "fsc" ? (
+        ) : profile.type === "user" ? (
           <div class="profile-content">
             <header class="profile-header">
               <div class="avatar-container">
@@ -323,8 +320,8 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
       });
     });
 
-    // Load dynamic content for FSC profiles
-    if (profileType === "fsc" && username) {
+    // Load dynamic content for user profiles
+    if (profileType === "user" && username) {
       loadShowcase();
       loadProjects();
     }

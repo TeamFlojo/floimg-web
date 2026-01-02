@@ -6,8 +6,7 @@ import { fetchContributors, fetchRepoStats } from "../lib/github";
 const contributors = await fetchContributors();
 const stats = await fetchRepoStats();
 
-// Known team members with FloImg profiles (hardcoded to avoid API dependency at build time)
-// This keeps the OSS build independent of the commercial API
+// Team members with profile pages
 const knownProfiles = new Map<string, string>([
   ["brettcooke", "brett"],
   ["bleuropa", "brandon"],
@@ -88,7 +87,7 @@ const contributionAreas = [
           Thank you to everyone who has contributed to FloImg. Your work makes this project
           possible.
         </p>
-        <GitHubContributors contributors={contributors} fscMappings={knownProfiles} />
+        <GitHubContributors contributors={contributors} profileMappings={knownProfiles} />
         <div class="contributors-cta">
           <a
             href="https://github.com/TeamFlojo/floimg/graphs/contributors"

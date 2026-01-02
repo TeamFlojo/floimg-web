@@ -1,16 +1,11 @@
 /**
- * Profile resolution logic for unified creator profiles.
- *
- * NOTE: This module makes runtime API calls to api.floimg.com (FloImg Studio Cloud).
- * The profile page at /u/[username] is a floimg.com-specific feature that requires
- * the FSC backend to display user profiles. Self-hosted instances without access to
- * api.floimg.com will fall back to GitHub contributor data only.
+ * Profile resolution logic for creator profiles.
  *
  * Profiles can come from:
- * 1. FSC users (have an account on FloImg Studio Cloud)
- * 2. GitHub contributors (contributed to floimg repo but no FSC account)
+ * 1. Registered users (via API)
+ * 2. GitHub contributors (via GitHub API)
  *
- * The profile page tries FSC first, then falls back to GitHub contributors.
+ * Resolution tries registered users first, falls back to GitHub contributors.
  */
 
 import type { GitHubContributor } from "./github";
@@ -18,8 +13,8 @@ import { fetchContributors } from "./github";
 
 const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
 
-export interface FSCProfile {
-  type: "fsc";
+export interface UserProfile {
+  type: "user";
   user: {
     id: string;
     name: string | null;
@@ -48,16 +43,16 @@ export interface GitHubProfile {
   contributor: GitHubContributor;
 }
 
-export type ProfileData = FSCProfile | GitHubProfile | null;
+export type ProfileData = UserProfile | GitHubProfile | null;
 
 /**
  * Resolve a profile by username.
  *
- * First tries FSC API, then falls back to GitHub contributors.
+ * First tries the user API, then falls back to GitHub contributors.
  * Returns null if not found in either.
  */
 export async function resolveProfile(username: string): Promise<ProfileData> {
-  // 1. Try FSC user
+  // 1. Try registered user
   try {
     const response = await fetch(`${API_URL}/api/users/${username}`, {
       headers: { Accept: "application/json" },
@@ -66,13 +61,13 @@ export async function resolveProfile(username: string): Promise<ProfileData> {
     if (response.ok) {
       const data = await response.json();
       return {
-        type: "fsc",
+        type: "user",
         user: data.user,
         stats: data.stats,
       };
     }
   } catch (error) {
-    console.error("Error fetching FSC profile:", error);
+    console.error("Error fetching user profile:", error);
   }
 
   // 2. Try GitHub contributor (username might be GitHub handle)
@@ -97,7 +92,7 @@ export async function resolveProfile(username: string): Promise<ProfileData> {
 /**
  * Get social links for display.
  */
-export function getSocialLinks(profile: FSCProfile["user"]) {
+export function getSocialLinks(profile: UserProfile["user"]) {
   const links: { platform: string; url: string; handle: string }[] = [];
 
   if (profile.githubHandle) {

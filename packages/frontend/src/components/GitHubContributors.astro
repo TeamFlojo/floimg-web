@@ -4,22 +4,22 @@ import type { GitHubContributor } from "../lib/github";
 interface Props {
   contributors: GitHubContributor[];
   limit?: number;
-  /** Map of github_handle -> fsc_username for contributors with FSC accounts */
-  fscMappings?: Map<string, string | undefined>;
+  /** Map of github_handle -> username for contributors with profile pages */
+  profileMappings?: Map<string, string | undefined>;
 }
 
-const { contributors, limit = 20, fscMappings = new Map() } = Astro.props;
+const { contributors, limit = 20, profileMappings = new Map() } = Astro.props;
 const displayContributors = contributors.slice(0, limit);
 
 /**
  * Get the profile URL for a contributor.
- * If they have an FSC account, link to their FloImg profile.
+ * If they have a profile page, link internally.
  * Otherwise, link to their GitHub profile.
  */
 function getProfileUrl(contributor: GitHubContributor): { url: string; isInternal: boolean } {
-  const fscUsername = fscMappings.get(contributor.login);
-  if (fscUsername) {
-    return { url: `/u/${fscUsername}`, isInternal: true };
+  const username = profileMappings.get(contributor.login);
+  if (username) {
+    return { url: `/u/${username}`, isInternal: true };
   }
   return { url: contributor.html_url, isInternal: false };
 }
@@ -41,7 +41,7 @@ function getProfileUrl(contributor: GitHubContributor): { url: string; isInterna
           <span class="username">{contributor.login}</span>
           <span class="contributions">{contributor.contributions}</span>
           {isInternal && (
-            <span class="fsc-badge" title="FloImg Creator">
+            <span class="profile-badge" title="FloImg Creator">
               <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -103,7 +103,7 @@ function getProfileUrl(contributor: GitHubContributor): { url: string; isInterna
     color: var(--m-text-muted);
   }
 
-  .fsc-badge {
+  .profile-badge {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;

@@ -8,7 +8,7 @@
 export interface Author {
   id: string;
   name: string;
-  username: string | null; // FSC username for profile link, null for team/collective
+  username: string | null; // Username for profile link, null for team/collective
   avatarUrl: string | null;
   role?: string;
   isTeam?: boolean;
