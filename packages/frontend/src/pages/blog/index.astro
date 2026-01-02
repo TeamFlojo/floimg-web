@@ -1,0 +1,247 @@
+---
+import { getCollection } from "astro:content";
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import BlogCard from "../../components/blog/BlogCard.astro";
+import { blogCategories } from "../../data/blog-categories";
+
+// Get all non-draft blog posts, sorted by date
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<MarketingLayout
+  title="Blog"
+  description="Updates, tutorials, and engineering insights from the FloImg team."
+  keywords={["FloImg blog", "image workflow tutorials", "AI image generation", "developer guides"]}
+>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Blog</h1>
+      <p class="hero-description">
+        Updates, tutorials, and engineering insights from the FloImg team.
+      </p>
+    </div>
+  </section>
+
+  <!-- Category Filter -->
+  <section class="filter-section">
+    <div class="filter-container">
+      <button class="filter-btn active" data-category="all">All</button>
+      {
+        blogCategories.map((cat) => (
+          <button class="filter-btn" data-category={cat.id}>
+            {cat.label}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Blog Posts Grid -->
+  <section class="posts-section">
+    {
+      posts.length > 0 ? (
+        <div class="posts-grid">
+          {posts.map((post) => (
+            <div class="post-item" data-category={post.data.category}>
+              <BlogCard post={post} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            class="empty-icon"
+          >
+            <path
+              d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <h2 class="empty-title">No posts yet</h2>
+          <p class="empty-description">Check back soon for updates, tutorials, and more.</p>
+        </div>
+      )
+    }
+  </section>
+</MarketingLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, rgb(13 148 136 / 0.05), rgb(13 148 136 / 0.02));
+    padding: 4rem 1.5rem;
+    text-align: center;
+  }
+
+  :global(.dark) .hero {
+    background: linear-gradient(135deg, rgb(13 148 136 / 0.1), rgb(13 148 136 / 0.02));
+  }
+
+  .hero-content {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--sl-color-text, rgb(24 24 27));
+    margin: 0 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+  }
+
+  .hero-description {
+    font-size: 1.25rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    margin: 0;
+  }
+
+  .filter-section {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+  }
+
+  .filter-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+    border-radius: 9999px;
+    background: var(--sl-color-bg, white);
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .filter-btn:hover {
+    border-color: rgb(13 148 136);
+    color: rgb(13 148 136);
+  }
+
+  .filter-btn.active {
+    background: rgb(13 148 136);
+    border-color: rgb(13 148 136);
+    color: white;
+  }
+
+  .posts-section {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .post-item {
+    transition: opacity 0.3s;
+  }
+
+  .post-item.hidden {
+    display: none;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+
+  .empty-icon {
+    width: 4rem;
+    height: 4rem;
+    color: var(--sl-color-gray-4, rgb(161 161 170));
+    margin: 0 auto 1.5rem;
+  }
+
+  .empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--sl-color-text, rgb(24 24 27));
+    margin: 0 0 0.5rem;
+  }
+
+  .empty-description {
+    font-size: 1rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    margin: 0;
+  }
+</style>
+
+<script>
+  function initBlogFilters() {
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const postItems = document.querySelectorAll(".post-item");
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const category = (btn as HTMLElement).dataset.category;
+
+        // Update active button
+        filterBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        // Filter posts
+        postItems.forEach((item) => {
+          const postCategory = (item as HTMLElement).dataset.category;
+          if (category === "all" || postCategory === category) {
+            item.classList.remove("hidden");
+          } else {
+            item.classList.add("hidden");
+          }
+        });
+      });
+    });
+
+    // Check URL params for initial filter
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = params.get("category");
+    if (categoryParam) {
+      const btn = document.querySelector(`.filter-btn[data-category="${categoryParam}"]`);
+      if (btn) {
+        (btn as HTMLElement).click();
+      }
+    }
+  }
+
+  initBlogFilters();
+  document.addEventListener("astro:after-swap", initBlogFilters);
+</script>

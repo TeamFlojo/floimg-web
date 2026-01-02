@@ -1,0 +1,418 @@
+---
+import type { CollectionEntry } from "astro:content";
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import CategoryBadge from "./CategoryBadge.astro";
+import TagBadge from "./TagBadge.astro";
+import ShareButtons from "./ShareButtons.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  category,
+  tags,
+  heroImage,
+  heroWorkflow,
+  author,
+} = post.data;
+
+const formattedPubDate = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const formattedUpdatedDate = updatedDate?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const canonicalUrl = `https://floimg.com/blog/${post.id}`;
+const ogImage = heroImage || "/og/blog-default.png";
+
+// JSON-LD structured data for blog post
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description: description,
+  image: ogImage.startsWith("http") ? ogImage : `https://floimg.com${ogImage}`,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate || pubDate).toISOString(),
+  author: {
+    "@type": "Organization",
+    name: author,
+    url: "https://floimg.com",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "FloImg",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://floimg.com/favicon.svg",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalUrl,
+  },
+};
+---
+
+<MarketingLayout title={title} description={description} ogImage={ogImage} ogType="article">
+  <article class="blog-post">
+    <!-- Hero Section -->
+    <header class="post-header">
+      <div class="header-content">
+        <div class="post-meta">
+          <CategoryBadge category={category} href={`/blog?category=${category}`} />
+          <span class="date-separator">|</span>
+          <time datetime={pubDate.toISOString()}>{formattedPubDate}</time>
+          {
+            updatedDate && (
+              <>
+                <span class="date-separator">|</span>
+                <span class="updated">
+                  Updated: <time datetime={updatedDate.toISOString()}>{formattedUpdatedDate}</time>
+                </span>
+              </>
+            )
+          }
+        </div>
+
+        <h1 class="post-title">{title}</h1>
+        <p class="post-description">{description}</p>
+
+        <div class="post-info">
+          <span class="author">By {author}</span>
+          <ShareButtons title={title} url={canonicalUrl} />
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Image -->
+    {
+      heroImage && (
+        <div class="hero-image-container">
+          <img src={heroImage} alt={title} class="hero-image" />
+          {heroWorkflow && (
+            <div class="workflow-badge">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                class="workflow-icon"
+              >
+                <path
+                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>Made with FloImg: {heroWorkflow}</span>
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    <!-- Content -->
+    <div class="post-content">
+      <div class="prose">
+        <slot />
+      </div>
+
+      <!-- Tags -->
+      {
+        tags && tags.length > 0 && (
+          <div class="post-tags">
+            <span class="tags-label">Tags:</span>
+            <div class="tags-list">
+              {tags.map((tag) => (
+                <TagBadge tag={tag} href={`/blog?tag=${tag}`} />
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      <!-- Share Again -->
+      <div class="post-share">
+        <ShareButtons title={title} url={canonicalUrl} />
+      </div>
+    </div>
+
+    <!-- Back to Blog -->
+    <div class="back-link-container">
+      <a href="/blog" class="back-link">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="back-icon"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        Back to Blog
+      </a>
+    </div>
+  </article>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+</MarketingLayout>
+
+<style>
+  .blog-post {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+  }
+
+  .header-content {
+    text-align: center;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+  }
+
+  .date-separator {
+    color: var(--sl-color-gray-4, rgb(161 161 170));
+  }
+
+  .post-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--sl-color-text, rgb(24 24 27));
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 640px) {
+    .post-title {
+      font-size: 1.75rem;
+    }
+  }
+
+  .post-description {
+    font-size: 1.25rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+  }
+
+  .post-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .author {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+  }
+
+  .hero-image-container {
+    margin-bottom: 2rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--sl-color-gray-6, rgb(244 244 245));
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .workflow-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--sl-color-gray-6, rgb(244 244 245));
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+  }
+
+  :global(.dark) .workflow-badge {
+    background: rgb(39 39 42);
+  }
+
+  .workflow-icon {
+    width: 1rem;
+    height: 1rem;
+    color: rgb(13 148 136);
+  }
+
+  .post-content {
+    margin-bottom: 3rem;
+  }
+
+  /* Prose styles for MDX content */
+  .prose {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--sl-color-text, rgb(24 24 27));
+  }
+
+  .prose :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+    color: var(--sl-color-text, rgb(24 24 27));
+  }
+
+  .prose :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+    color: var(--sl-color-text, rgb(24 24 27));
+  }
+
+  .prose :global(p) {
+    margin: 0 0 1.25rem;
+  }
+
+  .prose :global(a) {
+    color: rgb(13 148 136);
+    text-decoration: underline;
+  }
+
+  :global(.dark) .prose :global(a) {
+    color: rgb(45 212 191);
+  }
+
+  .prose :global(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875em;
+    padding: 0.2em 0.4em;
+    background: var(--sl-color-gray-6, rgb(244 244 245));
+    border-radius: 0.25rem;
+  }
+
+  :global(.dark) .prose :global(code) {
+    background: rgb(39 39 42);
+  }
+
+  .prose :global(pre) {
+    padding: 1rem;
+    background: var(--sl-color-gray-6, rgb(244 244 245));
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  :global(.dark) .prose :global(pre) {
+    background: rgb(24 24 27);
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    background: none;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose :global(li) {
+    margin: 0.5rem 0;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 4px solid rgb(13 148 136);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    font-style: italic;
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .post-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+    flex-wrap: wrap;
+  }
+
+  .tags-label {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .post-share {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+  }
+
+  .back-link-container {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgb(13 148 136);
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+
+  .back-link:hover {
+    gap: 0.75rem;
+  }
+
+  :global(.dark) .back-link {
+    color: rgb(45 212 191);
+  }
+
+  .back-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+</style>

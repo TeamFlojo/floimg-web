@@ -1,0 +1,59 @@
+---
+interface Props {
+  category: string;
+  href?: string;
+}
+
+const { category, href } = Astro.props;
+
+// Category colors
+const categoryColors: Record<string, { bg: string; text: string }> = {
+  Announcements: {
+    bg: "bg-teal-100 dark:bg-teal-900/30",
+    text: "text-teal-700 dark:text-teal-300",
+  },
+  Tutorials: {
+    bg: "bg-blue-100 dark:bg-blue-900/30",
+    text: "text-blue-700 dark:text-blue-300",
+  },
+  Engineering: {
+    bg: "bg-purple-100 dark:bg-purple-900/30",
+    text: "text-purple-700 dark:text-purple-300",
+  },
+  Community: {
+    bg: "bg-amber-100 dark:bg-amber-900/30",
+    text: "text-amber-700 dark:text-amber-300",
+  },
+};
+
+const colors = categoryColors[category] || {
+  bg: "bg-zinc-100 dark:bg-zinc-800",
+  text: "text-zinc-600 dark:text-zinc-400",
+};
+---
+
+{
+  href ? (
+    <a href={href} class={`category-badge ${colors.bg} ${colors.text}`}>
+      {category}
+    </a>
+  ) : (
+    <span class={`category-badge ${colors.bg} ${colors.text}`}>{category}</span>
+  )
+}
+
+<style>
+  .category-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  a.category-badge:hover {
+    opacity: 0.8;
+  }
+</style>
