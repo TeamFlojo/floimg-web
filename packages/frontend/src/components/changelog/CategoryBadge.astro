@@ -1,0 +1,44 @@
+---
+interface Props {
+  category: "SDK" | "Studio" | "Cloud" | "Repository";
+}
+
+const { category } = Astro.props;
+
+const categoryStyles: Record<string, { bg: string; text: string }> = {
+  SDK: {
+    bg: "bg-blue-100 dark:bg-blue-900/30",
+    text: "text-blue-700 dark:text-blue-300",
+  },
+  Studio: {
+    bg: "bg-purple-100 dark:bg-purple-900/30",
+    text: "text-purple-700 dark:text-purple-300",
+  },
+  Cloud: {
+    bg: "bg-teal-100 dark:bg-teal-900/30",
+    text: "text-teal-700 dark:text-teal-300",
+  },
+  Repository: {
+    bg: "bg-zinc-100 dark:bg-zinc-800",
+    text: "text-zinc-600 dark:text-zinc-400",
+  },
+};
+
+const styles = categoryStyles[category] || categoryStyles.Repository;
+---
+
+<span class={`category-badge ${styles.bg} ${styles.text}`}>
+  {category}
+</span>
+
+<style>
+  .category-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+</style>

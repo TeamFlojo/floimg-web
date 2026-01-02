@@ -1,0 +1,316 @@
+---
+import type { ChangelogRelease, ChangeEntry } from "../../lib/changelog-parser";
+import { formatReleaseDate } from "../../lib/changelog-parser";
+import CategoryBadge from "./CategoryBadge.astro";
+
+interface Props {
+  release: ChangelogRelease;
+}
+
+const { release } = Astro.props;
+
+// Change type icons and colors
+function getChangeTypeStyles(type: ChangeEntry["type"]) {
+  switch (type) {
+    case "feat":
+      return {
+        icon: "+",
+        color: "text-emerald-600 dark:text-emerald-400",
+        bg: "bg-emerald-100 dark:bg-emerald-900/30",
+      };
+    case "fix":
+      return {
+        icon: "~",
+        color: "text-blue-600 dark:text-blue-400",
+        bg: "bg-blue-100 dark:bg-blue-900/30",
+      };
+    case "breaking":
+      return {
+        icon: "!",
+        color: "text-red-600 dark:text-red-400",
+        bg: "bg-red-100 dark:bg-red-900/30",
+      };
+    case "docs":
+      return {
+        icon: "#",
+        color: "text-amber-600 dark:text-amber-400",
+        bg: "bg-amber-100 dark:bg-amber-900/30",
+      };
+    case "chore":
+      return {
+        icon: "*",
+        color: "text-zinc-500 dark:text-zinc-400",
+        bg: "bg-zinc-100 dark:bg-zinc-800",
+      };
+    default:
+      return {
+        icon: "-",
+        color: "text-zinc-600 dark:text-zinc-400",
+        bg: "bg-zinc-100 dark:bg-zinc-800",
+      };
+  }
+}
+
+const githubReleaseUrl = `https://github.com/TeamFlojo/floimg/releases/tag/${release.version}`;
+---
+
+<article class="changelog-entry" data-category={release.category}>
+  <header class="entry-header">
+    <div class="header-left">
+      <h2 class="version">{release.version}</h2>
+      <CategoryBadge category={release.category} />
+    </div>
+    <div class="header-right">
+      <time datetime={release.date} class="date">{formatReleaseDate(release.date)}</time>
+      <a href={githubReleaseUrl} target="_blank" rel="noopener noreferrer" class="github-link">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="github-icon">
+          <path
+            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+          ></path>
+        </svg>
+        View on GitHub
+      </a>
+    </div>
+  </header>
+
+  <div class="entry-content">
+    {/* Package changes */}
+    {
+      release.packages.length > 0 && (
+        <div class="packages">
+          {release.packages.map((pkg) => (
+            <div class="package">
+              <h3 class="package-name">
+                <a
+                  href={`https://www.npmjs.com/package/${pkg.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {pkg.name}
+                </a>
+                <span class="package-version">{pkg.version}</span>
+              </h3>
+              <ul class="changes-list">
+                {pkg.changes.map((change) => {
+                  const styles = getChangeTypeStyles(change.type);
+                  return (
+                    <li class="change-item">
+                      <span class={`change-type ${styles.bg} ${styles.color}`}>{styles.icon}</span>
+                      <span class="change-text">{change.description}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    {/* Section changes (Added, Fixed, etc.) */}
+    {
+      release.sections.length > 0 && (
+        <div class="sections">
+          {release.sections.map((section) => (
+            <div class="section">
+              <h3 class="section-name">{section.name}</h3>
+              <ul class="changes-list">
+                {section.items.map((item) => {
+                  const styles = getChangeTypeStyles(item.type);
+                  return (
+                    <li class="change-item">
+                      <span class={`change-type ${styles.bg} ${styles.color}`}>{styles.icon}</span>
+                      <span class="change-text">{item.description}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .changelog-entry {
+    background: var(--sl-color-bg, white);
+    border: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: var(--sl-color-gray-6, rgb(244 244 245));
+    border-bottom: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  :global(.dark) .entry-header {
+    background: rgb(24 24 27);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .version {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--sl-color-text, rgb(24 24 27));
+    margin: 0;
+  }
+
+  .date {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+  }
+
+  .github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .github-link:hover {
+    color: rgb(13 148 136);
+  }
+
+  :global(.dark) .github-link:hover {
+    color: rgb(45 212 191);
+  }
+
+  .github-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .entry-content {
+    padding: 1.25rem;
+  }
+
+  .packages,
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .package,
+  .section {
+    border-bottom: 1px solid var(--sl-color-gray-5, rgb(228 228 231));
+    padding-bottom: 1.25rem;
+  }
+
+  .package:last-child,
+  .section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .package-name,
+  .section-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--sl-color-text, rgb(24 24 27));
+    margin: 0 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .package-name a {
+    color: rgb(13 148 136);
+    text-decoration: none;
+  }
+
+  .package-name a:hover {
+    text-decoration: underline;
+  }
+
+  :global(.dark) .package-name a {
+    color: rgb(45 212 191);
+  }
+
+  .package-version {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--sl-color-gray-3, rgb(113 113 122));
+    background: var(--sl-color-gray-6, rgb(244 244 245));
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+  }
+
+  :global(.dark) .package-version {
+    background: rgb(39 39 42);
+  }
+
+  .changes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .change-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .change-type {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: ui-monospace, monospace;
+  }
+
+  .change-text {
+    color: var(--sl-color-gray-2, rgb(63 63 70));
+  }
+
+  :global(.dark) .change-text {
+    color: rgb(161 161 170);
+  }
+
+  @media (max-width: 640px) {
+    .entry-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .header-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>
