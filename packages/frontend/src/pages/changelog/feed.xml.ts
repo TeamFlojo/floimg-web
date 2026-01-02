@@ -1,38 +1,18 @@
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
-import { parseChangelog } from "../../lib/changelog-parser";
-import fs from "node:fs";
-import path from "node:path";
-
-// Helper to read changelog from possible paths
-function readChangelogFile(possiblePaths: string[]): string {
-  for (const changelogPath of possiblePaths) {
-    try {
-      return fs.readFileSync(changelogPath, "utf-8");
-    } catch {
-      // Try next path
-    }
-  }
-  return "";
-}
+import {
+  parseChangelog,
+  fetchFloimgChangelog,
+  fetchCloudChangelog,
+} from "../../lib/changelog-parser";
 
 export async function GET(context: APIContext) {
-  // Read CHANGELOG.md from floimg repo (OSS)
-  const floimgPaths = [
-    path.resolve(process.cwd(), "../../floimg/CHANGELOG.md"),
-    path.resolve(process.cwd(), "../../../floimg/CHANGELOG.md"),
-    path.resolve(process.cwd(), "../../../../repos/floimg/CHANGELOG.md"),
-  ];
-  const ossContent = readChangelogFile(floimgPaths);
+  // Fetch FloImg OSS changelog from GitHub
+  const ossContent = await fetchFloimgChangelog();
   const ossReleases = ossContent ? parseChangelog(ossContent) : [];
 
-  // Read CHANGELOG.md from floimg-cloud (Cloud platform)
-  const cloudPaths = [
-    path.resolve(process.cwd(), "../../floimg-cloud/CHANGELOG.md"),
-    path.resolve(process.cwd(), "../../../floimg-cloud/CHANGELOG.md"),
-    path.resolve(process.cwd(), "../../../../repos/floimg-cloud/CHANGELOG.md"),
-  ];
-  const cloudContent = readChangelogFile(cloudPaths);
+  // Fetch FSC changelog from API (graceful degradation if unavailable)
+  const cloudContent = await fetchCloudChangelog();
   const cloudReleases = cloudContent ? parseChangelog(cloudContent) : [];
 
   // Mark cloud releases with Cloud category

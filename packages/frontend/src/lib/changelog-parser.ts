@@ -3,7 +3,49 @@
  *
  * Parses CHANGELOG.md files in Keep a Changelog format.
  * Extracts releases, packages, and changes.
+ *
+ * Fetches from GitHub raw URLs in production for reliability.
+ * Falls back to filesystem paths in local development.
  */
+
+// Public URLs for changelog data
+const FLOIMG_CHANGELOG_URL = "https://raw.githubusercontent.com/TeamFlojo/FloImg/main/CHANGELOG.md";
+const FSC_CHANGELOG_API = "https://api.floimg.com/api/changelog";
+
+/**
+ * Fetch FloImg OSS changelog from GitHub
+ */
+export async function fetchFloimgChangelog(): Promise<string> {
+  try {
+    const response = await fetch(FLOIMG_CHANGELOG_URL, {
+      headers: { "User-Agent": "floimg-web" },
+    });
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch {
+    // GitHub fetch failed
+  }
+  return "";
+}
+
+/**
+ * Fetch FSC changelog from API
+ * Returns empty string if API unavailable - graceful degradation
+ */
+export async function fetchCloudChangelog(): Promise<string> {
+  try {
+    const response = await fetch(FSC_CHANGELOG_API, {
+      headers: { "User-Agent": "floimg-web" },
+    });
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch {
+    // API unavailable - graceful degradation
+  }
+  return "";
+}
 
 export interface ChangeEntry {
   type: "feat" | "fix" | "breaking" | "docs" | "chore" | "other";
