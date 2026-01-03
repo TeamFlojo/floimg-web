@@ -165,11 +165,11 @@ const categories = [
 
     function createCard(item) {
       const imageUrl = `${API_URL}/api/storage/images/${item.image.id}/content`;
-      const userUrl = item.user.username ? `/profile?username=${item.user.username}` : "#";
+      const userUrl = item.user.username ? `/u/${item.user.username}` : "#";
 
       return `
         <div class="showcase-card" data-id="${item.id}">
-          <a href="/showcase/item?id=${item.id}" class="card-image-link">
+          <a href="/showcase/${item.id}" class="card-image-link">
             <img
               src="${imageUrl}"
               alt="${item.title}"
@@ -179,7 +179,7 @@ const categories = [
             ${item.workflowShared ? '<span class="workflow-badge" title="Workflow included">Workflow</span>' : ""}
           </a>
           <div class="card-content">
-            <a href="/showcase/item?id=${item.id}" class="card-title">${item.title}</a>
+            <a href="/showcase/${item.id}" class="card-title">${item.title}</a>
             <div class="card-meta">
               <a href="${userUrl}" class="card-author">
                 <span class="author-avatar">${item.user.name?.[0]?.toUpperCase() || item.user.username?.[0]?.toUpperCase() || "?"}</span>

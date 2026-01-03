@@ -1,12 +1,19 @@
 # PROJECT STATUS
 
-**Last Updated**: 2025-12-31
+**Last Updated**: 2026-01-03
 
 ## Current Focus
 
-None - pending PR merge.
+None - ready for new work.
 
 ## Just Completed
+
+**T-2026-005: Convert Pages to SSR** (2026-01-03)
+
+- Created `/showcase/[id].astro` SSR page with dynamic og:image, og:title
+- Deleted legacy `/showcase/item.astro` and `/profile.astro`
+- Updated internal links in showcase.astro and u/[username].astro
+- PR #53
 
 **T-2025-004: GDPR Cookie Consent and Privacy Policy** (2025-12-31)
 
@@ -83,5 +90,5 @@ docs/
 ## Notes
 
 - Open-source (MIT license)
-- Static site served by nginx
+- SSR site served by Node.js (Astro Node adapter)
 - CI/CD via Coolify (auto-deploy on push)

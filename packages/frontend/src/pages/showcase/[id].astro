@@ -1,187 +1,234 @@
 ---
+/**
+ * Showcase Item Detail Page (SSR)
+ *
+ * Server-side rendered for proper SEO and social sharing.
+ * Dynamic og:image, og:title, og:description for link previews.
+ */
+export const prerender = false;
+
 import MarketingLayout from "../../layouts/MarketingLayout.astro";
 
 const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
 const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.com";
+
+const { id } = Astro.params;
+
+// Fetch item data server-side
+let item: any = null;
+let error: string | null = null;
+
+if (id) {
+  try {
+    const res = await fetch(`${API_URL}/api/showcase/${id}`);
+    if (res.ok) {
+      const data = await res.json();
+      item = data.item;
+    } else if (res.status === 404) {
+      error = "not_found";
+    } else {
+      error = "fetch_error";
+    }
+  } catch (e) {
+    console.error("Failed to fetch showcase item:", e);
+    error = "fetch_error";
+  }
+}
+
+// Generate metadata
+const pageTitle = item ? `${item.title} - FloImg Showcase` : "Item Not Found";
+const pageDescription = item?.description || "View this showcase item on FloImg.";
+const ogImageUrl = item ? `${API_URL}/api/storage/images/${item.image.id}/content` : undefined;
+
+// Format author info for SSR
+const authorName = item?.user?.name || item?.user?.username || "Anonymous";
+const authorInitial = (item?.user?.name?.[0] || item?.user?.username?.[0] || "?").toUpperCase();
+const authorUrl = item?.user?.username ? `/u/${item.user.username}` : null;
 ---
 
-<MarketingLayout title="Showcase" description="View community-created image and workflow details.">
+<MarketingLayout title={pageTitle} description={pageDescription} ogImage={ogImageUrl}>
   <main class="showcase-detail">
     <div class="container">
-      <!-- Loading state -->
-      <div id="loading" class="loading-state">
-        <div class="loading-spinner"></div>
-      </div>
+      {
+        !item ? (
+          <div class="error-state">
+            <h1>Item Not Found</h1>
+            <p>This showcase item may have been removed or doesn't exist.</p>
+            <a href="/showcase" class="back-link-btn">
+              Back to Showcase
+            </a>
+          </div>
+        ) : (
+          <div class="content">
+            <a href="/showcase" class="back-link">
+              <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              Back to Showcase
+            </a>
 
-      <!-- Error state -->
-      <div id="error-state" class="error-state hidden">
-        <h1>Item Not Found</h1>
-        <p>This showcase item may have been removed or doesn't exist.</p>
-        <a href="/showcase" class="back-link-btn">Back to Showcase</a>
-      </div>
+            <div class="detail-grid">
+              <div class="image-section">
+                <div class="image-container">
+                  <img
+                    src={`${API_URL}/api/storage/images/${item.image.id}/content`}
+                    alt={item.title}
+                    class="main-image"
+                  />
+                </div>
+              </div>
 
-      <!-- Content -->
-      <div id="content" class="hidden">
-        <!-- Back link -->
-        <a href="/showcase" class="back-link">
-          <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"></path>
-          </svg>
-          Back to Showcase
-        </a>
+              <div class="info-section">
+                <h1 class="item-title">{item.title}</h1>
 
-        <div class="detail-grid">
-          <!-- Image section -->
-          <div class="image-section">
-            <div class="image-container">
-              <img id="item-image" src="" alt="" class="main-image" />
+                <div class="author-section">
+                  <a href={authorUrl || "#"} class="author-link">
+                    <span class="author-avatar">{authorInitial}</span>
+                    <span class="author-name">{authorName}</span>
+                  </a>
+                  <span class="item-time" data-created={item.createdAt} />
+                </div>
+
+                <div class="stats-row">
+                  <button
+                    id="like-btn"
+                    class="stat-btn"
+                    data-id={item.id}
+                    data-liked={item.isLiked ? "true" : "false"}
+                  >
+                    <svg
+                      id="like-icon"
+                      class="stat-icon"
+                      fill={item.isLiked ? "currentColor" : "none"}
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      />
+                    </svg>
+                    <span id="like-count">{item.likeCount}</span>
+                  </button>
+                  <span class="stat">
+                    <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                    <span>{item.viewCount}</span>
+                  </span>
+                  <span class="stat">
+                    <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                      />
+                    </svg>
+                    <span id="comment-count">{item.commentCount}</span>
+                  </span>
+                </div>
+
+                {item.description && (
+                  <div class="description-section">
+                    <p>{item.description}</p>
+                  </div>
+                )}
+
+                {(item.category || (item.tags && item.tags.length > 0)) && (
+                  <div class="meta-section">
+                    {item.category && (
+                      <span class="category-badge">{item.category.replace("-", " ")}</span>
+                    )}
+                    {item.tags && item.tags.length > 0 && (
+                      <div class="tags-container">
+                        {item.tags.map((tag: string) => (
+                          <span class="tag">#{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {item.workflowShared && item.workflowId && (
+                  <div class="workflow-section">
+                    <a href={`${STUDIO_URL}?workflow=${item.workflowId}`} class="workflow-button">
+                      <svg
+                        class="workflow-icon"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                        />
+                      </svg>
+                      Open Workflow in Studio
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div class="comments-section">
+              <h2 class="comments-title">
+                Comments
+                <span id="comments-count-badge" class="comments-count">
+                  ({item.commentCount})
+                </span>
+              </h2>
+
+              <div class="comment-form-section">
+                <textarea
+                  id="comment-input"
+                  class="comment-input"
+                  placeholder="Add a comment..."
+                  maxlength="1000"
+                />
+                <div class="comment-form-actions">
+                  <span id="comment-char-count" class="char-count">
+                    0/1000
+                  </span>
+                  <button id="submit-comment-btn" class="submit-comment-btn" disabled>
+                    Post Comment
+                  </button>
+                </div>
+              </div>
+
+              <div id="comments-list" class="comments-list" />
+              <div id="no-comments" class="no-comments hidden">
+                <p>No comments yet. Be the first to comment!</p>
+              </div>
             </div>
           </div>
-
-          <!-- Info section -->
-          <div class="info-section">
-            <h1 id="item-title" class="item-title"></h1>
-
-            <!-- Author -->
-            <div class="author-section">
-              <a id="author-link" href="#" class="author-link">
-                <span id="author-avatar" class="author-avatar"></span>
-                <span id="author-name" class="author-name"></span>
-              </a>
-              <span id="item-time" class="item-time"></span>
-            </div>
-
-            <!-- Stats -->
-            <div class="stats-row">
-              <button id="like-btn" class="stat-btn">
-                <svg
-                  id="like-icon"
-                  class="stat-icon"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  ></path>
-                </svg>
-                <span id="like-count">0</span>
-              </button>
-              <span class="stat">
-                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  ></path>
-                </svg>
-                <span id="view-count">0</span>
-              </span>
-              <span class="stat">
-                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                  ></path>
-                </svg>
-                <span id="comment-count">0</span>
-              </span>
-            </div>
-
-            <!-- Description -->
-            <div id="description-section" class="description-section hidden">
-              <p id="item-description"></p>
-            </div>
-
-            <!-- Category & Tags -->
-            <div id="meta-section" class="meta-section hidden">
-              <div id="category-badge" class="category-badge hidden"></div>
-              <div id="tags-container" class="tags-container hidden"></div>
-            </div>
-
-            <!-- Workflow button -->
-            <div id="workflow-section" class="workflow-section hidden">
-              <a id="workflow-btn" href="#" class="workflow-button">
-                <svg class="workflow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                  ></path>
-                </svg>
-                Open Workflow in Studio
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Comments section -->
-        <div class="comments-section">
-          <h2 class="comments-title">
-            Comments
-            <span id="comments-count-badge" class="comments-count">(0)</span>
-          </h2>
-
-          <!-- Comment form -->
-          <div id="comment-form-section" class="comment-form-section">
-            <textarea
-              id="comment-input"
-              class="comment-input"
-              placeholder="Add a comment..."
-              maxlength="1000"></textarea>
-            <div class="comment-form-actions">
-              <span id="comment-char-count" class="char-count">0/1000</span>
-              <button id="submit-comment-btn" class="submit-comment-btn" disabled>
-                Post Comment
-              </button>
-            </div>
-          </div>
-
-          <!-- Comments list -->
-          <div id="comments-list" class="comments-list"></div>
-          <div id="no-comments" class="no-comments hidden">
-            <p>No comments yet. Be the first to comment!</p>
-          </div>
-        </div>
-      </div>
+        )
+      }
     </div>
   </main>
 
-  <script define:vars={{ API_URL, STUDIO_URL }}>
-    const loadingEl = document.getElementById("loading");
-    const errorEl = document.getElementById("error-state");
-    const contentEl = document.getElementById("content");
-
-    // Get ID from query param
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-
-    let itemData = null;
-    let isLiked = false;
-
-    if (!id) {
-      loadingEl.classList.add("hidden");
-      errorEl.classList.remove("hidden");
-    } else {
-      fetchItem();
-    }
-
+  <script define:vars={{ API_URL, itemId: id }}>
+    // Format relative time for timestamps
     function formatRelativeTime(dateStr) {
       const date = new Date(dateStr);
       const now = new Date();
@@ -203,108 +250,16 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
       return "just now";
     }
 
-    async function fetchItem() {
-      try {
-        const res = await fetch(`${API_URL}/api/showcase/${id}`, {
-          credentials: "include",
-        });
-
-        if (!res.ok) throw new Error("Not found");
-
-        const data = await res.json();
-        itemData = data.item;
-        isLiked = itemData.isLiked;
-        renderItem();
-        fetchComments();
-      } catch (err) {
-        console.error("Failed to fetch item:", err);
-        loadingEl.classList.add("hidden");
-        errorEl.classList.remove("hidden");
-      }
+    // Update item time on client
+    const itemTimeEl = document.querySelector(".item-time");
+    if (itemTimeEl && itemTimeEl.dataset.created) {
+      itemTimeEl.textContent = formatRelativeTime(itemTimeEl.dataset.created);
     }
 
-    function renderItem() {
-      const item = itemData;
-      const imageUrl = `${API_URL}/api/storage/images/${item.image.id}/content`;
-
-      // Update page title
-      document.title = `${item.title} - FloImg Showcase`;
-
-      // Image
-      const img = document.getElementById("item-image");
-      img.src = imageUrl;
-      img.alt = item.title;
-
-      // Title
-      document.getElementById("item-title").textContent = item.title;
-
-      // Author
-      const authorLink = document.getElementById("author-link");
-      authorLink.href = item.user.username ? `/profile?username=${item.user.username}` : "#";
-      document.getElementById("author-avatar").textContent =
-        item.user.name?.[0]?.toUpperCase() || item.user.username?.[0]?.toUpperCase() || "?";
-      document.getElementById("author-name").textContent =
-        item.user.name || item.user.username || "Anonymous";
-
-      // Time
-      document.getElementById("item-time").textContent = formatRelativeTime(item.createdAt);
-
-      // Stats
-      document.getElementById("like-count").textContent = item.likeCount;
-      document.getElementById("view-count").textContent = item.viewCount;
-      document.getElementById("comment-count").textContent = item.commentCount;
-      document.getElementById("comments-count-badge").textContent = `(${item.commentCount})`;
-
-      // Like state
-      const likeBtn = document.getElementById("like-btn");
-      const likeIcon = document.getElementById("like-icon");
-      if (isLiked) {
-        likeBtn.classList.add("liked");
-        likeIcon.setAttribute("fill", "currentColor");
-      }
-
-      // Description
-      if (item.description) {
-        document.getElementById("item-description").textContent = item.description;
-        document.getElementById("description-section").classList.remove("hidden");
-      }
-
-      // Category & Tags
-      const metaSection = document.getElementById("meta-section");
-      if (item.category || (item.tags && item.tags.length > 0)) {
-        metaSection.classList.remove("hidden");
-
-        if (item.category) {
-          const categoryBadge = document.getElementById("category-badge");
-          categoryBadge.textContent = item.category.replace("-", " ");
-          categoryBadge.classList.remove("hidden");
-        }
-
-        if (item.tags && item.tags.length > 0) {
-          const tagsContainer = document.getElementById("tags-container");
-          tagsContainer.innerHTML = item.tags
-            .map((tag) => `<span class="tag">#${tag}</span>`)
-            .join("");
-          tagsContainer.classList.remove("hidden");
-        }
-      }
-
-      // Workflow
-      if (item.workflowShared && item.workflowId) {
-        const workflowSection = document.getElementById("workflow-section");
-        const workflowBtn = document.getElementById("workflow-btn");
-        workflowBtn.href = `${STUDIO_URL}?workflow=${item.workflowId}`;
-        workflowSection.classList.remove("hidden");
-      }
-
-      // Show content
-      loadingEl.classList.add("hidden");
-      contentEl.classList.remove("hidden");
-    }
-
+    // Load comments
     async function fetchComments() {
       try {
-        const res = await fetch(`${API_URL}/api/showcase/${id}/comments`, {
+        const res = await fetch(`${API_URL}/api/showcase/${itemId}/comments`, {
           credentials: "include",
         });
 
@@ -333,7 +288,7 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
           (comment) => `
         <div class="comment" data-id="${comment.id}">
           <div class="comment-header">
-            <a href="${comment.user.username ? `/profile?username=${comment.user.username}` : "#"}" class="comment-author">
+            <a href="${comment.user.username ? `/u/${comment.user.username}` : "#"}" class="comment-author">
               <span class="author-avatar">${comment.user.name?.[0]?.toUpperCase() || comment.user.username?.[0]?.toUpperCase() || "?"}</span>
               <span class="author-name">${comment.user.name || comment.user.username || "Anonymous"}</span>
             </a>
@@ -353,9 +308,9 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
     }
 
     // Like handler
-    document.getElementById("like-btn").addEventListener("click", async () => {
+    document.getElementById("like-btn")?.addEventListener("click", async () => {
       try {
-        const res = await fetch(`${API_URL}/api/showcase/${id}/like`, {
+        const res = await fetch(`${API_URL}/api/showcase/${itemId}/like`, {
           method: "POST",
           credentials: "include",
         });
@@ -368,13 +323,12 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
         if (!res.ok) throw new Error("Failed to like");
 
         const data = await res.json();
-        isLiked = data.liked;
-        document.getElementById("like-count").textContent = data.likeCount;
-
         const likeBtn = document.getElementById("like-btn");
         const likeIcon = document.getElementById("like-icon");
-        likeBtn.classList.toggle("liked", isLiked);
-        likeIcon.setAttribute("fill", isLiked ? "currentColor" : "none");
+
+        document.getElementById("like-count").textContent = data.likeCount;
+        likeBtn.classList.toggle("liked", data.liked);
+        likeIcon.setAttribute("fill", data.liked ? "currentColor" : "none");
       } catch (err) {
         console.error("Failed to toggle like:", err);
       }
@@ -385,13 +339,13 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
     const charCount = document.getElementById("comment-char-count");
     const submitBtn = document.getElementById("submit-comment-btn");
 
-    commentInput.addEventListener("input", () => {
+    commentInput?.addEventListener("input", () => {
       const len = commentInput.value.length;
       charCount.textContent = `${len}/1000`;
       submitBtn.disabled = len === 0 || len > 1000;
     });
 
-    submitBtn.addEventListener("click", async () => {
+    submitBtn?.addEventListener("click", async () => {
       const content = commentInput.value.trim();
       if (!content) return;
 
@@ -399,7 +353,7 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
       submitBtn.textContent = "Posting...";
 
       try {
-        const res = await fetch(`${API_URL}/api/showcase/${id}/comments`, {
+        const res = await fetch(`${API_URL}/api/showcase/${itemId}/comments`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -430,6 +384,9 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
         submitBtn.textContent = "Post Comment";
       }
     });
+
+    // Initial load
+    fetchComments();
   </script>
 </MarketingLayout>
 
@@ -442,28 +399,6 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
   .container {
     max-width: 1000px;
     margin: 0 auto;
-  }
-
-  .loading-state {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem;
-  }
-
-  .loading-spinner {
-    width: 2rem;
-    height: 2rem;
-    border: 2px solid var(--sl-color-gray-5);
-    border-top-color: rgb(13 148 136);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
   }
 
   .error-state {

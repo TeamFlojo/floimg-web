@@ -347,7 +347,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || "https://api.floimg.com";
           gridEl.innerHTML = data.showcase
             .map(
               (item) => `
-              <a href="/showcase/item?id=${item.id}" class="showcase-card">
+              <a href="/showcase/${item.id}" class="showcase-card">
                 <div class="showcase-image">
                   <div class="showcase-placeholder">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
