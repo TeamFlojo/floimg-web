@@ -1,5 +1,5 @@
 # floimg-web Dockerfile
-# Multi-stage build for Astro static site
+# Multi-stage build for Astro SSR site with Node adapter
 
 # Stage 1: Build
 FROM node:20-alpine AS builder
@@ -24,23 +24,27 @@ COPY packages/frontend ./packages/frontend
 # Build shared types first (if it exists)
 RUN pnpm --filter @floimg-web/shared build 2>/dev/null || true
 
-# Build Astro static site
+# Build Astro SSR site
 RUN pnpm --filter @floimg-web/frontend build
 
-# Stage 2: Production with nginx
-FROM nginx:alpine AS runner
+# Stage 2: Production with Node
+FROM node:20-alpine AS runner
 
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Copy built static files
-COPY --from=builder /app/packages/frontend/dist /usr/share/nginx/html
+# Copy built server and client files
+COPY --from=builder /app/packages/frontend/dist ./dist
 
 # Expose port
 EXPOSE 80
 
-# Health check (use 127.0.0.1 to avoid IPv6 issues)
+# Set environment variables
+ENV HOST=0.0.0.0
+ENV PORT=80
+
+# Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:80/ || exit 1
 
-CMD ["nginx", "-g", "daemon off;"]
+# Run the Node server
+CMD ["node", "./dist/server/entry.mjs"]
