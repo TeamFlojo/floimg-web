@@ -13,7 +13,7 @@ None - ready for new work.
 - Created `/showcase/[id].astro` SSR page with dynamic og:image, og:title
 - Deleted legacy `/showcase/item.astro` and `/profile.astro`
 - Updated internal links in showcase.astro and u/[username].astro
-- PR #53
+- PR #53 merged
 
 **T-2025-004: GDPR Cookie Consent and Privacy Policy** (2025-12-31)
 
