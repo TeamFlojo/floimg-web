@@ -13,6 +13,7 @@
     "@astrojs/rss": "^4.0.14",
     "@astrojs/starlight": "^0.37.1",
     "@astrojs/tailwind": "^6.0.2",
+    "@teamflojo/floimg-templates": "^0.1.0",
     "astro": "^5.16.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

@@ -1,10 +1,10 @@
 ---
-import type { GalleryTemplate } from "../data/templates";
-import { getStudioUrl } from "../data/templates";
+import type { Template } from "@teamflojo/floimg-templates";
+import { getStudioUrl } from "@teamflojo/floimg-templates";
 import { generateCodeFormats } from "../utils/code-format";
 
 interface Props {
-  template: GalleryTemplate;
+  template: Template;
 }
 
 const { template } = Astro.props;

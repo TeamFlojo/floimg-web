@@ -1,0 +1,850 @@
+---
+/**
+ * Template Detail Page
+ *
+ * Statically generated pages for each workflow template.
+ * Provides SEO-friendly detail view with code examples and "Open in Studio" CTA.
+ */
+
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import {
+  allTemplates as templates,
+  getStudioUrl,
+  type Template,
+} from "@teamflojo/floimg-templates";
+import { generateCodeFormats } from "../../utils/code-format";
+
+// Pre-render all template pages at build time
+export function getStaticPaths() {
+  return templates.map((template) => ({
+    params: { id: template.id },
+    props: { template },
+  }));
+}
+
+interface Props {
+  template: Template;
+}
+
+const { template } = Astro.props;
+
+// Generate code examples in all formats
+const code = template.codeExample
+  ? generateCodeFormats({
+      name: template.name,
+      generator: template.generator,
+      jsCode: template.codeExample,
+    })
+  : null;
+
+// Category info for icons
+const categoryIcons: Record<string, string> = {
+  "AI Workflows": "sparkles",
+  "Data Viz": "chart",
+  Marketing: "share",
+  Utilities: "qr",
+};
+
+// Generator badge colors (same as TemplateCard)
+const generatorColors: Record<string, { bg: string; text: string }> = {
+  quickchart: { bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-300" },
+  mermaid: { bg: "bg-pink-100 dark:bg-pink-900/30", text: "text-pink-700 dark:text-pink-300" },
+  qr: { bg: "bg-green-100 dark:bg-green-900/30", text: "text-green-700 dark:text-green-300" },
+  d3: { bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-700 dark:text-orange-300" },
+  screenshot: { bg: "bg-teal-100 dark:bg-teal-900/30", text: "text-teal-700 dark:text-teal-300" },
+  openai: {
+    bg: "bg-emerald-100 dark:bg-emerald-900/30",
+    text: "text-emerald-700 dark:text-emerald-300",
+  },
+  pipeline: { bg: "bg-teal-100 dark:bg-teal-900/30", text: "text-teal-700 dark:text-teal-300" },
+  input: { bg: "bg-zinc-100 dark:bg-zinc-800", text: "text-zinc-600 dark:text-zinc-400" },
+};
+
+const colors = generatorColors[template.generator] || {
+  bg: "bg-zinc-100 dark:bg-zinc-800",
+  text: "text-zinc-600 dark:text-zinc-400",
+};
+
+// SEO metadata
+const pageTitle = `${template.name} - FloImg Templates`;
+const pageDescription = template.description;
+const ogImageUrl = template.preview?.imageUrl;
+
+// Use template's own availability flags
+const requiresCloud = template.requiresCloud ?? false;
+const requiresAuth = template.requiresAuth ?? requiresCloud;
+---
+
+<MarketingLayout title={pageTitle} description={pageDescription} ogImage={ogImageUrl}>
+  <main class="template-detail">
+    <div class="container">
+      <!-- Back Link -->
+      <a href="/templates" class="back-link">
+        <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+        Back to Templates
+      </a>
+
+      <!-- Hero Section -->
+      <div class="hero-grid">
+        <!-- Preview -->
+        <div class="preview-section">
+          <div class="preview-container">
+            {
+              template.preview?.imageUrl ? (
+                <img src={template.preview.imageUrl} alt={template.name} class="preview-image" />
+              ) : (
+                <div class="preview-placeholder">
+                  <div class="placeholder-icon">
+                    {template.generator === "quickchart" && "📊"}
+                    {template.generator === "mermaid" && "📐"}
+                    {template.generator === "qr" && "📱"}
+                    {template.generator === "d3" && "📈"}
+                    {template.generator === "screenshot" && "🖼️"}
+                    {template.generator === "openai" && "🎨"}
+                    {template.generator === "pipeline" && "⚡"}
+                    {template.generator === "input" && "📁"}
+                  </div>
+                  <span class="placeholder-text">Preview not available</span>
+                </div>
+              )
+            }
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="info-section">
+          <div class="info-header">
+            <span class="category-badge">{template.category}</span>
+            {
+              requiresCloud && (
+                <span class="cloud-badge">
+                  <svg class="badge-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                    />
+                  </svg>
+                  Cloud
+                </span>
+              )
+            }
+            {
+              requiresAuth && (
+                <span class="auth-badge">
+                  <svg class="badge-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  Sign in required
+                </span>
+              )
+            }
+          </div>
+
+          <h1 class="template-title">{template.name}</h1>
+          <p class="template-description">{template.description}</p>
+
+          <!-- Generator & Tags -->
+          <div class="meta-section">
+            <span class={`generator-badge ${colors.bg} ${colors.text}`}>
+              {template.generator}
+            </span>
+            {
+              template.tags && template.tags.length > 0 && (
+                <div class="tags-list">
+                  {template.tags.map((tag) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+              )
+            }
+          </div>
+
+          <!-- Capabilities -->
+          {
+            template.capabilities && (
+              <div class="capabilities">
+                {template.capabilities.claudeCodeReady && (
+                  <span class="capability claude-ready">
+                    <svg
+                      class="cap-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    Claude Code Ready
+                  </span>
+                )}
+                {template.capabilities.studioCompatible && (
+                  <span class="capability studio-compat">
+                    <svg
+                      class="cap-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <line x1="3" y1="9" x2="21" y2="9" />
+                      <line x1="9" y1="21" x2="9" y2="9" />
+                    </svg>
+                    Studio Compatible
+                  </span>
+                )}
+                {template.capabilities.pipeline && (
+                  <span class="capability pipeline">
+                    <svg
+                      class="cap-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M13 17l5-5-5-5M6 17l5-5-5-5" />
+                    </svg>
+                    Multi-step Pipeline
+                  </span>
+                )}
+              </div>
+            )
+          }
+
+          <!-- CTA Buttons -->
+          <div class="cta-section">
+            <a
+              href={getStudioUrl(template.id)}
+              class="cta-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in Studio
+              <svg class="cta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                ></path>
+              </svg>
+            </a>
+            {
+              code && (
+                <button id="scroll-to-code" class="cta-secondary">
+                  View Code
+                  <svg class="cta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                    />
+                  </svg>
+                </button>
+              )
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Examples Section -->
+      {
+        code && (
+          <div id="code-section" class="code-section">
+            <h2 class="section-title">Code Examples</h2>
+            <p class="section-subtitle">
+              Use this template programmatically with the FloImg SDK or CLI
+            </p>
+
+            <div class="code-tabs">
+              <div class="tab-bar">
+                <button class="tab-btn active" data-tab="js">
+                  JavaScript
+                </button>
+                <button class="tab-btn" data-tab="yaml">
+                  YAML
+                </button>
+                <button class="tab-btn" data-tab="cli">
+                  CLI
+                </button>
+              </div>
+              <button class="copy-code-btn" id="copy-code">
+                Copy
+              </button>
+            </div>
+
+            <div class="code-panels">
+              {/* prettier-ignore */}
+              <pre class="code-block code-panel active" data-panel="js"><code set:text={code.js} /></pre>
+              {/* prettier-ignore */}
+              <pre class="code-block code-panel" data-panel="yaml"><code set:text={code.yaml} /></pre>
+              {/* prettier-ignore */}
+              <pre class="code-block code-panel" data-panel="cli"><code set:text={code.cli} /></pre>
+            </div>
+          </div>
+        )
+      }
+
+      <!-- Related Templates -->
+      <div class="related-section">
+        <h2 class="section-title">Related Templates</h2>
+        <div class="related-grid">
+          {
+            templates
+              .filter((t) => t.id !== template.id && t.category === template.category)
+              .slice(0, 3)
+              .map((related) => (
+                <a href={`/templates/${related.id}`} class="related-card">
+                  <div class="related-preview">
+                    {related.preview?.imageUrl ? (
+                      <img
+                        src={related.preview.imageUrl}
+                        alt={related.name}
+                        class="related-image"
+                      />
+                    ) : (
+                      <div class="related-placeholder">
+                        {related.generator === "quickchart" && "📊"}
+                        {related.generator === "mermaid" && "📐"}
+                        {related.generator === "qr" && "📱"}
+                        {related.generator === "openai" && "🎨"}
+                        {related.generator === "pipeline" && "⚡"}
+                      </div>
+                    )}
+                  </div>
+                  <div class="related-info">
+                    <h3>{related.name}</h3>
+                    <p>{related.description}</p>
+                  </div>
+                </a>
+              ))
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function initTemplatePage() {
+      // Scroll to code button
+      document.getElementById("scroll-to-code")?.addEventListener("click", () => {
+        document.getElementById("code-section")?.scrollIntoView({ behavior: "smooth" });
+      });
+
+      // Tab switching
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tabId = (btn as HTMLElement).dataset.tab;
+          if (!tabId) return;
+
+          // Update active tab
+          document.querySelectorAll(".tab-btn").forEach((t) => t.classList.remove("active"));
+          btn.classList.add("active");
+
+          // Update active panel
+          document.querySelectorAll(".code-panel").forEach((p) => p.classList.remove("active"));
+          document.querySelector(`.code-panel[data-panel="${tabId}"]`)?.classList.add("active");
+        });
+      });
+
+      // Copy code
+      document.getElementById("copy-code")?.addEventListener("click", async () => {
+        const activePanel = document.querySelector(".code-panel.active code");
+        const code = activePanel?.textContent || "";
+
+        if (code) {
+          await navigator.clipboard.writeText(code);
+          const btn = document.getElementById("copy-code");
+          if (btn) {
+            const originalText = btn.textContent;
+            btn.textContent = "Copied!";
+            setTimeout(() => {
+              btn.textContent = originalText;
+            }, 2000);
+          }
+        }
+      });
+    }
+
+    initTemplatePage();
+    document.addEventListener("astro:after-swap", initTemplatePage);
+  </script>
+</MarketingLayout>
+
+<style>
+  .template-detail {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: rgb(13 148 136);
+  }
+
+  .back-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Hero Grid */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .preview-section {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+
+  .preview-container {
+    background: var(--sl-color-gray-6);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 1.5rem;
+  }
+
+  .preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  .placeholder-icon {
+    font-size: 3rem;
+  }
+
+  .placeholder-text {
+    font-size: 0.875rem;
+  }
+
+  /* Info Section */
+  .info-section {
+    padding: 1rem 0;
+  }
+
+  .info-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-badge {
+    padding: 0.375rem 0.75rem;
+    background: rgb(13 148 136 / 0.1);
+    color: rgb(13 148 136);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+  }
+
+  :global(.dark) .category-badge {
+    background: rgb(45 212 191 / 0.15);
+    color: rgb(45 212 191);
+  }
+
+  .cloud-badge,
+  .auth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 9999px;
+  }
+
+  .cloud-badge {
+    background: rgb(59 130 246 / 0.1);
+    color: rgb(59 130 246);
+  }
+
+  :global(.dark) .cloud-badge {
+    background: rgb(59 130 246 / 0.2);
+    color: rgb(147 197 253);
+  }
+
+  .auth-badge {
+    background: rgb(245 158 11 / 0.1);
+    color: rgb(217 119 6);
+  }
+
+  :global(.dark) .auth-badge {
+    background: rgb(245 158 11 / 0.2);
+    color: rgb(251 191 36);
+  }
+
+  .badge-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .template-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .template-description {
+    font-size: 1.125rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .meta-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .generator-badge {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 500;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    border-radius: 0.25rem;
+  }
+
+  /* Capabilities */
+  .capabilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .capability {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+  }
+
+  .cap-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .claude-ready {
+    background: rgb(13 148 136 / 0.1);
+    color: rgb(13 148 136);
+  }
+
+  :global(.dark) .claude-ready {
+    background: rgb(13 148 136 / 0.2);
+    color: rgb(45 212 191);
+  }
+
+  .studio-compat {
+    background: rgb(99 102 241 / 0.1);
+    color: rgb(99 102 241);
+  }
+
+  :global(.dark) .studio-compat {
+    background: rgb(99 102 241 / 0.2);
+    color: rgb(165 180 252);
+  }
+
+  .pipeline {
+    background: rgb(234 179 8 / 0.1);
+    color: rgb(161 98 7);
+  }
+
+  :global(.dark) .pipeline {
+    background: rgb(234 179 8 / 0.2);
+    color: rgb(250 204 21);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cta-primary,
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 0.9375rem;
+  }
+
+  .cta-primary {
+    background: rgb(13 148 136);
+    color: white;
+    border: none;
+  }
+
+  .cta-primary:hover {
+    background: rgb(15 118 110);
+  }
+
+  .cta-secondary {
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    border: 1px solid var(--sl-color-gray-5);
+  }
+
+  .cta-secondary:hover {
+    border-color: rgb(13 148 136);
+    color: rgb(13 148 136);
+  }
+
+  .cta-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* Code Section */
+  .code-section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--sl-color-gray-5);
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sl-color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    color: var(--sl-color-gray-3);
+    margin-bottom: 1.5rem;
+  }
+
+  .code-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: var(--sl-color-gray-6);
+    border-radius: 0.5rem 0.5rem 0 0;
+    border: 1px solid var(--sl-color-gray-5);
+    border-bottom: none;
+  }
+
+  .tab-bar {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .tab-btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    color: var(--sl-color-gray-3);
+  }
+
+  .tab-btn:hover {
+    background: var(--sl-color-gray-5);
+    color: var(--sl-color-text);
+  }
+
+  .tab-btn.active {
+    background: rgb(13 148 136);
+    color: white;
+  }
+
+  .copy-code-btn {
+    padding: 0.5rem 0.875rem;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .copy-code-btn:hover {
+    background: rgb(13 148 136);
+    color: white;
+    border-color: rgb(13 148 136);
+  }
+
+  .code-panels {
+    border: 1px solid var(--sl-color-gray-5);
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    overflow: hidden;
+  }
+
+  .code-panel {
+    display: none;
+    margin: 0;
+    padding: 1.25rem;
+    background: var(--m-code-bg, #1e1e2e);
+    max-height: 400px;
+    overflow: auto;
+  }
+
+  .code-panel.active {
+    display: block;
+  }
+
+  .code-panel code {
+    color: var(--m-code-text, #e4e4e7);
+    background: transparent;
+    padding: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+    white-space: pre;
+  }
+
+  /* Related Section */
+  .related-section {
+    padding-top: 2rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .related-card {
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .related-card:hover {
+    border-color: rgb(13 148 136 / 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .related-preview {
+    aspect-ratio: 16 / 10;
+    background: var(--sl-color-gray-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .related-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+  }
+
+  .related-placeholder {
+    font-size: 2rem;
+  }
+
+  .related-info {
+    padding: 1rem;
+  }
+
+  .related-info h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    margin-bottom: 0.375rem;
+  }
+
+  .related-info p {
+    font-size: 0.8125rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
