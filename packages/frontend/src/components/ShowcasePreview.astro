@@ -447,82 +447,9 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
     display: none !important;
   }
 
-  /* Light mode */
-  :global(:not(.dark)) .showcase-preview-section {
-    background: #f4f4f5;
-    border-top-color: #e4e4e7;
-  }
-
-  :global(:not(.dark)) .section-title {
-    color: #18181b;
-  }
-
-  :global(:not(.dark)) .section-subtitle {
-    color: #52525b;
-  }
-
-  :global(:not(.dark)) .showcase-card {
-    background: #ffffff;
-    border-color: #e4e4e7;
-  }
-
-  :global(:not(.dark)) .showcase-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-
-  :global(:not(.dark)) .card-image-wrapper {
-    background: #e4e4e7;
-  }
-
-  :global(:not(.dark)) .card-title {
-    color: #18181b;
-  }
-
-  :global(:not(.dark)) .card-author {
-    color: #52525b;
-  }
-
-  :global(:not(.dark)) .author-avatar {
-    background: #e4e4e7;
-    color: #52525b;
-  }
-
-  :global(:not(.dark)) .stat {
-    color: #a1a1aa;
-  }
-
-  :global(:not(.dark)) .skeleton-card {
-    background: #ffffff;
-    border-color: #e4e4e7;
-  }
-
-  :global(:not(.dark)) .skeleton-image {
-    background: linear-gradient(90deg, #e4e4e7 0%, #f4f4f5 50%, #e4e4e7 100%);
-    background-size: 200% 100%;
-  }
-
-  :global(:not(.dark)) .skeleton-title,
-  :global(:not(.dark)) .skeleton-meta {
-    background: #e4e4e7;
-  }
-
-  :global(:not(.dark)) .empty-icon {
-    color: #a1a1aa;
-  }
-
-  :global(:not(.dark)) .empty-text {
-    color: #18181b;
-  }
-
-  :global(:not(.dark)) .empty-subtext {
-    color: #52525b;
-  }
-
-  :global(:not(.dark)) .cta-link {
-    color: rgb(13 148 136);
-  }
-
-  :global(:not(.dark)) .cta-link:hover {
-    color: rgb(15 118 110);
-  }
+  /*
+   * This section is always dark themed (like TabbedDemo).
+   * Dark background makes showcase images pop.
+   * No light mode overrides needed.
+   */
 </style>

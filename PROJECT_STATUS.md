@@ -1,10 +1,23 @@
 # PROJECT STATUS
 
-**Last Updated**: 2026-01-03
+**Last Updated**: 2026-01-06
 
 ## Current Focus
 
-None - ready for new work.
+**T-2026-007: Homepage Redesign**
+
+Redesigning homepage to create tighter narrative, fix dark mode bugs, improve visual variety, and make Studio more prominent. Reducing from 10 to 7 sections.
+
+Progress:
+
+- [x] Fix dark mode bug in ShowcasePreview
+- [ ] Fix H1 widow + improve headline
+- [ ] Fix ImageShowcase links
+- [ ] Add Studio nav button
+- [ ] Remove redundant sections
+- [ ] Create Studio section
+- [ ] Streamline features
+- [ ] Merge community sections
 
 ## Just Completed
 
