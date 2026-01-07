@@ -178,10 +178,9 @@ const STUDIO_URL = import.meta.env.PUBLIC_STUDIO_URL || "https://studio.floimg.c
       gridEl.classList.remove("hidden");
     } catch (err) {
       console.error("Failed to load showcase:", err);
-      // Hide entire section on error - fail gracefully
-      if (sectionEl) {
-        sectionEl.style.display = "none";
-      }
+      // Show empty state on error - keeps Community section visible with CTAs
+      loadingEl.classList.add("hidden");
+      emptyEl.classList.remove("hidden");
     }
   }
 
