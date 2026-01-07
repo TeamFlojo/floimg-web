@@ -1,6 +1,6 @@
 # T-2026-010: Fix Docs Page Title Typography
 
-**Status**: In Progress
+**Status**: Done
 **Created**: 2026-01-07
 **Priority**: P2
 
@@ -26,9 +26,9 @@ Add explicit styles for `h1#_top` in `custom.css` using Starlight's CSS variable
 
 ## Acceptance Criteria
 
-- [ ] Page title is visually larger than section headings
-- [ ] Works in both light and dark modes
-- [ ] Consistent across all docs pages
+- [x] Page title is visually larger than section headings
+- [x] Works in both light and dark modes
+- [x] Consistent across all docs pages
 
 ## Related
 
