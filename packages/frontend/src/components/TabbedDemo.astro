@@ -1,6 +1,12 @@
 ---
 // Tabbed demo section showing real-world use cases
 // Tabs: Marketing Assets, Web Development, Product Images
+// Each tab shows SDK, CLI, and YAML variants of the same workflow
+
+interface Link {
+  label: string;
+  href: string;
+}
 
 interface DemoTab {
   id: string;
@@ -8,7 +14,16 @@ interface DemoTab {
   description: string;
   image: string;
   imageAlt: string;
-  code: string;
+  code: {
+    sdk: string;
+    cli: string;
+    yaml: string;
+  };
+  links: {
+    sdk: Link[];
+    cli: Link[];
+    yaml: Link[];
+  };
 }
 
 const tabs: DemoTab[] = [
@@ -19,7 +34,8 @@ const tabs: DemoTab[] = [
       "Generate a hero image with AI, then resize it for every social platform in one pipeline. No more manual exports.",
     image: "/showcase/ai-generation/futuristic-city.png",
     imageAlt: "AI-generated hero image resized for social platforms",
-    code: `import floimg from '@teamflojo/floimg';
+    code: {
+      sdk: `import floimg from '@teamflojo/floimg';
 import openai from '@teamflojo/floimg-openai';
 
 floimg.use(openai());
@@ -40,6 +56,55 @@ for (const [platform, [w, h]] of Object.entries(sizes)) {
     .resize({ width: w, height: h, fit: 'cover' })
     .save(\`hero-\${platform}.png\`);
 }`,
+      cli: `# Generate hero image with AI
+floimg generate openai \\
+  --prompt "Minimal gradient background, soft purple to blue" \\
+  --out hero.png
+
+# Create all social media sizes
+floimg resize hero.png 1200x675 --fit cover -o hero-twitter.png
+floimg resize hero.png 1200x627 --fit cover -o hero-linkedin.png
+floimg resize hero.png 1080x1080 --fit cover -o hero-instagram.png`,
+      yaml: `name: Social Media Hero
+steps:
+  - kind: generate
+    generator: openai
+    params:
+      prompt: "Minimal gradient background, soft purple to blue"
+    out: hero
+
+  - kind: transform
+    in: hero
+    op: resize
+    params: { width: 1200, height: 675, fit: cover }
+    out: hero-twitter.png
+
+  - kind: transform
+    in: hero
+    op: resize
+    params: { width: 1200, height: 627, fit: cover }
+    out: hero-linkedin.png
+
+  - kind: transform
+    in: hero
+    op: resize
+    params: { width: 1080, height: 1080, fit: cover }
+    out: hero-instagram.png`,
+    },
+    links: {
+      sdk: [
+        { label: "Fluent API Docs", href: "/docs/sdk/fluent" },
+        { label: "OpenAI Plugin", href: "/docs/plugins/openai" },
+      ],
+      cli: [
+        { label: "CLI Reference", href: "/docs/cli" },
+        { label: "OpenAI Plugin", href: "/docs/plugins/openai" },
+      ],
+      yaml: [
+        { label: "Pipeline Guide", href: "/docs/pipelines" },
+        { label: "Try in Studio", href: "https://studio.floimg.com" },
+      ],
+    },
   },
   {
     id: "webdev",
@@ -48,7 +113,8 @@ for (const [platform, [w, h]] of Object.entries(sizes)) {
       "Turn any image into a responsive srcset. Automatic WebP conversion, optimized sizes, ready for your <picture> element.",
     image: "/showcase/pipelines/output/avatar-128.png",
     imageAlt: "Responsive image pipeline output",
-    code: `import floimg from '@teamflojo/floimg';
+    code: {
+      sdk: `import floimg from '@teamflojo/floimg';
 
 const source = await floimg.load('./uploads/hero.jpg');
 
@@ -66,6 +132,54 @@ await Promise.all(
 );
 
 // Output: hero-320.webp, hero-640.webp, ...`,
+      cli: `# Generate responsive srcset from any image
+floimg resize hero.jpg 320 --sharpen 0.5 --format webp -q 85 -o hero-320.webp
+floimg resize hero.jpg 640 --sharpen 0.5 --format webp -q 85 -o hero-640.webp
+floimg resize hero.jpg 1280 --sharpen 0.5 --format webp -q 85 -o hero-1280.webp
+floimg resize hero.jpg 1920 --sharpen 0.5 --format webp -q 85 -o hero-1920.webp
+
+# Or use batch mode
+floimg batch hero.jpg --widths 320,640,1280,1920 \\
+  --sharpen 0.5 --format webp -q 85`,
+      yaml: `name: Responsive Srcset
+input: hero.jpg
+steps:
+  - kind: transform
+    op: resize
+    params: { width: 320 }
+    then:
+      - op: sharpen
+        params: { amount: 0.5 }
+      - op: convert
+        params: { format: webp, quality: 85 }
+    out: hero-320.webp
+
+  - kind: transform
+    op: resize
+    params: { width: 640 }
+    then:
+      - op: sharpen
+        params: { amount: 0.5 }
+      - op: convert
+        params: { format: webp, quality: 85 }
+    out: hero-640.webp
+
+  # ... 1280, 1920`,
+    },
+    links: {
+      sdk: [
+        { label: "Fluent API Docs", href: "/docs/sdk/fluent" },
+        { label: "Transform Reference", href: "/docs/sdk/transforms" },
+      ],
+      cli: [
+        { label: "CLI Reference", href: "/docs/cli" },
+        { label: "Batch Processing", href: "/docs/cli#batch" },
+      ],
+      yaml: [
+        { label: "Pipeline Guide", href: "/docs/pipelines" },
+        { label: "Try in Studio", href: "https://studio.floimg.com" },
+      ],
+    },
   },
   {
     id: "product",
@@ -74,7 +188,8 @@ await Promise.all(
       "Process user uploads at scale. Crop, resize, optimize, and store—all in a single workflow that runs on every upload.",
     image: "/showcase/pipelines/output/filter-vintage.png",
     imageAlt: "Processed user avatar",
-    code: `import floimg from '@teamflojo/floimg';
+    code: {
+      sdk: `import floimg from '@teamflojo/floimg';
 
 export async function processUserAvatar(upload: Buffer) {
   const image = await floimg.load(upload);
@@ -94,6 +209,54 @@ export async function processUserAvatar(upload: Buffer) {
 
   return url;
 }`,
+      cli: `# Process avatar: crop to square, resize, optimize
+floimg pipeline avatar-upload.jpg \\
+  --crop "1:1" --gravity face \\
+  --resize 256 \\
+  --sharpen \\
+  --format webp -q 90 \\
+  -o processed-avatar.webp
+
+# Upload to S3
+aws s3 cp processed-avatar.webp s3://avatars/user-123.webp`,
+      yaml: `name: Avatar Processor
+input: $upload
+steps:
+  - kind: transform
+    op: crop
+    params:
+      aspect: "1:1"
+      gravity: face
+
+  - kind: transform
+    op: resize
+    params: { width: 256 }
+
+  - kind: transform
+    op: sharpen
+
+  - kind: transform
+    op: convert
+    params: { format: webp, quality: 90 }
+
+  - kind: save
+    destination: s3://avatars
+    filename: "\${userId}-256.webp"`,
+    },
+    links: {
+      sdk: [
+        { label: "Fluent API Docs", href: "/docs/sdk/fluent" },
+        { label: "Storage Plugins", href: "/docs/plugins#storage" },
+      ],
+      cli: [
+        { label: "CLI Reference", href: "/docs/cli" },
+        { label: "Pipeline Mode", href: "/docs/cli#pipeline" },
+      ],
+      yaml: [
+        { label: "Pipeline Guide", href: "/docs/pipelines" },
+        { label: "Try in Studio", href: "https://studio.floimg.com" },
+      ],
+    },
   },
 ];
 ---
@@ -130,8 +293,51 @@ export async function processUserAvatar(upload: Buffer) {
             </a>
             <div class="panel-info">
               <p class="panel-description">{tab.description}</p>
-              {/* prettier-ignore */}
-              <pre class="panel-code"><code set:text={tab.code} /></pre>
+
+              <div class="format-selector" role="tablist" aria-label="Code format">
+                <button role="tab" aria-selected="true" data-format="sdk" class="format-btn active">
+                  SDK
+                </button>
+                <button role="tab" aria-selected="false" data-format="cli" class="format-btn">
+                  CLI
+                </button>
+                <button role="tab" aria-selected="false" data-format="yaml" class="format-btn">
+                  YAML
+                </button>
+              </div>
+
+              <div class="code-blocks">
+                {/* prettier-ignore */}
+                <pre class="panel-code active" data-code="sdk"><code set:text={tab.code.sdk} /></pre>
+                {/* prettier-ignore */}
+                <pre class="panel-code" data-code="cli"><code set:text={tab.code.cli} /></pre>
+                {/* prettier-ignore */}
+                <pre class="panel-code" data-code="yaml"><code set:text={tab.code.yaml} /></pre>
+              </div>
+
+              <div class="panel-links">
+                <div class="links-group active" data-links="sdk">
+                  {tab.links.sdk.map((link) => (
+                    <a href={link.href} class="panel-link">
+                      {link.label} →
+                    </a>
+                  ))}
+                </div>
+                <div class="links-group" data-links="cli">
+                  {tab.links.cli.map((link) => (
+                    <a href={link.href} class="panel-link">
+                      {link.label} →
+                    </a>
+                  ))}
+                </div>
+                <div class="links-group" data-links="yaml">
+                  {tab.links.yaml.map((link) => (
+                    <a href={link.href} class="panel-link">
+                      {link.label} →
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -144,6 +350,9 @@ export async function processUserAvatar(upload: Buffer) {
   function initTabs() {
     const tabButtons = document.querySelectorAll(".tab-button");
     const tabPanels = document.querySelectorAll(".tab-panel");
+
+    // Get saved format preference (default to SDK)
+    const savedFormat = localStorage.getItem("floimg-code-format") || "sdk";
 
     tabButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -166,6 +375,71 @@ export async function processUserAvatar(upload: Buffer) {
         });
       });
     });
+
+    // Initialize format selectors for each panel
+    tabPanels.forEach((panel) => {
+      const formatBtns = panel.querySelectorAll(".format-btn");
+      const codeBlocks = panel.querySelectorAll(".panel-code");
+      const linkGroups = panel.querySelectorAll(".links-group");
+
+      // Set initial format from localStorage
+      setFormat(savedFormat);
+
+      formatBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const format = btn.getAttribute("data-format");
+          if (format) {
+            setFormat(format);
+            // Save preference
+            localStorage.setItem("floimg-code-format", format);
+            // Sync across all panels
+            syncFormatAcrossPanels(format);
+          }
+        });
+      });
+
+      function setFormat(format: string) {
+        // Update format buttons
+        formatBtns.forEach((b) => {
+          const isActive = b.getAttribute("data-format") === format;
+          b.classList.toggle("active", isActive);
+          b.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        // Update code blocks
+        codeBlocks.forEach((block) => {
+          block.classList.toggle("active", block.getAttribute("data-code") === format);
+        });
+
+        // Update link groups
+        linkGroups.forEach((group) => {
+          group.classList.toggle("active", group.getAttribute("data-links") === format);
+        });
+      }
+    });
+
+    // Sync format across all panels when changed
+    function syncFormatAcrossPanels(format: string) {
+      tabPanels.forEach((panel) => {
+        const formatBtns = panel.querySelectorAll(".format-btn");
+        const codeBlocks = panel.querySelectorAll(".panel-code");
+        const linkGroups = panel.querySelectorAll(".links-group");
+
+        formatBtns.forEach((b) => {
+          const isActive = b.getAttribute("data-format") === format;
+          b.classList.toggle("active", isActive);
+          b.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        codeBlocks.forEach((block) => {
+          block.classList.toggle("active", block.getAttribute("data-code") === format);
+        });
+
+        linkGroups.forEach((group) => {
+          group.classList.toggle("active", group.getAttribute("data-links") === format);
+        });
+      });
+    }
   }
 
   // Initialize on load and navigation
@@ -265,18 +539,62 @@ export async function processUserAvatar(upload: Buffer) {
 
   .panel-description {
     color: #a1a1aa;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-size: 1.1rem;
     line-height: 1.6;
   }
 
+  /* Format Selector */
+  .format-selector {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .format-btn {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #3f3f46;
+    background: transparent;
+    color: #a1a1aa;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .format-btn:hover {
+    background: #27272a;
+    color: #e4e4e7;
+  }
+
+  .format-btn.active {
+    background: #27272a;
+    border-color: #52525b;
+    color: #fafafa;
+  }
+
+  /* Code Blocks */
+  .code-blocks {
+    position: relative;
+  }
+
   .panel-code {
+    display: none;
     background: var(--m-code-bg, #1e1e2e);
     border: 1px solid var(--m-code-border, #3f3f46);
     border-radius: 0.5rem;
     padding: 1.25rem;
     overflow-x: auto;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    max-height: 320px;
+  }
+
+  .panel-code.active {
+    display: block;
+    animation: fadeIn 0.2s ease;
   }
 
   .panel-code code {
@@ -285,6 +603,34 @@ export async function processUserAvatar(upload: Buffer) {
     padding: 0;
     white-space: pre;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  /* Links Section */
+  .panel-links {
+    margin-top: 0.75rem;
+  }
+
+  .links-group {
+    display: none;
+    gap: 1rem;
+  }
+
+  .links-group.active {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .panel-link {
+    color: rgb(45 212 191);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+
+  .panel-link:hover {
+    color: rgb(94 234 212);
+    text-decoration: underline;
   }
 
   :global(.dark) .panel-image {
