@@ -994,3 +994,17 @@ starlight-toc a[aria-current="true"],
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
 }
+
+/* ===========================================
+   Page Title Fix
+   Tailwind reset overrides Starlight's h1 styling
+   for h1#_top which is outside .sl-markdown-content
+   =========================================== */
+
+h1#_top {
+  font-size: var(--sl-text-h1);
+  line-height: var(--sl-line-height-headings);
+  font-weight: 600;
+  color: var(--sl-color-white);
+  margin-top: 1rem;
+}
