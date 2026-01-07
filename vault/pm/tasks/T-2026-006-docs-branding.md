@@ -1,8 +1,10 @@
 # T-2026-006: Fix Docs Branding
 
-**Status**: IN_PROGRESS
+**Status**: DONE
 **Created**: 2026-01-06
+**Completed**: 2026-01-06
 **Priority**: P2
+**PR**: #61 (merged)
 
 ## Summary
 
