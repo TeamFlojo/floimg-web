@@ -249,7 +249,7 @@ floimg config set s3.bucket my-images
 floimg config set s3.region us-east-1
 
 # Now you can save to S3
-floimg generate --generator shapes --params '{"type":"gradient"}' \
+floimg generate --generator shapes --params '{"shapeType":"rectangle","fillType":"gradient"}' \
   --out s3://my-images/gradient.png
 ```
 
