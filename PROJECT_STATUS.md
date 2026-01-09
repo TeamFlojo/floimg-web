@@ -1,6 +1,6 @@
 # PROJECT STATUS
 
-**Last Updated**: 2026-01-06
+**Last Updated**: 2026-01-09
 
 ## Current Focus
 
@@ -92,6 +92,7 @@ docs/
 
 ## Next Up
 
+- **BUG-2026-001**: Fix README referencing private floimg-cloud repo
 - Add more plugin documentation
 - Improve getting started guides
 - Add more examples and tutorials
