@@ -6,31 +6,33 @@ import TemplateHighlights from "../components/TemplateHighlights.astro";
 import ShowcasePreview from "../components/ShowcasePreview.astro";
 import GitHubStars from "../components/GitHubStars.astro";
 
-// Streamlined features: 6 cards in 3x2 grid (removed Generators category - covered in templates/plugins)
+// Streamlined features: 6 cards in 3x2 grid
 const features = [
   {
-    title: "AI Image Generation",
-    description: "Generate images with DALL-E and other AI models via a unified API.",
+    title: "AI + Deterministic",
+    description:
+      "Generate with DALL-E, then resize precisely, add captions, convert formats—one pipeline.",
     icon: "🎨",
-    link: "/docs/plugins/openai",
-  },
-  {
-    title: "Deterministic Transforms",
-    description: "Same inputs, same outputs. Reliable execution for production.",
-    icon: "🎯",
     link: "/docs/getting-started/concepts",
   },
   {
-    title: "Pipeline Engine",
-    description: "Chain generators and transforms into reusable, shareable workflows.",
+    title: "Composable Pipelines",
+    description: "Chain any generators and transforms. Mix AI creativity with exact precision.",
     icon: "⚡",
     link: "/docs/getting-started/concepts",
   },
   {
     title: "LLM-Ready",
-    description: "MCP integration for Claude and other AI agents out of the box.",
+    description:
+      "MCP integration for Claude and other AI agents. Session state for iterative refinement.",
     icon: "🤖",
     link: "/docs/mcp",
+  },
+  {
+    title: "Multiple Interfaces",
+    description: "SDK, CLI, visual builder, or MCP. Same workflows, different access patterns.",
+    icon: "🔌",
+    link: "/docs/plugins/openai",
   },
   {
     title: "Self-Hostable",

@@ -3,30 +3,29 @@ title: MCP Overview
 description: Use FloImg as an AI agent tool
 ---
 
-FloImg provides an MCP (Model Context Protocol) server that lets AI agents generate images as part of their workflows.
+FloImg provides an MCP (Model Context Protocol) server that lets AI agents generate and manipulate images as part of their workflows.
 
 ## What is MCP?
 
 MCP is a protocol that enables AI assistants like Claude to use external tools. With FloImg's MCP server, AI agents can:
 
-- Generate charts and visualizations
-- Create diagrams and flowcharts
-- Produce QR codes
-- Capture screenshots
-- Transform and save images
+- Generate images with AI (DALL-E, Stability, Ollama)
+- Create charts, diagrams, and QR codes
+- Apply precise transforms (resize, caption, adjust colors)
+- Save to local storage or cloud (S3, R2)
 
 ## Why FloImg + MCP?
 
-AI agents need deterministic image generation:
+AI agents benefit from composable image pipelines. FloImg lets agents:
 
-| AI Image Generation | FloImg |
-|---------------------|--------|
-| Non-deterministic | Same input → same output |
-| Slow (seconds) | Fast (milliseconds) |
-| Expensive | Free / cheap |
-| Hallucinates data | Accurate to input |
+| Capability | What It Enables |
+|------------|-----------------|
+| **AI Generation** | Generate creative images via DALL-E, Stability, or local models |
+| **Deterministic Transforms** | Resize to exact dimensions, adjust colors precisely, add captions |
+| **Mixed Pipelines** | Generate with AI → transform deterministically → save to cloud |
+| **Session State** | Reference previous images by ID for iterative refinement |
 
-For data visualizations, diagrams, and functional images, FloImg gives agents reliable, reproducible results.
+The power is in composition: agents can generate creatively, then apply precise transforms—all in one pipeline.
 
 ## Quick Start
 

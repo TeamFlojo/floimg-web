@@ -127,9 +127,9 @@ export const faqCategories: FAQCategory[] = [
           "The core library works offline for local generators (charts, QR codes) and transforms. AI generation requires internet access. Self-hosted FloImg Studio can run entirely on your local network.",
       },
       {
-        question: "What can FloImg do that AI generators can't?",
+        question: "How does FloImg work with AI image generators?",
         answer:
-          "AI generators create images probabilistically—asking 'make it bluer' might give you a different composition. FloImg applies deterministic transforms: modulate({hue: 30}) adjusts hue mathematically, guaranteed to preserve everything else. FloImg also chains operations in atomic pipelines with session state.",
+          "FloImg integrates AI generators (DALL-E, Stability, Ollama) as pipeline steps. Generate an image with AI, then apply deterministic transforms—resize to exact dimensions, adjust colors precisely, add captions—and save to cloud storage. One pipeline handles the full workflow: creative generation → precise transforms → delivery.",
       },
       {
         question: "How does content moderation work?",

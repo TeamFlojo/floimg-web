@@ -54,25 +54,53 @@ The power isn't just "deterministic" OR "AI" - it's **composing both together**:
 
 ### Remaining Work
 
-- [ ] **concepts.mdx**: Add AI generators (OpenAI, Stability) to Generators section
-- [ ] **concepts.mdx**: Add example showing AI → deterministic workflow
-- [ ] **concepts.mdx**: Add three workflow types table
-- [ ] **index.astro**: Strengthen "mix AI + deterministic" in features section
-- [ ] **mcp/index.mdx**: Reframe comparison as "complement" not "alternative"
-- [ ] **about.astro**: Add composability narrative to the two cards
-- [ ] Audit for outdated competitive claims (remove any "X can't do Y" language)
-- [ ] Build passes, visual check confirms pages render correctly
+#### Critical
+
+- [ ] **concepts.mdx**: Add AI generators (OpenAI, Stability, Google, Replicate, Ollama, xAI)
+- [ ] **concepts.mdx**: Remove "Unlike AI image generation" comparative framing (line 104)
+- [ ] **concepts.mdx**: Add mixed workflow example (AI generate → transform → save)
+
+#### High Priority
+
+- [ ] **faq.ts**: Reframe "What can FloImg do that AI generators can't?" to composability focus
+- [ ] **mcp/index.mdx**: Replace vs-table (lines 22-27) with complementary framing
+- [ ] **about.astro**: Fix line 40 "problems that AI image tools can't solve alone"
+
+#### Medium Priority
+
+- [ ] **index.astro**: Update feature descriptions to show composition, not separation
+- [ ] **installation.mdx**: Add missing AI generators (Google, Replicate, Ollama, xAI)
+
+#### Verification
+
+- [ ] Build passes
+- [ ] No "X can't do Y" competitive claims remain
+- [ ] Composability message clear on key pages
 
 ## Implementation Details
 
-### Files to Modify
+### Audit Findings (14 issues across 6 files)
 
-| File                                                 | Priority | Change                                             |
-| ---------------------------------------------------- | -------- | -------------------------------------------------- |
-| `src/content/docs/docs/getting-started/concepts.mdx` | Critical | Add AI generators, show mixed workflow example     |
-| `src/pages/index.astro`                              | High     | Feature card showing "Mix AI + Deterministic"      |
-| `src/content/docs/docs/mcp/index.mdx`                | High     | Reframe FloImg as AI complement, not alternative   |
-| `src/pages/about.astro`                              | Medium   | Weave composability into existing 2-card structure |
+| File               | Priority | Issues Found                                                 |
+| ------------------ | -------- | ------------------------------------------------------------ |
+| `concepts.mdx`     | Critical | Missing AI generators, "Unlike AI" framing, no mixed example |
+| `faq.ts`           | High     | "What can FloImg do that AI generators can't?"               |
+| `mcp/index.mdx`    | High     | Comparison table positions FloImg vs AI                      |
+| `about.astro`      | High     | Line 40: "problems AI tools can't solve alone"               |
+| `index.astro`      | Medium   | Features treated as separate, not composed                   |
+| `installation.mdx` | Medium   | Missing 4 AI generators                                      |
+
+### Specific Text to Fix
+
+**Competitive claims to remove:**
+
+- "What can FloImg do that AI generators can't?" (faq.ts:130)
+- "Unlike AI image generation..." (concepts.mdx:104)
+- "problems that AI image tools can't solve alone" (about.astro:40)
+
+**Contrast framing to reframe:**
+
+- MCP table showing FloImg beating AI on every row (mcp/index.mdx:22-27)
 
 ### Three Workflow Types (add where missing)
 

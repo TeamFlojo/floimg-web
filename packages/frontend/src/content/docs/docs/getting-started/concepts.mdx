@@ -3,7 +3,7 @@ title: Core Concepts
 description: Understanding how FloImg works
 ---
 
-FloImg is built around three simple operations: **Generate**, **Transform**, and **Save**.
+FloImg is built around three simple operations: **Generate**, **Transform**, and **Save**. The power is in composing them—mix AI generation with deterministic transforms in one pipeline.
 
 ## The Workflow Model
 
@@ -13,27 +13,49 @@ Every FloImg workflow follows this pattern:
 Generate → Transform (optional, repeatable) → Save
 ```
 
-1. **Generate**: Create an image from parameters (charts, diagrams, QR codes, etc.)
-2. **Transform**: Modify the image (resize, blur, convert format, etc.)
+1. **Generate**: Create an image—with AI (DALL-E, Stability) or deterministically (charts, QR codes)
+2. **Transform**: Modify the image precisely (resize, adjust colors, add caption)
 3. **Save**: Output to filesystem, S3, or other storage
+
+### Three Workflow Types
+
+| Type | Example |
+|------|---------|
+| **AI + Professional** | Generate with DALL-E → resize to 1200x630 → add caption → S3 |
+| **Purely Creative** | AI generate → AI refine → create variations |
+| **Purely Practical** | Chart → resize → format convert → CDN |
+
+Use whichever fits your task—or combine them.
 
 ## Generators
 
-Generators create images from structured data. Each generator is a plugin with its own parameter schema.
+Generators create images. Each generator is a plugin—install only what you need.
 
 ```typescript
 const image = await floimg.generate({
-  generator: 'quickchart',  // Which generator to use
-  params: { ... }           // Generator-specific parameters
+  generator: 'openai',  // Which generator to use
+  params: { prompt: 'Product photo of wireless headphones' }
 });
 ```
 
-Available generators:
+### AI Image Generators
+
+- `openai` - DALL-E 3 for high-quality AI images
+- `stability` - Stable Diffusion (SDXL, SD3)
+- `google` - Google Imagen
+- `replicate` - Thousands of AI models
+- `ollama` - Local AI models (no API key required)
+- `xai` - Grok for text and vision
+
+### Deterministic Generators
+
 - `quickchart` - Charts via Chart.js
 - `mermaid` - Diagrams and flowcharts
 - `qr` - QR codes
 - `d3` - D3 data visualizations
 - `screenshot` - Website screenshots
+
+See [Plugins](/docs/plugins) for the full list and documentation.
 
 ## Transforms
 
@@ -91,17 +113,47 @@ await floimg.save(image, 'custom://path/image.png');
 
 ## Deterministic Execution
 
-FloImg is designed for deterministic execution:
+FloImg transforms are deterministic:
 
 > **Same inputs → Same outputs**
 
-This makes FloImg ideal for:
-- CI/CD pipelines
-- Automated reporting
-- AI agent workflows (MCP)
-- Testing and QA
+When you resize, adjust colors, or convert formats, you get identical results every time. This makes FloImg ideal for CI/CD pipelines, automated reporting, and AI agent workflows.
 
-Unlike AI image generation, FloImg workflows produce identical results every time (when using non-AI generators).
+When using AI generators (DALL-E, Stability), the generation step is non-deterministic—but the transforms after generation are still precise. This is the power of composition: creative AI generation followed by exact, repeatable transforms.
+
+## Putting It Together
+
+Here's a complete example mixing AI generation with deterministic transforms:
+
+```typescript
+import createClient from '@teamflojo/floimg';
+import openai from '@teamflojo/floimg-openai';
+
+const floimg = createClient();
+floimg.registerGenerator(openai());
+
+// 1. Generate with AI
+const image = await floimg.generate({
+  generator: 'openai',
+  params: { prompt: 'Professional product photo of wireless headphones' }
+});
+
+// 2. Apply deterministic transforms
+const resized = await floimg.transform(image, {
+  op: 'resize',
+  params: { width: 1200, height: 630 }
+});
+
+const captioned = await floimg.transform(resized, {
+  op: 'caption',
+  params: { text: 'New Release', position: 'bottom' }
+});
+
+// 3. Save to cloud storage
+await floimg.save(captioned, 's3://my-bucket/hero.png');
+```
+
+One pipeline: AI creativity → precise transforms → cloud delivery.
 
 ## Next Steps
 
