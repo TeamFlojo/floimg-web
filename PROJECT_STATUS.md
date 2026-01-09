@@ -4,20 +4,22 @@
 
 ## Current Focus
 
-**T-2026-011: Value Proposition Consistency**
+**T-2026-011: Value Proposition Consistency** (ready for PR)
 
-Aligning messaging across site after reframing from "Three Problems" to two core concepts (Deterministic Transforms, Unified API). Key emphasis on the **composability story**: mixing AI generation with deterministic transforms in one pipeline.
+Aligned messaging across site with two core concepts (Deterministic Transforms, Unified API) and strengthened the **composability story**: mixing AI generation with deterministic transforms in one pipeline.
 
-Progress:
+Completed:
 
-- [x] Consolidate about.astro (3→2 cards)
-- [x] Consolidate claude-code.astro (3→2 cards)
-- [x] Update docs/claude-code/index.mdx
-- [x] Update Glossary.md terminology
-- [ ] Fix concepts.mdx (add AI generators, mixed workflow example)
-- [ ] Strengthen index.astro composability message
-- [ ] Reframe mcp/index.mdx as AI complement
-- [ ] Audit for outdated competitive claims
+- [x] Consolidate about.astro and claude-code.astro (3→2 cards)
+- [x] Update docs/claude-code/index.mdx and Glossary.md
+- [x] Fix concepts.mdx (add AI generators, mixed workflow example, three workflow types)
+- [x] Strengthen index.astro with "AI + Deterministic" and "Composable Pipelines" features
+- [x] Reframe mcp/index.mdx as AI complement (replaced vs-table)
+- [x] Fix faq.ts competitive question
+- [x] Remove all "X can't do Y" competitive claims
+- [x] Add missing AI generators to installation.mdx
+
+Branch: `chore/T-2026-011-value-prop-consistency`
 
 ---
 

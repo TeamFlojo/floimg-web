@@ -52,30 +52,30 @@ The power isn't just "deterministic" OR "AI" - it's **composing both together**:
 - [x] Update docs/claude-code/index.mdx with 2-point framing
 - [x] Update vault/Glossary.md terminology
 
-### Remaining Work
+### Audit & Fixes (Completed)
 
 #### Critical
 
-- [ ] **concepts.mdx**: Add AI generators (OpenAI, Stability, Google, Replicate, Ollama, xAI)
-- [ ] **concepts.mdx**: Remove "Unlike AI image generation" comparative framing (line 104)
-- [ ] **concepts.mdx**: Add mixed workflow example (AI generate → transform → save)
+- [x] **concepts.mdx**: Add AI generators (OpenAI, Stability, Google, Replicate, Ollama, xAI)
+- [x] **concepts.mdx**: Remove "Unlike AI image generation" comparative framing
+- [x] **concepts.mdx**: Add mixed workflow example (AI generate → transform → save)
 
 #### High Priority
 
-- [ ] **faq.ts**: Reframe "What can FloImg do that AI generators can't?" to composability focus
-- [ ] **mcp/index.mdx**: Replace vs-table (lines 22-27) with complementary framing
-- [ ] **about.astro**: Fix line 40 "problems that AI image tools can't solve alone"
+- [x] **faq.ts**: Reframe "What can FloImg do that AI generators can't?" to composability focus
+- [x] **mcp/index.mdx**: Replace vs-table with complementary framing
+- [x] **about.astro**: Fix "problems that AI image tools can't solve alone"
 
 #### Medium Priority
 
-- [ ] **index.astro**: Update feature descriptions to show composition, not separation
-- [ ] **installation.mdx**: Add missing AI generators (Google, Replicate, Ollama, xAI)
+- [x] **index.astro**: Update feature descriptions to show composition
+- [x] **installation.mdx**: Add missing AI generators (Google, Replicate, Ollama, xAI)
 
 #### Verification
 
-- [ ] Build passes
-- [ ] No "X can't do Y" competitive claims remain
-- [ ] Composability message clear on key pages
+- [x] Build passes
+- [x] No "X can't do Y" competitive claims remain
+- [x] Composability message clear on key pages
 
 ## Implementation Details
 
