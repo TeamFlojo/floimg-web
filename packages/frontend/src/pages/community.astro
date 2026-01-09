@@ -7,9 +7,11 @@ const contributors = await fetchContributors();
 const stats = await fetchRepoStats();
 
 // Team members with profile pages
+// Maps GitHub handle → FloImg username for team member profile links
 const knownProfiles = new Map<string, string>([
-  ["brettcooke", "brett"],
+  ["bcooke", "brett"],
   ["bleuropa", "brandon"],
+  ["baljeetaulakh", "baljeet"],
 ]);
 
 const contributionAreas = [

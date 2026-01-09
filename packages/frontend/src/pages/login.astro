@@ -168,8 +168,8 @@ const errorMessages: Record<string, string> = {
       const data = await res.json();
 
       if (res.ok) {
-        // Redirect to dashboard on success
-        window.location.href = "/dashboard";
+        // Redirect to Studio Cloud dashboard on success
+        window.location.href = "https://studio.floimg.com/dashboard";
       } else if (data.code === "EMAIL_NOT_VERIFIED") {
         message.className =
           "text-center p-4 rounded-lg text-sm bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200";
