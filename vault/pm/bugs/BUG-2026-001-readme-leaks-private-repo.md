@@ -1,9 +1,10 @@
 ---
 tags: [type/bug]
-status: in-progress
+status: completed
 priority: p1
 created: 2026-01-09
 updated: 2026-01-09
+completed: 2026-01-09
 parent:
 children: []
 ---
@@ -13,10 +14,10 @@ children: []
 ## Bug Details
 
 - **Bug ID**: BUG-2026-001
-- **Status**: in-progress
+- **Status**: completed
 - **Priority**: p1
 - **Created**: 2026-01-09
-- **Resolved**:
+- **Resolved**: 2026-01-09
 
 ## Description
 
@@ -58,9 +59,9 @@ Remove the floimg-cloud line from the "Related Repos" section entirely.
 
 ## Acceptance Criteria
 
-- [ ] No references to floimg-cloud in README
-- [ ] No references to private repos or internal infrastructure
-- [ ] Related Repos section only lists public, accessible repos
+- [x] No references to floimg-cloud in README
+- [x] No references to private repos or internal infrastructure
+- [x] Related Repos section only lists public, accessible repos
 
 ## Progress Notes
 

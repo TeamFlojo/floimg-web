@@ -4,12 +4,6 @@
 
 ## Current Focus
 
-**BUG-2026-001: README references private floimg-cloud repo**
-
-Removing private repo reference from public README to maintain OSS boundary.
-
----
-
 **T-2026-007: Homepage Redesign**
 
 Redesigning homepage to create tighter narrative, fix dark mode bugs, improve visual variety, and make Studio more prominent. Reducing from 10 to 7 sections.
@@ -26,6 +20,12 @@ Progress:
 - [ ] Merge community sections
 
 ## Just Completed
+
+**BUG-2026-001: Remove private repo references from README** (2026-01-09)
+
+- Removed floimg-cloud reference from Related Repos section
+- Fixed "Shared types with floimg-cloud" comment in Structure section
+- Updated FloImg repo link to correct GitHub URL
 
 **T-2026-005: Convert Pages to SSR** (2026-01-03)
 
