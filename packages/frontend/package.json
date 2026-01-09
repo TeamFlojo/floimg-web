@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "generate:previews": "tsx scripts/generate-template-previews.ts"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.1",
@@ -13,6 +14,11 @@
     "@astrojs/rss": "^4.0.14",
     "@astrojs/starlight": "^0.37.1",
     "@astrojs/tailwind": "^6.0.2",
+    "@teamflojo/floimg": "^0.8.0",
+    "@teamflojo/floimg-mermaid": "^0.2.0",
+    "@teamflojo/floimg-openai": "^0.2.0",
+    "@teamflojo/floimg-qr": "^0.2.0",
+    "@teamflojo/floimg-quickchart": "^0.2.0",
     "@teamflojo/floimg-templates": "^0.2.0",
     "astro": "^5.16.6",
     "react": "^19.2.3",
@@ -21,6 +27,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^3.4.19",
+    "tsx": "^4.19.0"
   }
 }
