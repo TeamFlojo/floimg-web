@@ -7,7 +7,7 @@ Public website for the floimg ecosystem: marketing, documentation, and gallery.
 ```
 packages/
 ├── frontend/        # React 19 + Vite (marketing, docs, gallery UI)
-└── shared/          # Shared types with floimg-cloud
+└── shared/          # Shared TypeScript types
 ```
 
 ## Tech Stack
@@ -33,9 +33,7 @@ pnpm build
 
 ## Related Repos
 
-- [floimg](../floimg) - Core library
-- [floimg-studio](../floimg-studio) - Visual builder
-- floimg-cloud (private) - Cloud API that powers gallery and auth
+- [FloImg](https://github.com/TeamFlojo/FloImg) - Core library and FloImg Studio
 
 ## Contributors
 
