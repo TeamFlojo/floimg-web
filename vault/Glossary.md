@@ -30,17 +30,6 @@ Use these terms consistently in docs and marketing copy:
 
 ---
 
-## Two Core Differentiators
-
-Use these concepts when explaining FloImg's value:
-
-1. **Deterministic Transforms** - FloImg applies precise, repeatable transforms (hue shift, resize, caption) vs AI regeneration which is probabilistic
-2. **A Unified API** - Composable pipelines consolidate fragmented tools and glue code into one abstraction layer
-
-In user-facing copy, frame these as problems FloImg solves ("AI editing is unpredictable", "Tools are fragmented") rather than technical differentiators.
-
----
-
 ## User Segments
 
 How we refer to different user types:
