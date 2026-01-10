@@ -58,3 +58,24 @@ This site calls `api.floimg.com` for:
 - User dashboard
 
 Cross-origin cookies enabled via `Domain=.floimg.com`.
+
+## PM Artifacts Policy (OSS)
+
+This is a **public repo**. Code must be self-documenting.
+
+| Location      | Task/Bug IDs | Epics | ADRs  |
+| ------------- | ------------ | ----- | ----- |
+| Source code   | Never        | Never | Never |
+| Commits / PRs | OK           | OK    | OK    |
+
+**Never put PM artifact references in source code** - even in comments:
+
+```typescript
+// BAD
+// Implements T-2025-001 pricing page
+
+// GOOD
+// Displays pricing tiers with feature comparison
+```
+
+External contributors can't see ecosystem-level PM docs (EPICs, ADRs).
