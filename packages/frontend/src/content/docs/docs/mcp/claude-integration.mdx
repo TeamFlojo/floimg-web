@@ -27,8 +27,8 @@ Add floimg to the `mcpServers` section:
 {
   "mcpServers": {
     "floimg": {
-      "command": "floimg-mcp",
-      "args": [],
+      "command": "npx",
+      "args": ["-y", "@teamflojo/floimg-mcp"],
       "env": {
         "FLOIMG_OUTPUT_DIR": "/Users/you/Pictures/floimg"
       }
@@ -65,7 +65,8 @@ Add to your Claude Code MCP configuration:
 {
   "mcpServers": {
     "floimg": {
-      "command": "floimg-mcp"
+      "command": "npx",
+      "args": ["-y", "@teamflojo/floimg-mcp"]
     }
   }
 }
@@ -94,7 +95,8 @@ Example configuration with environment:
 {
   "mcpServers": {
     "floimg": {
-      "command": "floimg-mcp",
+      "command": "npx",
+      "args": ["-y", "@teamflojo/floimg-mcp"],
       "env": {
         "FLOIMG_OUTPUT_DIR": "/path/to/images",
         "AWS_ACCESS_KEY_ID": "your-key",
